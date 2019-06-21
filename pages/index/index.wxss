@@ -1,0 +1,266 @@
+/* loading页面 */
+#loading{
+  background-color: #db9e36;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+  margin-top: 0rpx;
+  top: 0rpx;
+}
+#loading-center{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  }
+#loading-center-absolute {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 150rpx;
+  width: 150rpx;
+  margin-top: -75rpx;
+  margin-left: -75rpx; 
+  -ms-transform: rotate(45deg); 
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg); 
+}
+.object{
+  width: 20rpx;
+  height: 20rpx;
+  background-color:#FFF;
+  position: absolute;
+  left: 65rpx;
+  top: 65rpx;
+  }
+.object:nth-child(2n+0) {
+  margin-right: 0px;
+}
+#object_one {
+  -webkit-animation: object_one 2s infinite;
+  animation: object_one 2s infinite;
+  -webkit-animation-delay: 0.2s; 
+    animation-delay: 0.2s; 
+  }
+#object_two {
+  -webkit-animation: object_two 2s infinite;
+  animation: object_two 2s infinite;
+  -webkit-animation-delay: 0.3s; 
+    animation-delay: 0.3s; 
+  }
+#object_three {
+  -webkit-animation: object_three 2s infinite;
+  animation: object_three 2s infinite;
+  -webkit-animation-delay: 0.4s; 
+    animation-delay: 0.4s; 
+  }
+#object_four {
+  -webkit-animation: object_four 2s infinite;
+  animation: object_four 2s infinite;
+  -webkit-animation-delay: 0.5s; 
+    animation-delay: 0.5s; 
+}
+#object_five {
+  -webkit-animation: object_five 2s infinite;
+  animation: object_five 2s infinite;
+  -webkit-animation-delay: 0.6s; 
+    animation-delay: 0.6s; 
+}
+#object_six {
+  -webkit-animation: object_six 2s infinite;
+  animation: object_six 2s infinite;
+  -webkit-animation-delay: 0.7s; 
+    animation-delay: 0.7s; 
+}
+#object_seven {
+  -webkit-animation: object_seven 2s infinite;
+  animation: object_seven 2s infinite;
+  -webkit-animation-delay: 0.8s; 
+    animation-delay: 0.8s; 
+}
+#object_eight {
+  -webkit-animation: object_eight 2s infinite;
+  animation: object_eight 2s infinite;
+   -webkit-animation-delay: 0.9s; 
+    animation-delay: 0.9s; 
+}
+#object_big{
+  position: absolute;
+  width: 50rpx;
+  height: 50rpx;
+  left: 50rpx;
+  top: 50rpx;
+  -webkit-animation: object_big 2s infinite;
+  animation: object_big 2s infinite;
+  -webkit-animation-delay: 0.5s; 
+    animation-delay: 0.5s; 
+} 
+@-webkit-keyframes object_big {
+ 50% { -webkit-transform: scale(0.5); }
+}
+@keyframes object_big {
+ 50% { 
+    transform: scale(0.5);
+    -webkit-transform: scale(0.5);
+  } 
+}
+@-webkit-keyframes object_one {
+ 50% { -webkit-transform: translate(-65rpx,-65rpx)  ; }
+}
+@keyframes object_one {
+ 50% { 
+    transform: translate(-65rpx,-65rpx) ;
+    -webkit-transform: translate(-65rpx,-65rpx) ;
+  } 
+}
+@-webkit-keyframes object_two {
+  50% { -webkit-transform: translate(0,-65rpx) ; }
+}
+@keyframes object_two {
+ 50% { 
+    transform: translate(0,-65rpx) ; 
+    -webkit-transform: translate(0,-65rpx) ; 
+  } 
+}
+@-webkit-keyframes object_three {
+ 50% { -webkit-transform: translate(65rpx,-65rpx) ; }
+}
+@keyframes object_three {
+ 50% { 
+    transform: translate(65rpx,-65rpx) ;
+    -webkit-transform: translate(65rpx,-r65px) ;
+  } 
+}
+@-webkit-keyframes object_four {
+  50% { -webkit-transform: translate(65rpx,0) ; }
+}
+@keyframes object_four {
+  50% { 
+    transform: translate(65rpx,0) ;
+    -webkit-transform: translate(65rpx,0) ;
+  } 
+}
+@-webkit-keyframes object_five {
+  50% { -webkit-transform: translate(65rpx,65rpx) ; }
+}
+@keyframes object_five {
+  50% { 
+    transform: translate(65rpx,65rpx) ;
+    -webkit-transform: translate(65rpx,65rpx) ;
+  } 
+}
+@-webkit-keyframes object_six {
+  50% { -webkit-transform: translate(0,65rpx) ; }
+}
+@keyframes object_six {
+  50% { 
+    transform:  translate(0,65rpx) ;
+    -webkit-transform:  translate(0,65rpx) ;
+  } 
+}
+@-webkit-keyframes object_seven {
+  50% { -webkit-transform: translate(-65rpx,65rpx) ; }
+}
+@keyframes object_seven {
+  50% { 
+    transform: translate(-65rpx,65rpx) ;
+    -webkit-transform: translate(-65rpx,65rpx) ;
+  } 
+}
+@-webkit-keyframes object_eight {
+  50% { -webkit-transform: translate(-65rpx,0) ; 
+  }
+  @keyframes object_eight {
+    50% { 
+      transform: translate(-65px,0) ;
+      -webkit-transform: translate(-65rpx,0) ;
+    } 
+  }
+}
+/* loading页面结束 */
+.header {
+    margin: 90rpx 0 90rpx 50rpx;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+    width: 650rpx;
+    height: 300rpx;
+    line-height: 450rpx;
+}
+ 
+.header image {
+    width: 200rpx;
+    height: 200rpx;
+    border-radius:50%;
+}
+ 
+.content {
+    margin-left: 50rpx;
+    margin-bottom: 90rpx;
+}
+ 
+.content text {
+    display: block;
+    color: #9d9d9d;
+    margin-top: 40rpx;
+}
+ 
+.bottom {
+    border-radius: 80rpx;
+    margin: 70rpx 50rpx;
+    font-size: 35rpx;
+}
+
+.bind_header{
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+    width: 650rpx;
+    height: 300rpx;
+    line-height: 450rpx;
+}
+.loginTopContainer {
+    width: 100%;
+    height: 20%;
+    content: '';
+  }
+  .loginAvatarText {
+    color: #ecfeff;
+    top: 16%;
+    left: 32%;
+  }
+  .loginBottom {
+    width: 100%;
+    height: 300rpx;
+  }
+  .formPanel {
+    width: 100%;
+    height: 40%;
+    position: absolute;
+    top: 40%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  .txtItem {
+    display: flex;
+    border: 2rpx solid #eaeaea;
+    border-radius: 8rpx;
+    padding: 10rpx;
+    font-size: 30rpx;
+    background: #fff;
+  }
+  .txt{padding:10rpx 0;}
+  .pwd{
+    margin-top: 30rpx;
+  }
+  .checkinput{
+      width: 70%;
+  }
+  .button{
+    margin-top:30rpx;
+    color:rgba(255, 255, 255, 0.972);
+    background-color:#179B16;
+  }
+
+  .checkimage{
+      height: 1.4rem;
+      width: 30%;
+  }

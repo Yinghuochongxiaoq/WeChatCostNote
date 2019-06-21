@@ -1,0 +1,35 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/home/home",
+    "pages/logs/logs"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "生活印记",
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh":true
+  },
+  "tabBar": {
+    "list": [{
+      "pagePath": "pages/home/home",
+      "text": "流水"
+    },{
+      "pagePath": "pages/logs/logs",
+      "text": "账户"
+    },{
+      "pagePath": "pages/logs/logs",
+      "text": "记一笔"
+    }, {
+      "pagePath": "pages/logs/logs",
+      "text": "图表"
+    },{
+      "pagePath": "pages/logs/logs",
+      "text": "我的"
+    }],
+    "position":"bottom"
+  },
+  "sitemapLocation": "sitemap.json",
+  "debug":true
+}
