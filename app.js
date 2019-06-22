@@ -5,6 +5,7 @@ App({
   },
   globalData: {
     userInfo: null,
-    api: 'http://localhost:8004/api',
+    // api: 'https://api.aivabc.com:8080/api',
+    api: 'http://localhost:8001/api',
   }
 })

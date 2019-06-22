@@ -1,4 +1,7 @@
 {
     "enablePullDownRefresh": true,
-    "onReachBottomDistance": 50
-  }
+    "onReachBottomDistance": 50,
+    "usingComponents": {
+        "i-load-more": "../../iView/load-more/index"
+    }
+}

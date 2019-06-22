@@ -1,22 +1,67 @@
-<view class="page">  
-    <!--列表页账单-->
-      <view class="weui-cells weui-cells_after-title" wx:for="{{dataList}}" wx:key="id">
-        <navigator url="./edit?id={{item.id}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-  
-          <!--<view class="weui-cell">-->
-          <view class="weui-cell__hd" style="position: relative;margin-right: 10px;">
-            <image lazy-load="true" src="../../image/icon_class/{{item.icon}}" style="width: 50px; height: 50px; display: block; border-radius:50%; " />
-          </view>
-          <view class="weui-cell__bd">
-            <view class="list-item-title">{{item.costThing}}</view>
-            <view class="list-item-mark">备注：{{item.costTypeName}}</view>
-          </view>
-          <view class="weui-cell__ft">
-            <view class="list-text-ft">￥{{item.cost}}</view>
-            <view hidden="{{isHiddenFunds}}" class="list-item-mark">{{item.funds}}</view>
-          </view>
-        </navigator>
-      </view>
+<view class="mg-10">
+    <view class="search-list-inline list-inline">
+        <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{costTypemultiIndex}}" range="{{costTypemultiArray}}">
+            <view class="list-inline">
+                <view class="picker pd-10">
+                    交易类型:{{costTypemultiArray[0][costTypemultiIndex[0]]}},{{costTypemultiArray[1][costTypemultiIndex[1]]}}
+                </view>
+                <view class='arrow'></view>
+            </view>
+        </picker>
+        <picker model="multiSelector" bindchange="bindChannelPickerChange" value="{{channelmultiIndex}}" range="{{channelmultiArray}}">
+            <view class="list-inline">
+                <view class="picker pd-10">
+                    账户:{{channelmultiArray[channelmultiIndex]}}
+                </view>
+                <view class='arrow'></view>
+            </view>
+        </picker>
     </view>
-  
-  
+</view>
+
+<!-- 汇总数据 -->
+<view class="mg--5">
+    <view class="list-card" hover-class="list-card-active">
+        <view class="list-item-cost">
+            <view class="list-text-ft tui-fl">
+                <text class="ft-bg-danger ft-bolder"> {{statisticsModel.allCouldCost}}</text>
+                <text class="block-ft">可支配余额</text>
+            </view>
+        </view>
+        <view class="list-right tui-fr">
+            <text class="list-item-title ft-bg-green">{{statisticsModel.allInCost}}</text>
+            <text class="list-item-type">收入</text>
+            <text class="list-item-title">{{statisticsModel.allOutCost}}</text>
+            <text class="list-item-type">支出</text>
+        </view>
+    </view>
+</view>
+
+<!--列表页账单-->
+<view wx:if="{{dataList.length>0}}">
+    <view wx:for="{{dataList}}" wx:key="id" class="mg-10">
+        <navigator url="./edit?id={{item.id}}" class="list-card" hover-class="list-card-active">
+            <view class="list-item-left">
+                <text class="number_border tui-fl {{item.costInOrOut==1?' bg-green':' bg-danger'}}">{{item.costInOrOut==1?"收":"支"}}</text>
+            </view>
+            <view class="list-right tui-fl">
+                <text class="list-item-title">{{item.costThing}}</text>
+                <text class="list-item-type">{{item.costTypeName}}</text>
+                <text class="list-item-time">{{item.costTime}}</text>
+            </view>
+            <view class="list-item-cost">
+                <view class="list-text-ft tui-fr {{item.costInOrOut==1?' ft-bg-green':' ft-bg-danger'}}">{{item.costInOrOut==1?"+":"-"}}{{item.cost}}</view>
+            </view>
+        </navigator>
+    </view>
+</view>
+<view wx:else class="mg-10">
+    <view class="list-column">
+        <icon size="40" type="warn" role="img"></icon>
+        <view>还没有数据哦~</view>
+    </view>
+</view>
+<view wx:if="{{loading}}">
+    <i-load-more />
+</view>
+<i-load-more loading="{{ false }}" />
