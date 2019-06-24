@@ -1,0 +1,11 @@
+{
+    "navigationBarTitleText": "账户信息",
+    "usingComponents": {
+        "i-cell-group": "../../iView/cell-group/index",
+        "i-cell": "../../iView/cell/index",
+        "i-panel": "../../iView/panel/index",
+        "i-icon": "../../iView/icon/index",
+        "i-switch": "../../iView/switch/index"
+    },
+    "enablePullDownRefresh": true
+}

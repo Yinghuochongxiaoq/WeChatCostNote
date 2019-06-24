@@ -2,7 +2,9 @@
   "pages": [
     "pages/index/index",
     "pages/home/home",
-    "pages/logs/logs"
+    "pages/costchannel/costchannel",
+    "pages/logs/logs",
+    "pages/my/my"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -16,7 +18,7 @@
       "pagePath": "pages/home/home",
       "text": "流水"
     },{
-      "pagePath": "pages/logs/logs",
+      "pagePath": "pages/costchannel/costchannel",
       "text": "账户"
     },{
       "pagePath": "pages/logs/logs",
@@ -25,7 +27,7 @@
       "pagePath": "pages/logs/logs",
       "text": "图表"
     },{
-      "pagePath": "pages/logs/logs",
+      "pagePath": "pages/my/my",
       "text": "我的"
     }],
     "position":"bottom"

@@ -1,0 +1,33 @@
+page {
+    background-color: #f5f6f7;
+    height: 100%;
+    letter-spacing: 1px;
+}
+
+.personal_info {
+    padding: 20px 0;
+    background-color: #FFF;
+}
+
+.photo_wrap {
+    text-align: center;
+}
+
+.photo {
+    width: 90px;
+    height: 90px;
+    border-radius: 90px;
+}
+
+.nickname {
+    margin-top: 15px;
+    text-align: center;
+    color: #696969;
+}
+
+.wode_item_wrap {
+    background-color: #FFF;
+    font-size: 14px;
+    margin-top: 10px;
+    border-top: 1px solid #E5E5E5;
+}

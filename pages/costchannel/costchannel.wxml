@@ -1,0 +1,37 @@
+<!-- 汇总数据 -->
+<view class="mg-10">
+    <view class="list-card" hover-class="list-card-active">
+        <view class="list-item-cost">
+            <view class="list-text-ft tui-fl">
+                <text class="ft-bg-danger ft-bolder"> {{statisticsModel.allCouldCost}}</text>
+                <text class="block-ft">可支配余额</text>
+            </view>
+        </view>
+        <view class="list-right tui-fr">
+            <text class="list-item-title ft-bg-green">{{statisticsModel.allInCost}}</text>
+            <text class="list-item-type">收入</text>
+            <text class="list-item-title">{{statisticsModel.allOutCost}}</text>
+            <text class="list-item-type">支出</text>
+        </view>
+    </view>
+</view>
+
+<!--列表页账单-->
+<view wx:if="{{channelAcount.length>0}}">
+    <view class="mg-10">
+        <i-panel>
+            <i-cell-group wx:for="{{channelAcount}}" wx:key="costChannelName">
+                <i-cell title="{{item.costChannelName}}" is-link i-class="{{item.costCount<=0?' ft-bg-green':' ft-bg-danger'}}" value="{{item.costCount}}">
+                </i-cell>
+                
+            </i-cell-group>
+        </i-panel>
+    </view>
+</view>
+<view wx:else class="mg-10">
+    <view class="list-column">
+        <icon size="40" type="warn" role="img"></icon>
+        <view>还没有数据哦~</view>
+    </view>
+</view>
+<i-load-more loading="{{ false }}" />

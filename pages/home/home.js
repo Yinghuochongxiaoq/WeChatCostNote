@@ -4,7 +4,7 @@ Page({
         loading: true,
         dataList: [],
         pageCount: 0,
-        pageIndex: 0,
+        pageIndex: 1,
         pageSize: 10,
         costType: -1,
         spendType: -1,
@@ -37,7 +37,8 @@ Page({
         this.searchCostNoteData(true)
     },
     onReachBottom() {
-        if (this.data.pageIndex > this.data.pageCount) {
+        console.log("下拉加载,页号:"+this.data.pageIndex+"总页数:"+this.data.pageCount)
+        if (this.data.pageIndex <= this.data.pageCount) {
             this.setData({
                 loading: true
             })
@@ -54,7 +55,7 @@ Page({
         var self = this;
         // 请求数据，并渲染
         wx.request({
-            url: app.globalData.api + '/Account/GetCostPage',
+            url: app.globalData.api + '/CostNote/GetCostPage',
             data: {
                 token: app.globalData.userInfo.token,
                 pageIndex: self.data.pageIndex,
@@ -68,7 +69,9 @@ Page({
                 if (res.data.resultCode == 0) {
                     var arr = self.data.dataList;
                     if (!refresh) {
-                        arr.push(res.data.data.dataList)
+                        res.data.data.dataList.forEach(element => {
+                            arr.push(element) 
+                        });
                     } else {
                         arr = res.data.data.dataList
                     }
@@ -77,9 +80,9 @@ Page({
                         statisticsModel: res.data.data.statisticsModel,
                         pageCount: res.data.data.pageCount,
                         pageIndex: self.data.pageIndex + 1,
-                        loading: false,
-                        statisticsModel: res.data.data.statisticsModel
+                        loading: false
                     })
+                    console.log(self.data)
                 } else {
                     wx.showToast({
                         title: res.data.message,
@@ -93,7 +96,7 @@ Page({
     getAllCostType() {
         var self = this;
         wx.request({
-            url: app.globalData.api + '/Account/GetCostChannelType',
+            url: app.globalData.api + '/CostNote/GetCostChannelType',
             data: {
                 token: app.globalData.userInfo.token
             },

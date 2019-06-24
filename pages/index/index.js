@@ -45,6 +45,7 @@ Page({
                     success: function (res) {
                       if (res.data.resultCode == 0) {
                         app.globalData.userInfo = res.data.data;
+                        console.log(app.globalData)
                         if (!app.globalData.userInfo.accountId) {
                           //绑定账号
                           that.setData({

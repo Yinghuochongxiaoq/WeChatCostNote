@@ -1,5 +1,6 @@
 {
     "enablePullDownRefresh": true,
+    "navigationBarTitleText": "消费记录",
     "onReachBottomDistance": 50,
     "usingComponents": {
         "i-load-more": "../../iView/load-more/index"

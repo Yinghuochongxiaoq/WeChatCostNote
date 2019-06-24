@@ -1,0 +1,17 @@
+<view class="personal_info">
+    <view class="photo_wrap">
+        <image src="{{userInfo.avatarUrl}}" class="photo"></image>
+    </view>
+    <view class="nickname">
+        {{userInfo.nickName}}
+    </view>
+</view>
+<view class="wode_item_wrap">
+    <i-panel>
+        <i-cell-group>
+            <i-cell title="账户设置" is-link url="/pages/costchannel/costchannel"></i-cell>
+            <i-cell title="消费类型设置" is-link url="/pages/costchannel/costchannel"></i-cell>
+            <i-cell title="关于我们" link-type="navigateTo" is-link url="/pages/costchannel/costchannel"></i-cell>
+        </i-cell-group>
+    </i-panel>
+</view>
