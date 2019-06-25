@@ -8,7 +8,7 @@
                 <view class='arrow'></view>
             </view>
         </picker>
-        <picker model="multiSelector" bindchange="bindChannelPickerChange" value="{{channelmultiIndex}}" range="{{channelmultiArray}}">
+        <picker bindchange="bindChannelPickerChange" value="{{channelmultiIndex}}" range="{{channelmultiArray}}">
             <view class="list-inline">
                 <view class="picker pd-10">
                     账户:{{channelmultiArray[channelmultiIndex]}}

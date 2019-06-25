@@ -6,7 +6,7 @@ Page({
         costcontentmodel: {
             Cost: '',
             CostAddress: "",
-            CostChannel: 0,
+            CostChannel: -1,
             CostThing: "",
             CostTime: "",
             CostType: -1,
@@ -14,54 +14,88 @@ Page({
             SpendType: 0,
             LinkCostChannel: 0
         },
+
+        costTypemultiIndex: 0,
+        costTypemultiArray: ['请选择'],
+        costTypeObjectMultiArray: [],
+        costTypeIdList: [-1],
+
+        channelmultiIndex: 0,
+        channelmultiArray: ['请选择'],
+        channelObjectMultiArray: [],
+        channelIdList: [-1],
+
         date: '2018-10-01',
         time: '12:00',
-        dateTimeArray: null,
-        dateTime: null,
         dateTimeArray1: null,
         dateTime1: null,
         startYear: 2000,
         endYear: 2050
     },
     onLoad() {
+        //获取类型，账户
+        this.getAllCostType()
+
         // 获取完整的年月日 时分秒，以及默认显示的数组
-        var obj = dateTimePicker.dateTimePicker(this.data.startYear, this.data.endYear);
         var obj1 = dateTimePicker.dateTimePicker(this.data.startYear, this.data.endYear);
         // 精确到分的处理，将数组的秒去掉
-        var lastArray = obj1.dateTimeArray.pop();
-        var lastTime = obj1.dateTime.pop();
+        obj1.dateTimeArray.pop();
+        obj1.dateTime.pop();
 
         this.setData({
-            dateTime: obj.dateTime,
-            dateTimeArray: obj.dateTimeArray,
             dateTimeArray1: obj1.dateTimeArray,
             dateTime1: obj1.dateTime
         });
     },
-    changeDate(e) {
-        this.setData({ date: e.detail.value });
+    bindChannelPickerChange: function(e) {
+        this.setData({
+            channelmultiIndex: e.detail.value
+        })
     },
-    changeTime(e) {
-        this.setData({ time: e.detail.value });
+    changeCostTypeChange: function(e) {
+        this.setData({
+            costTypemultiIndex: e.detail.value
+        })
+    },
+    getAllCostType() {
+        var self = this;
+        wx.request({
+            url: app.globalData.api + '/CostNote/GetCostChannelType',
+            data: {
+                token: app.globalData.userInfo.token
+            },
+            method: 'GET',
+            success: function(res) {
+                if (res.data.resultCode == 0) {
+                    var list = ['请选择']
+                    var idList = [-1]
+                    for (var i = 0; i < res.data.data.channelData.length; i++) {
+                        list.push(res.data.data.channelData[i].costChannelName)
+                        idList.push(res.data.data.channelData[i].id)
+                    }
+                    self.setData({
+                        costTypeObjectMultiArray: res.data.data.costTypeData,
+                        channelObjectMultiArray: res.data.data.channelData,
+                        channelmultiArray: list,
+                        channelIdList: idList
+                    })
+                    self.handleChange({ key: self.data.costcontentmodel.SpendType })
+                } else {
+                    wx.showToast({
+                        title: res.data.message,
+                        icon: 'none',
+                        duration: 2000
+                    })
+                }
+            }
+        })
     },
     changeDateTime(e) {
-        this.setData({ dateTime: e.detail.value });
-    },
-    changeDateTime1(e) {
-        this.setData({ dateTime1: e.detail.value });
-    },
-    changeDateTimeColumn(e) {
-        var arr = this.data.dateTime,
-            dateArr = this.data.dateTimeArray;
-
-        arr[e.detail.column] = e.detail.value;
-        dateArr[2] = dateTimePicker.getMonthDay(dateArr[0][arr[0]], dateArr[1][arr[1]]);
-
         this.setData({
-            dateTimeArray: dateArr
+            dateTime1: e.detail.value
         });
     },
-    changeDateTimeColumn1(e) {
+    changeDateTimeColumn(e) {
         var arr = this.data.dateTime1,
             dateArr = this.data.dateTimeArray1;
 
@@ -73,10 +107,23 @@ Page({
         });
     },
 
-    handleChange({ detail }) {
+    handleChange({
+        detail
+    }) {
+        console.log(detail)
+        var list = ['请选择']
+        var idList = [-1]
+        for (var i = 0; i < this.data.costTypeObjectMultiArray.length; i++) {
+            if (this.data.costTypeObjectMultiArray[i].spendType + 1 == detail.key) {
+                list.push(this.data.costTypeObjectMultiArray[i].name)
+                idList.push(this.data.costTypeObjectMultiArray[i].id)
+            }
+        }
         this.setData({
+            costTypemultiArray: list,
+            costTypemultiIndex: 0,
+            costTypeIdList: idList,
             "costcontentmodel.SpendType": detail.key
-        });
-        console.log(this.data)
+        })
     }
 });
