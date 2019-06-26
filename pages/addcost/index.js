@@ -4,7 +4,7 @@ var dateTimePicker = require('../../utils/dateTimePicker.js');
 Page({
     data: {
         costcontentmodel: {
-            Cost: '',
+            Cost: 28.69,
             CostAddress: "",
             CostChannel: -1,
             CostThing: "",
@@ -12,7 +12,8 @@ Page({
             CostType: -1,
             Id: 0,
             SpendType: 0,
-            LinkCostChannel: 0
+            LinkCostChannel: 0,
+            Token: ''
         },
 
         costTypemultiIndex: 0,
@@ -21,6 +22,7 @@ Page({
         costTypeIdList: [-1],
 
         channelmultiIndex: 0,
+        linkchannelIndex: 0,
         channelmultiArray: ['请选择'],
         channelObjectMultiArray: [],
         channelIdList: [-1],
@@ -30,7 +32,9 @@ Page({
         dateTimeArray1: null,
         dateTime1: null,
         startYear: 2000,
-        endYear: 2050
+        endYear: 2050,
+
+        isSaving: false
     },
     onLoad() {
         //获取类型，账户
@@ -44,15 +48,21 @@ Page({
 
         this.setData({
             dateTimeArray1: obj1.dateTimeArray,
-            dateTime1: obj1.dateTime
+            dateTime1: obj1.dateTime,
+            "costcontentmodel.Token": app.globalData.userInfo.token
         });
     },
-    bindChannelPickerChange: function(e) {
+    bindChannelPickerChange: function (e) {
         this.setData({
             channelmultiIndex: e.detail.value
         })
     },
-    changeCostTypeChange: function(e) {
+    bindLinkChannelPickerChange: function (e) {
+        this.setData({
+            linkchannelIndex: e.detail.value
+        })
+    },
+    changeCostTypeChange: function (e) {
         this.setData({
             costTypemultiIndex: e.detail.value
         })
@@ -65,7 +75,7 @@ Page({
                 token: app.globalData.userInfo.token
             },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 if (res.data.resultCode == 0) {
                     var list = ['请选择']
                     var idList = [-1]
@@ -79,7 +89,7 @@ Page({
                         channelmultiArray: list,
                         channelIdList: idList
                     })
-                    self.handleChange({ key: self.data.costcontentmodel.SpendType })
+                    self.changeSpendType(self.data.costcontentmodel.SpendType)
                 } else {
                     wx.showToast({
                         title: res.data.message,
@@ -110,11 +120,13 @@ Page({
     handleChange({
         detail
     }) {
-        console.log(detail)
+        this.changeSpendType(detail.key)
+    },
+    changeSpendType(spendType) {
         var list = ['请选择']
         var idList = [-1]
         for (var i = 0; i < this.data.costTypeObjectMultiArray.length; i++) {
-            if (this.data.costTypeObjectMultiArray[i].spendType + 1 == detail.key) {
+            if (this.data.costTypeObjectMultiArray[i].spendType == spendType) {
                 list.push(this.data.costTypeObjectMultiArray[i].name)
                 idList.push(this.data.costTypeObjectMultiArray[i].id)
             }
@@ -123,7 +135,80 @@ Page({
             costTypemultiArray: list,
             costTypemultiIndex: 0,
             costTypeIdList: idList,
-            "costcontentmodel.SpendType": detail.key
+            "costcontentmodel.SpendType": spendType
         })
+    },
+    handleSaveClick: function () {
+        //拼接参数
+        var self = this;
+        self.data.costcontentmodel.CostTime = self.data.dateTimeArray1[0][self.data.dateTime1[0]] + '-' + self.data.dateTimeArray1[1][self.data.dateTime1[1]] + '-' + self.data.dateTimeArray1[2][self.data.dateTime1[2]] + ' ' + self.data.dateTimeArray1[3][self.data.dateTime1[3]] + ':' + self.data.dateTimeArray1[4][self.data.dateTime1[4]] + ':00';
+        self.data.costcontentmodel.CostType = self.data.costTypeIdList[self.data.costTypemultiIndex];
+        self.data.costcontentmodel.CostChannel = self.data.channelIdList[self.data.channelmultiIndex];
+        self.data.costcontentmodel.LinkCostChannel = self.data.channelIdList[self.data.linkchannelIndex];
+        self.setData({
+            isSaving: true
+        });
+        wx.request({
+            url: app.globalData.api + '/CostNote/AddCostInfo',
+            data: self.data.costcontentmodel,
+            method: 'POST',
+            success: function (res) {
+                if (res.data.resultCode == 0) {
+                    wx.showToast({
+                        title: '保存成功',
+                        icon: 'success',
+                        duration: 2000
+                    })
+                    self.initPage()
+                    self.onLoad()
+                } else {
+                    wx.showToast({
+                        title: res.data.message,
+                        icon: 'none',
+                        duration: 2000
+                    })
+                    self.setData({
+                        isSaving: false
+                    })
+                }
+            }
+        })
+    },
+    initPage: function () {
+        var initData = {
+            costcontentmodel: {
+                Cost: 23.67,
+                CostAddress: "",
+                CostChannel: -1,
+                CostThing: "",
+                CostTime: "",
+                CostType: -1,
+                Id: 0,
+                SpendType: 0,
+                LinkCostChannel: 0,
+                Token: ''
+            },
+
+            costTypemultiIndex: 0,
+            costTypemultiArray: ['请选择'],
+            costTypeObjectMultiArray: [],
+            costTypeIdList: [-1],
+
+            channelmultiIndex: 0,
+            linkchannelIndex: 0,
+            channelmultiArray: ['请选择'],
+            channelObjectMultiArray: [],
+            channelIdList: [-1],
+
+            date: '2018-10-01',
+            time: '12:00',
+            dateTimeArray1: null,
+            dateTime1: null,
+            startYear: 2000,
+            endYear: 2050,
+
+            isSaving: false
+        };
+        this.setData(initData)
     }
 });
