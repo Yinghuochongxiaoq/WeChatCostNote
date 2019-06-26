@@ -3,10 +3,10 @@
         "pages/index/index",
         "pages/home/home",
         "pages/costchannel/costchannel",
-        "pages/logs/logs",
-        "pages/my/my",
         "pages/costtype/costtype",
-        "pages/addcost/index"
+        "pages/addcost/index",
+        "pages/logs/logs",
+        "pages/my/my"
     ],
     "window": {
         "backgroundTextStyle": "light",

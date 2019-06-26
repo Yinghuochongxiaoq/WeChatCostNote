@@ -4,7 +4,7 @@ var dateTimePicker = require('../../utils/dateTimePicker.js');
 Page({
     data: {
         costcontentmodel: {
-            Cost: 28.69,
+            Cost: '',
             CostAddress: "",
             CostChannel: -1,
             CostThing: "",
@@ -15,7 +15,6 @@ Page({
             LinkCostChannel: 0,
             Token: ''
         },
-
         costTypemultiIndex: 0,
         costTypemultiArray: ['请选择'],
         costTypeObjectMultiArray: [],
@@ -49,22 +48,39 @@ Page({
         this.setData({
             dateTimeArray1: obj1.dateTimeArray,
             dateTime1: obj1.dateTime,
-            "costcontentmodel.Token": app.globalData.userInfo.token
+            "costcontentmodel.Token": app.globalData.userInfo.token,
+            "costcontentmodel.CostTime": obj1.dateTimeArray[0][obj1.dateTime[0]] + '-' + obj1.dateTimeArray[1][obj1.dateTime[1]] + '-' + obj1.dateTimeArray[2][obj1.dateTime[2]] + ' ' + obj1.dateTimeArray[3][obj1.dateTime[3]] + ':' + obj1.dateTimeArray[4][obj1.dateTime[4]] + ':00'
         });
     },
-    bindChannelPickerChange: function (e) {
+    bindChannelPickerChange: function(e) {
         this.setData({
             channelmultiIndex: e.detail.value
         })
     },
-    bindLinkChannelPickerChange: function (e) {
+    bindLinkChannelPickerChange: function(e) {
         this.setData({
             linkchannelIndex: e.detail.value
         })
     },
-    changeCostTypeChange: function (e) {
+    changeCostTypeChange: function(e) {
         this.setData({
             costTypemultiIndex: e.detail.value
+        })
+    },
+    changeCost: function(e) {
+        this.setData({
+            "costcontentmodel.Cost": e.detail.detail.value
+        })
+        console.log(this.data)
+    },
+    changeCostAddress: function(e) {
+        this.setData({
+            "costcontentmodel.CostAddress": e.detail.detail.value
+        })
+    },
+    changeCostThing: function(e) {
+        this.setData({
+            "costcontentmodel.CostThing": e.detail.detail.value
         })
     },
     getAllCostType() {
@@ -75,7 +91,7 @@ Page({
                 token: app.globalData.userInfo.token
             },
             method: 'GET',
-            success: function (res) {
+            success: function(res) {
                 if (res.data.resultCode == 0) {
                     var list = ['请选择']
                     var idList = [-1]
@@ -138,7 +154,7 @@ Page({
             "costcontentmodel.SpendType": spendType
         })
     },
-    handleSaveClick: function () {
+    handleSaveClick: function() {
         //拼接参数
         var self = this;
         self.data.costcontentmodel.CostTime = self.data.dateTimeArray1[0][self.data.dateTime1[0]] + '-' + self.data.dateTimeArray1[1][self.data.dateTime1[1]] + '-' + self.data.dateTimeArray1[2][self.data.dateTime1[2]] + ' ' + self.data.dateTimeArray1[3][self.data.dateTime1[3]] + ':' + self.data.dateTimeArray1[4][self.data.dateTime1[4]] + ':00';
@@ -152,7 +168,7 @@ Page({
             url: app.globalData.api + '/CostNote/AddCostInfo',
             data: self.data.costcontentmodel,
             method: 'POST',
-            success: function (res) {
+            success: function(res) {
                 if (res.data.resultCode == 0) {
                     wx.showToast({
                         title: '保存成功',
@@ -174,10 +190,10 @@ Page({
             }
         })
     },
-    initPage: function () {
+    initPage: function() {
         var initData = {
             costcontentmodel: {
-                Cost: 23.67,
+                Cost: '',
                 CostAddress: "",
                 CostChannel: -1,
                 CostThing: "",
@@ -210,5 +226,13 @@ Page({
             isSaving: false
         };
         this.setData(initData)
+    },
+    onShareAppMessage() {     
+        return {    
+            title: '记录生活印迹',
+            desc: '在这里记录你的每一点一滴~',
+            path: 'pages/index/index',
+            imageUrl: '/images/share.jpg'   
+        }    
     }
 });

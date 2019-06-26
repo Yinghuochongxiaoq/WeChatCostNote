@@ -3,20 +3,20 @@ Page({
     data: {
         userInfo: app.globalData,
         statisticsModel: {},
-        channelAcount:[]
+        channelAcount: []
     },
-    onLoad: function () {
+    onLoad: function() {
         var self = this;
         self.setData({
             userInfo: app.globalData.userInfo
         });
         this.getStatistics()
     },
-    onPullDownRefresh: function () {
+    onPullDownRefresh: function() {
         console.log("开始刷新页面")
         this.getStatistics()
     },
-    getStatistics: function () {
+    getStatistics: function() {
         var self = this;
         // 请求数据，并渲染
         wx.request({
@@ -25,7 +25,7 @@ Page({
                 token: app.globalData.userInfo.token
             },
             method: 'GET',
-            success: function (res) {
+            success: function(res) {
                 if (res.data.resultCode == 0) {
                     self.setData({
                         channelAcount: res.data.data.channelAcount,
@@ -41,5 +41,13 @@ Page({
                 }
             }
         })
+    },
+    onShareAppMessage() {     
+        return {    
+            title: '记录生活印迹',
+            desc: '在这里记录你的每一点一滴~',
+            path: 'pages/index/index',
+            imageUrl: '/images/share.jpg'   
+        }   
     }
 })

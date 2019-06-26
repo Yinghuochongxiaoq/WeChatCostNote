@@ -37,7 +37,7 @@ Page({
         this.searchCostNoteData(true)
     },
     onReachBottom() {
-        console.log("下拉加载,页号:"+this.data.pageIndex+"总页数:"+this.data.pageCount)
+        console.log("下拉加载,页号:" + this.data.pageIndex + "总页数:" + this.data.pageCount)
         if (this.data.pageIndex <= this.data.pageCount) {
             this.setData({
                 loading: true
@@ -70,7 +70,7 @@ Page({
                     var arr = self.data.dataList;
                     if (!refresh) {
                         res.data.data.dataList.forEach(element => {
-                            arr.push(element) 
+                            arr.push(element)
                         });
                     } else {
                         arr = res.data.data.dataList
@@ -165,5 +165,13 @@ Page({
                 })
 
         }
+    },
+    onShareAppMessage() {     
+        return {    
+            title: '记录生活印迹',
+            desc: '在这里记录你的每一点一滴~',
+            path: 'pages/index/index',
+            imageUrl: '/images/share.jpg'   
+        }   
     }
 })
