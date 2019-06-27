@@ -75,3 +75,28 @@ page {
 .weight-90 {
   width: 90%;
 }
+
+.i-input {
+  padding: 7px 15px;
+  color: #495060;
+
+}
+
+.i-cell {
+  position: relative;
+  padding: 12px 15px;
+  display: flex;
+  background: #fff;
+  align-items: center;
+  line-height: 1.4;
+  font-size: 14px;
+  overflow: hidden;
+
+}
+
+.i-input-title {
+  color: #495060;
+  min-width: 65px;
+  padding-right: 10px;
+
+}
