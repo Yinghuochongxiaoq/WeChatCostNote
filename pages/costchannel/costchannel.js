@@ -13,7 +13,6 @@ Page({
         this.getStatistics()
     },
     onPullDownRefresh: function() {
-        console.log("开始刷新页面")
         this.getStatistics()
     },
     getStatistics: function() {
@@ -31,7 +30,6 @@ Page({
                         channelAcount: res.data.data.channelAcount,
                         statisticsModel: res.data.data.statisticsModel,
                     })
-                    console.log(self.data)
                 } else {
                     wx.showToast({
                         title: res.data.message,
@@ -41,6 +39,11 @@ Page({
                 }
             }
         })
+    },
+    handleNavigateClick: function() {
+        wx.navigateTo({
+            url: "/pages/costchannel/edit?id=0"
+        });
     },
     onShareAppMessage() {     
         return {    

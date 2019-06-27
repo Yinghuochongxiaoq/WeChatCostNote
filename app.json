@@ -6,7 +6,8 @@
         "pages/costtype/costtype",
         "pages/addcost/index",
         "pages/logs/logs",
-        "pages/my/my"
+        "pages/my/my",
+        "pages/my/about"
     ],
     "window": {
         "backgroundTextStyle": "light",
@@ -18,19 +19,24 @@
     "tabBar": {
         "list": [{
             "pagePath": "pages/home/home",
-            "text": "流水"
+            "text": "流水",
+            "iconPath": "images/icon-search.png",
+            "selectedIconPath": "images/icon-search-select.png"
         }, {
             "pagePath": "pages/costchannel/costchannel",
-            "text": "账户"
+            "text": "账户",
+            "iconPath": "images/icon-site.png",
+            "selectedIconPath": "images/icon-site-select.png"
         }, {
             "pagePath": "pages/addcost/index",
-            "text": "记一笔"
-        }, {
-            "pagePath": "pages/logs/logs",
-            "text": "图表"
+            "text": "记一笔",
+            "iconPath": "images/icon-add.png",
+            "selectedIconPath": "images/icon-add-select.png"
         }, {
             "pagePath": "pages/my/my",
-            "text": "我的"
+            "text": "我的",
+            "iconPath": "images/icon-my.png",
+            "selectedIconPath": "images/icon-my-select.png"
         }],
         "position": "bottom"
     },

@@ -21,9 +21,9 @@
     <view class="mg-10">
         <i-panel>
             <i-cell-group wx:for="{{channelAcount}}" wx:key="costChannelName">
-                <i-cell title="{{item.costChannelName}}" is-link i-class="{{item.costCount<=0?' ft-bg-green':' ft-bg-danger'}}" value="{{item.costCount}}">
+                <i-cell title="{{item.costChannelName}}" is-link url="./edit?id={{item.costChannel}}" i-class="{{item.costCount<=0?' ft-bg-green':' ft-bg-danger'}}" value="{{item.costCount}}">
                 </i-cell>
-                
+
             </i-cell-group>
         </i-panel>
     </view>
@@ -35,3 +35,4 @@
     </view>
 </view>
 <i-load-more loading="{{ false }}" />
+<i-button bind:click="handleNavigateClick" type="success">增加新账户</i-button>

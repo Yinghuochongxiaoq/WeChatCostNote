@@ -11,7 +11,7 @@
         <i-cell-group>
             <i-cell title="账户设置" is-link link-type="reLaunch" url="/pages/costchannel/costchannel"></i-cell>
             <i-cell title="消费类型设置" is-link url="/pages/costtype/costtype"></i-cell>
-            <i-cell title="关于我们" is-link url="/pages/costchannel/costchannel"></i-cell>
+            <i-cell title="关于我们" is-link url="./about"></i-cell>
         </i-cell-group>
     </i-panel>
 </view>

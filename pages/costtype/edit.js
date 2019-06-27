@@ -18,24 +18,24 @@ Page({
             color: '#ed3f14'
         }]
     },
-    onLoad: function (options) {
+    onLoad: function(options) {
         var id = options.id;
         if (id && id > 0) {
             this.getCostTypeModel(id)
         }
     },
-    bindSpendTypeChange: function (e) {
+    bindSpendTypeChange: function(e) {
         this.setData({
             spendTypeIndex: e.detail.value,
             "model.spendType": this.data.spendTypeIds[e.detail.value]
         })
     },
-    changeSort: function (e) {
+    changeSort: function(e) {
         this.setData({
             "model.sort": e.detail.detail.value
         })
     },
-    getCostTypeModel: function (id) {
+    getCostTypeModel: function(id) {
         var self = this;
         wx.request({
             url: app.globalData.api + '/CostNote/GetCostTypeModel',
@@ -44,7 +44,7 @@ Page({
                 id: id
             },
             method: 'GET',
-            success: function (res) {
+            success: function(res) {
                 if (res.data.resultCode == 0) {
                     self.setData({
                         model: res.data.data,
@@ -61,12 +61,12 @@ Page({
             }
         })
     },
-    changeName: function (e) {
+    changeName: function(e) {
         this.setData({
             "model.name": e.detail.detail.value
         })
     },
-    handleSaveClick: function (e) {
+    handleSaveClick: function(e) {
         var self = this;
         wx.request({
             url: app.globalData.api + '/CostNote/SaveTypeInfo',
@@ -78,7 +78,7 @@ Page({
                 spendType: self.data.model.spendType
             },
             method: 'GET',
-            success: function (res) {
+            success: function(res) {
                 if (res.data.resultCode == 0) {
                     self.setData({
                         model: {
@@ -105,17 +105,17 @@ Page({
             }
         })
     },
-    handleOpenDelete: function () {
+    handleOpenDelete: function() {
         this.setData({
             visibleDelete: true
         });
     },
-    handleCancelDelete: function () {
+    handleCancelDelete: function() {
         this.setData({
             visibleDelete: false
         });
     },
-    handleDeleteCostType: function () {
+    handleDeleteCostType: function() {
         const action = [this.data.deleteActions];
         action[0].loading = true;
         this.setData({
@@ -130,7 +130,7 @@ Page({
                 id: self.data.model.id
             },
             method: 'GET',
-            success: function (res) {
+            success: function(res) {
                 if (res.data.resultCode == 0) {
                     action[0].loading = false;
                     self.setData({
@@ -159,5 +159,13 @@ Page({
                 }
             }
         })
+    },
+    onShareAppMessage() {     
+        return {    
+            title: '记录生活印迹',
+            desc: '在这里记录你的每一点一滴~',
+            path: 'pages/index/index',
+            imageUrl: '/images/share.jpg'   
+        }   
     }
 })

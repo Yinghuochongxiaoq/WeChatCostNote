@@ -1,0 +1,12 @@
+{
+    "navigationBarTitleText": "编辑消费类型",
+    "usingComponents": {
+        "i-panel": "../../iView/panel/index",
+        "i-input": "../../iView/input/index",
+        "i-cell-group": "../../iView/cell-group/index",
+        "i-button": "../../iView/button/index",
+        "i-cell": "../../iView/cell/index",
+        "i-action-sheet": "../../iView/action-sheet/index",
+        "i-message": "../../iView/message/index"
+    }
+}
