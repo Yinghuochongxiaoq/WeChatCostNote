@@ -1,4 +1,5 @@
 {
+    "enablePullDownRefresh": true,
     "navigationBarTitleText": "消费类型",
     "usingComponents": {
         "i-tabs": "../../iView/tabs/index",

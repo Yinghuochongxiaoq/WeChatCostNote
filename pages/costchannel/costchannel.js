@@ -3,7 +3,9 @@ Page({
     data: {
         userInfo: app.globalData,
         statisticsModel: {},
-        channelAcount: []
+        channelAcount: [],
+
+        pulldownrefresh: false
     },
     onLoad: function() {
         var self = this;
@@ -13,6 +15,9 @@ Page({
         this.getStatistics()
     },
     onPullDownRefresh: function() {
+        this.setData({
+            pulldownrefresh: true
+        })
         this.getStatistics()
     },
     getStatistics: function() {
@@ -25,10 +30,15 @@ Page({
             },
             method: 'GET',
             success: function(res) {
+                //停止刷新
+                if (self.data.pulldownrefresh) {
+                    wx.stopPullDownRefresh()
+                }
                 if (res.data.resultCode == 0) {
                     self.setData({
                         channelAcount: res.data.data.channelAcount,
                         statisticsModel: res.data.data.statisticsModel,
+                        pulldownrefresh: false
                     })
                 } else {
                     wx.showToast({
@@ -47,8 +57,8 @@ Page({
     },
     onShareAppMessage() {     
         return {    
-            title: '记录生活印迹',
-            desc: '在这里记录你的每一点一滴~',
+            title: '记录你的一点一滴~',
+            desc: '记录你的一点一滴~',
             path: 'pages/index/index',
             imageUrl: '/images/share.jpg'   
         }   

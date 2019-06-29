@@ -71,7 +71,6 @@ Page({
         this.setData({
             "costcontentmodel.Cost": e.detail.detail.value
         })
-        console.log(this.data)
     },
     changeCostAddress: function(e) {
         this.setData({
@@ -229,8 +228,8 @@ Page({
     },
     onShareAppMessage() {     
         return {    
-            title: '记录生活印迹',
-            desc: '在这里记录你的每一点一滴~',
+            title: '记录你的一点一滴~',
+            desc: '记录你的一点一滴~',
             path: 'pages/index/index',
             imageUrl: '/images/share.jpg'   
         }    

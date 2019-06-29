@@ -23,7 +23,9 @@ Page({
         channelmultiArray: ['全部'],
         channelObjectMultiArray: [],
         channelIdList: [-1],
-        statisticsModel: {}
+        statisticsModel: {},
+
+        pulldownrefresh: false
     },
     onLoad: function() {
         this.getAllCostType()
@@ -31,13 +33,13 @@ Page({
     },
     onPullDownRefresh() {
         this.setData({
-            pageIndex: 0,
-            pageSize: 10
+            pageIndex: 1,
+            pageSize: 10,
+            pulldownrefresh: true
         })
         this.searchCostNoteData(true)
     },
     onReachBottom() {
-        console.log("下拉加载,页号:" + this.data.pageIndex + "总页数:" + this.data.pageCount)
         if (this.data.pageIndex <= this.data.pageCount) {
             this.setData({
                 loading: true
@@ -66,6 +68,10 @@ Page({
             },
             method: 'GET',
             success: function(res) {
+                //停止刷新
+                if (self.data.pulldownrefresh) {
+                    wx.stopPullDownRefresh()
+                }
                 if (res.data.resultCode == 0) {
                     var arr = self.data.dataList;
                     if (!refresh) {
@@ -80,9 +86,9 @@ Page({
                         statisticsModel: res.data.data.statisticsModel,
                         pageCount: res.data.data.pageCount,
                         pageIndex: self.data.pageIndex + 1,
-                        loading: false
+                        loading: false,
+                        pulldownrefresh: false
                     })
-                    console.log(self.data)
                 } else {
                     wx.showToast({
                         title: res.data.message,
@@ -103,8 +109,6 @@ Page({
             method: 'GET',
             success: function(res) {
                 if (res.data.resultCode == 0) {
-                    console.log(res.data)
-
                     var list = ['全部']
                     var idList = [-1]
                     for (var i = 0; i < res.data.data.channelData.length; i++) {
@@ -168,8 +172,8 @@ Page({
     },
     onShareAppMessage() {     
         return {    
-            title: '记录生活印迹',
-            desc: '在这里记录你的每一点一滴~',
+            title: '记录你的一点一滴~',
+            desc: '记录你的一点一滴~',
             path: 'pages/index/index',
             imageUrl: '/images/share.jpg'   
         }   

@@ -40,13 +40,13 @@
 <!--列表页账单-->
 <view wx:if="{{dataList.length>0}}">
     <view wx:for="{{dataList}}" wx:key="id" class="mg-10">
-        <navigator url="./edit?id={{item.id}}" class="list-card" hover-class="list-card-active">
+        <navigator class="list-card" hover-class="list-card-active">
             <view class="list-item-left">
                 <text class="number_border tui-fl {{item.costInOrOut==1?' bg-green':' bg-danger'}}">{{item.costInOrOut==1?"收":"支"}}</text>
             </view>
             <view class="list-right tui-fl">
                 <text class="list-item-title">{{item.costThing}}</text>
-                <text class="list-item-type">{{item.costTypeName}}</text>
+                <text class="list-item-type">{{item.costTypeName?item.costTypeName:'--'}}</text>
                 <text class="list-item-time">{{item.costTime}}</text>
             </view>
             <view class="list-item-cost">

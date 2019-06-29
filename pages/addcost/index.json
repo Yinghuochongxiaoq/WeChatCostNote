@@ -1,4 +1,5 @@
 {
+    "enablePullDownRefresh": false,
     "navigationBarTitleText": "添加消费记录",
     "usingComponents": {
         "i-tabs": "../../iView/tabs/index",

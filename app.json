@@ -3,11 +3,13 @@
         "pages/index/index",
         "pages/home/home",
         "pages/costchannel/costchannel",
+        "pages/costchannel/edit",
         "pages/costtype/costtype",
         "pages/addcost/index",
         "pages/logs/logs",
         "pages/my/my",
-        "pages/my/about"
+        "pages/my/about",
+        "pages/costtype/edit"
     ],
     "window": {
         "backgroundTextStyle": "light",

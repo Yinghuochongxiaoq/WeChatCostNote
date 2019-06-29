@@ -3,12 +3,20 @@ Page({
     data: {
         spendType: 0,
         costTypemultiArray: [],
-        costTypeObjectMultiArray: []
+        costTypeObjectMultiArray: [],
+
+        pulldownrefresh: false
     },
-    onLoad: function () {
+    onLoad: function() {
         this.getAllCostType()
     },
-    handlerSpendTypeChange: function ({
+    onPullDownRefresh() {
+        this.setData({
+            pulldownrefresh: true
+        })
+        this.getAllCostType()
+    },
+    handlerSpendTypeChange: function({
         detail
     }) {
         this.setData({
@@ -16,7 +24,7 @@ Page({
         })
         this.changeSpendType(detail.key)
     },
-    changeSpendType: function (spendType) {
+    changeSpendType: function(spendType) {
         var typeList = [];
         for (var i = 0; i < this.data.costTypeObjectMultiArray.length; i++) {
             var temp = this.data.costTypeObjectMultiArray[i];
@@ -30,7 +38,7 @@ Page({
             costTypemultiArray: typeList
         })
     },
-    getAllCostType: function () {
+    getAllCostType: function() {
         var self = this;
         wx.request({
             url: app.globalData.api + '/CostNote/GetCostChannelType',
@@ -38,10 +46,15 @@ Page({
                 token: app.globalData.userInfo.token
             },
             method: 'GET',
-            success: function (res) {
+            success: function(res) {
+                //停止刷新
+                if (self.data.pulldownrefresh) {
+                    wx.stopPullDownRefresh()
+                }
                 if (res.data.resultCode == 0) {
                     self.setData({
-                        costTypeObjectMultiArray: res.data.data.costTypeData
+                        costTypeObjectMultiArray: res.data.data.costTypeData,
+                        pulldownrefresh: false
                     })
                     self.changeSpendType(self.data.spendType)
                 } else {
@@ -54,15 +67,15 @@ Page({
             }
         })
     },
-    handleNavigateClick:function(){
+    handleNavigateClick: function() {
         wx.navigateTo({
             url: "/pages/costtype/edit?id=0"
-         });
+        });
     },
     onShareAppMessage() {     
         return {    
-            title: '记录生活印迹',
-            desc: '在这里记录你的每一点一滴~',
+            title: '记录你的一点一滴~',
+            desc: '记录你的一点一滴~',
             path: 'pages/index/index',
             imageUrl: '/images/share.jpg'   
         }   

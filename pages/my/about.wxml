@@ -1,17 +1,17 @@
 <!--about.wxml-->
 <view class="about-page">
-    <view class="about-title">我的生活印迹 for 微信小程序</view>
+    <view class="about-title">吾计 for 微信小程序</view>
     <view class="about-content">
-        我的生活印迹是一款轻量级的云记账工具。
+        吾计是一款轻量级的云记账工具。
     </view>
     <view class="about-content">
         这是一款轻量级的适合个人使用的云记账工具。 该项目采用微信小程序+iVew WeApp完成，后台采用.net开发，兼容可使用微信小程序的设备。
     </view>
     <view class="about-content">
-        该项目数据部分存储在云端，与web版本记账系统公用数据，通过小程序与后台通信，通过微信绑定后台账户，能够同步处理数据。 其中使用iView Weapp作为前端框架，.net负责逻辑处理和编译任务。
+        该项目数据部分存储在云端，与web版本记账系统公用数据，通过小程序与后台通信，能够同步处理数据。 其中使用iView Weapp作为前端框架，.net负责逻辑处理和编译任务。该项目GitHub地址：http://t.cn/Ai0GRDDT
     </view>
     <view class="about-content">
-        Github：{{url}}
+        关于作者FreshMan：{{authUrl}}
     </view>
     <button size="mini" type="primary" bindtap="bindCopyUrl">复制链接</button>
 </view>

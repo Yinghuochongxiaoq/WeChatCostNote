@@ -1,4 +1,5 @@
 {
+    "enablePullDownRefresh": false,
     "navigationBarTitleText": "我的",
     "usingComponents": {
         "i-cell-group": "../../iView/cell-group/index",
