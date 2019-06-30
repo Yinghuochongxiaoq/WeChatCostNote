@@ -25,7 +25,88 @@ Page({
         channelIdList: [-1],
         statisticsModel: {},
 
-        pulldownrefresh: false
+        pulldownrefresh: false,
+        visibleShowDelete: false,
+        actions2: [{
+            name: '删除',
+            color: '#ed3f14'
+        }],
+        //控制滑动 设置uncloseable为true时点击按钮不能关闭,必须联合toggle来实现
+        toggle: false,
+        //全局保存需要删除的记录
+        deleteId: 0
+    },
+    //取消删除
+    handleCancel() {
+        this.setData({
+            visibleShowDelete: false,
+            toggle: this.data.toggle ? false : true,
+            deleteId: 0
+        });
+    },
+    //确认删除
+    handleClickDelete() {
+        self = this;
+        const action = [...self.data.actions2];
+        action[0].loading = true;
+
+        self.setData({
+            actions2: action
+        });
+        //提交删除
+        wx.request({
+            url: app.globalData.api + '/CostNote/DeleteCostInfo',
+            data: {
+                token: app.globalData.userInfo.token,
+                id: self.data.deleteId
+            },
+            method: 'GET',
+            success: function(res) {
+                if (res.data.resultCode == 0) {
+                    wx.showToast({
+                            title: '删除成功',
+                            icon: 'success',
+                            duration: 2000
+                        })
+                        //刷新页面
+                    self.onPullDownRefresh()
+                } else {
+                    wx.showToast({
+                        title: res.data.message,
+                        icon: 'none',
+                        duration: 2000
+                    })
+                }
+                action[0].loading = false;
+                self.setData({
+                    visibleShowDelete: false,
+                    actions2: action,
+                    toggle: self.data.toggle ? false : true,
+                    deleteId: 0
+                });
+            },
+            fail: function() {
+                wx.showToast({
+                    title: '网络异常',
+                    icon: 'none',
+                    duration: 2000
+                })
+                action[0].loading = false;
+                self.setData({
+                    visibleShowDelete: false,
+                    actions2: action,
+                    toggle: self.data.toggle ? false : true,
+                    deleteId: 0
+                });
+            }
+        })
+    },
+    actionsTap(e) {
+        console.log(e)
+        this.setData({
+            visibleShowDelete: true,
+            deleteId: e.currentTarget.id
+        });
     },
     onLoad: function() {
         this.getAllCostType()
@@ -135,7 +216,7 @@ Page({
         this.setData({
             channelmultiIndex: e.detail.value,
             costChannel: this.data.channelIdList[e.detail.value],
-            pageIndex: 0,
+            pageIndex: 1,
             pageSize: 10
         })
         this.searchCostNoteData(true)
@@ -145,7 +226,7 @@ Page({
             costTypemultiIndex: e.detail.value,
             spendType: this.data.inoroutIdList[e.detail.value[0]],
             costType: this.data.costTypeIdList[e.detail.value[1]],
-            pageIndex: 0,
+            pageIndex: 1,
             pageSize: 10
         })
         this.searchCostNoteData(true)

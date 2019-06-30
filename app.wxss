@@ -1,102 +1,105 @@
 page {
-  background: #fff;
-  height: 100%;
+    background: #fff;
+    height: 100%;
 }
 
 .number_border {
-  -ms-border-radius: 50%;
-  border-radius: 50%;
-  height: 60rpx;
-  width: 60rpx;
-  margin-top: 40rpx;
-  display: inline-block;
-  vertical-align: middle;
-  color: #ffffff;
-  text-align: center;
-  font-size: 40rpx;
+    -ms-border-radius: 50%;
+    border-radius: 50%;
+    height: 60rpx;
+    width: 60rpx;
+    margin-top: 40rpx;
+    display: inline-block;
+    vertical-align: middle;
+    color: #ffffff;
+    text-align: center;
+    font-size: 40rpx;
 }
 
 .ft-bg-green {
-  color: #1BB97D;
+    color: #1BB97D;
 }
 
 .bg-green {
-  background: #1BB97D;
+    background: #1BB97D;
 }
 
 .ft-bg-danger {
-  color: #FF7B0E;
+    color: #FF7B0E;
 }
 
 .bg-danger {
-  background: #FF7B0E;
+    background: #FF7B0E;
 }
 
 .mg-10 {
-  margin: 5rpx 10rpx;
+    margin: 5rpx 10rpx;
 }
 
 .mg--5 {
-  margin: -5rpx 10rpx;
+    margin: -5rpx 10rpx;
 }
 
 .pd-10 {
-  padding: 10rpx;
+    padding: 10rpx;
 }
 
 .arrow {
-  width: 8px;
-  height: 8px;
-  border-bottom: 2px solid #999;
-  border-right: 2px solid #999;
-  transform: rotate(45deg);
-  margin-top: 15rpx;
+    width: 8px;
+    height: 8px;
+    border-bottom: 2px solid #999;
+    border-right: 2px solid #999;
+    transform: rotate(45deg);
+    margin-top: 15rpx;
 }
 
 .arrow-right {
-  width: 8px;
-  height: 8px;
-  border-top: 2px solid #999;
-  border-right: 2px solid #999;
-  transform: rotate(45deg);
+    width: 8px;
+    height: 8px;
+    border-top: 2px solid #999;
+    border-right: 2px solid #999;
+    transform: rotate(45deg);
 }
 
 .list-inline {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 
 .list-column {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }
 
 .weight-90 {
-  width: 90%;
+    width: 90%;
 }
 
 .i-input {
-  padding: 7px 15px;
-  color: #495060;
-
+    padding: 7px 15px;
+    color: #495060;
 }
 
 .i-cell {
-  position: relative;
-  padding: 12px 15px;
-  display: flex;
-  background: #fff;
-  align-items: center;
-  line-height: 1.4;
-  font-size: 14px;
-  overflow: hidden;
-
+    position: relative;
+    padding: 12px 15px;
+    display: flex;
+    background: #fff;
+    align-items: center;
+    line-height: 1.4;
+    font-size: 14px;
+    overflow: hidden;
 }
 
 .i-input-title {
-  color: #495060;
-  min-width: 65px;
-  padding-right: 10px;
+    color: #495060;
+    min-width: 65px;
+    padding-right: 10px;
+}
 
+.top-panel {
+    background-color: #fff;
+    padding: 15px 20px;
+    border-bottom: #dddee1 solid 1px;
 }

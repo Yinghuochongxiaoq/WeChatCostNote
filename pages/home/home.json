@@ -3,6 +3,12 @@
     "navigationBarTitleText": "消费记录",
     "onReachBottomDistance": 50,
     "usingComponents": {
-        "i-load-more": "../../iView/load-more/index"
+        "i-load-more": "../../iView/load-more/index",
+        "i-swipeout": "../../iView/swipeout/index",
+        "i-cell-group": "../../iView/cell-group/index",
+        "i-cell": "../../iView/cell/index",
+        "i-card": "../../iView/card/index",
+        "i-icon": "../../iView/icon/index",
+        "i-action-sheet": "../../iView/action-sheet/index"
     }
 }

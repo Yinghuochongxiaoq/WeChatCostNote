@@ -1,4 +1,4 @@
-<view class="mg-10">
+<view>
     <view class="search-list-inline list-inline">
         <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{costTypemultiIndex}}" range="{{costTypemultiArray}}">
             <view class="list-inline">
@@ -20,7 +20,7 @@
 </view>
 
 <!-- 汇总数据 -->
-<view class="mg--5">
+<view class="top-panel">
     <view class="list-card" hover-class="list-card-active">
         <view class="list-item-cost">
             <view class="list-text-ft tui-fl">
@@ -37,22 +37,38 @@
     </view>
 </view>
 
+<i-action-sheet visible="{{ visibleShowDelete }}" actions="{{ actions2 }}" show-cancel bind:cancel="handleCancel" bind:click="handleClickDelete" mask-closable="{{ false }}">
+    <view slot="header" style="padding: 16px">
+        <view style="color: #444;font-size: 16px">确定删除吗？</view>
+        <text>删除后无法恢复哦</text>
+    </view>
+</i-action-sheet>
+
 <!--列表页账单-->
 <view wx:if="{{dataList.length>0}}">
-    <view wx:for="{{dataList}}" wx:key="id" class="mg-10">
-        <navigator class="list-card" hover-class="list-card-active">
-            <view class="list-item-left">
-                <text class="number_border tui-fl {{item.costInOrOut==1?' bg-green':' bg-danger'}}">{{item.costInOrOut==1?"收":"支"}}</text>
+    <view wx:for="{{dataList}}" wx:key="id">
+        <i-swipeout i-class="i-swipeout-demo-item" operateWidth="{{80}}" unclosable="{{true}}" toggle="{{toggle}}">
+            <view slot="content">
+                <view class="list-card" hover-class="list-card-active">
+                    <view class="list-item-left">
+                        <text class="number_border tui-fl {{item.costInOrOut==1?' bg-green':' bg-danger'}}">{{item.costInOrOut==1?"收":"支"}}</text>
+                    </view>
+                    <view class="list-right tui-fl">
+                        <text class="list-item-title">{{item.costThing}}</text>
+                        <text class="list-item-type">{{item.costTypeName?item.costTypeName:'--'}}</text>
+                        <text class="list-item-time">{{item.costTime}}</text>
+                    </view>
+                    <view class="list-item-cost">
+                        <view class="list-text-ft tui-fr {{item.costInOrOut==1?' ft-bg-green':' ft-bg-danger'}}">{{item.costInOrOut==1?"+":"-"}}{{item.cost}}</view>
+                    </view>
+                </view>
             </view>
-            <view class="list-right tui-fl">
-                <text class="list-item-title">{{item.costThing}}</text>
-                <text class="list-item-type">{{item.costTypeName?item.costTypeName:'--'}}</text>
-                <text class="list-item-time">{{item.costTime}}</text>
+            <view slot="button" class="i-swipeout-demo-button-group">
+                <view class="i-swipeout-demo-button" style="width:80rpx;" style="background:#F8F9FB" bindtap="actionsTap" id="{{item.id}}">
+                    <i-icon size="32" type="delete" style="color: red"></i-icon>删除
+                </view>
             </view>
-            <view class="list-item-cost">
-                <view class="list-text-ft tui-fr {{item.costInOrOut==1?' ft-bg-green':' ft-bg-danger'}}">{{item.costInOrOut==1?"+":"-"}}{{item.cost}}</view>
-            </view>
-        </navigator>
+        </i-swipeout>
     </view>
 </view>
 <view wx:else class="mg-10">
