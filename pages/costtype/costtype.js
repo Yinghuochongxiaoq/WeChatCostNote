@@ -1,13 +1,16 @@
 var app = getApp();
 Page({
     data: {
-        spendType: 0,
+        spendType: 1,
         costTypemultiArray: [],
         costTypeObjectMultiArray: [],
 
         pulldownrefresh: false
     },
     onLoad: function() {
+        this.getAllCostType()
+    },
+    onShow:function(){
         this.getAllCostType()
     },
     onPullDownRefresh() {

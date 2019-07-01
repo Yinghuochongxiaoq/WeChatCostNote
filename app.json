@@ -1,6 +1,5 @@
 {
     "pages": [
-        "pages/test/index",
         "pages/index/index",
         "pages/home/home",
         "pages/costchannel/costchannel",

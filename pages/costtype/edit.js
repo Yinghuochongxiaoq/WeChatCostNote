@@ -30,7 +30,7 @@ Page({
             "model.spendType": this.data.spendTypeIds[e.detail.value]
         })
     },
-    changeSort: function(e) {
+    changeCostTypeSort: function(e) {
         this.setData({
             "model.sort": e.detail.detail.value
         })

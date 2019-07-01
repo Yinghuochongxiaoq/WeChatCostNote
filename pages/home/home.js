@@ -112,13 +112,11 @@ Page({
         this.getAllCostType()
         this.searchCostNoteData(true)
     },
+    onShow:function(){
+        this.initPageData()
+    },
     onPullDownRefresh() {
-        this.setData({
-            pageIndex: 1,
-            pageSize: 10,
-            pulldownrefresh: true
-        })
-        this.searchCostNoteData(true)
+        this.initPageData()
     },
     onReachBottom() {
         if (this.data.pageIndex <= this.data.pageCount) {
@@ -149,6 +147,9 @@ Page({
             },
             method: 'GET',
             success: function(res) {
+                self.setData({
+                    loading: false
+                })
                 //停止刷新
                 if (self.data.pulldownrefresh) {
                     wx.stopPullDownRefresh()
@@ -177,6 +178,11 @@ Page({
                         duration: 2000
                     })
                 }
+            },
+            fail:function(){
+                self.setData({
+                    loading: false
+                })
             }
         })
     },
@@ -258,5 +264,14 @@ Page({
             path: 'pages/index/index',
             imageUrl: '/images/share.jpg'   
         }   
+    },
+    initPageData:function(){
+        this.setData({
+            pageIndex: 1,
+            pageSize: 10,
+            pulldownrefresh: true
+        })
+        this.getAllCostType()
+        this.searchCostNoteData(true)
     }
 })

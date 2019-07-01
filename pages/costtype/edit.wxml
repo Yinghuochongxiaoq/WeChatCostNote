@@ -11,7 +11,7 @@
         </view>
     </picker>
 
-    <i-input value="{{ model.sort }}" type="number" title="排序值" bind:change="changeChannelSort" placeholder="排序值" maxlength="4" />
+    <i-input value="{{ model.sort }}" type="number" title="排序值" bind:change="changeCostTypeSort" placeholder="排序值" maxlength="4" />
 
     <i-button bind:click="handleSaveClick" type="success" loading="{{isSaving}}">{{isSaving?'保存中...':'保存'}}</i-button>
 

@@ -1,7 +1,7 @@
 
 <i-tabs current="{{ spendType }}" bindchange="handlerSpendTypeChange">
-    <i-tab key="0" title="支出"></i-tab>
     <i-tab key="1" title="收入"></i-tab>
+    <i-tab key="0" title="支出"></i-tab>
 </i-tabs>
 
 <i-panel>

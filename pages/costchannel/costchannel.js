@@ -14,6 +14,9 @@ Page({
         });
         this.getStatistics()
     },
+    onShow:function(){
+        this.getStatistics()
+    },
     onPullDownRefresh: function() {
         this.setData({
             pulldownrefresh: true
