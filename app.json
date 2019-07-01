@@ -7,6 +7,7 @@
         "pages/costtype/costtype",
         "pages/addcost/index",
         "pages/logs/logs",
+        "pages/chart/index",
         "pages/my/my",
         "pages/my/about",
         "pages/costtype/edit"
@@ -34,6 +35,9 @@
             "text": "记一笔",
             "iconPath": "images/icon-add.png",
             "selectedIconPath": "images/icon-add-select.png"
+        }, {
+            "pagePath": "pages/chart/index",
+            "text": "图表"
         }, {
             "pagePath": "pages/my/my",
             "text": "我的",

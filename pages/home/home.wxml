@@ -55,7 +55,7 @@
                     </view>
                     <view class="list-right tui-fl">
                         <text class="list-item-title">{{item.costThing}}</text>
-                        <text class="list-item-type">{{item.costChannelName+'  /  '+item.costTypeName||'--'}}</text>
+                        <text class="list-item-type">{{item.costChannelName+'  /  '+(item.costTypeName||'--')}}</text>
                         <text class="list-item-time">{{item.costTime}}</text>
                     </view>
                     <view class="list-item-cost">
