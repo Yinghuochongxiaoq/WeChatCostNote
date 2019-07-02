@@ -1,6 +1,6 @@
 {
     "enablePullDownRefresh": true,
-    "navigationBarTitleText": "统计图标",
+    "navigationBarTitleText": "统计图表",
     "usingComponents": {
         "i-tabs": "../../iView/tabs/index",
         "i-tab": "../../iView/tab/index",

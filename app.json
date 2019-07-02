@@ -37,7 +37,9 @@
             "selectedIconPath": "images/icon-add-select.png"
         }, {
             "pagePath": "pages/chart/index",
-            "text": "图表"
+            "text": "图表",
+            "iconPath": "images/icon-charts.png",
+            "selectedIconPath": "images/icon-charts-select.png"
         }, {
             "pagePath": "pages/my/my",
             "text": "我的",

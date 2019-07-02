@@ -1,7 +1,7 @@
 var app = getApp();
 Page({
     data: {
-        userInfo: app.globalData,
+        userInfo: app.globalData.userInfo,
         statisticsModel: {},
         channelAcount: [],
 
