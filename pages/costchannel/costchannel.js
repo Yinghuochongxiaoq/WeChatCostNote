@@ -12,9 +12,8 @@ Page({
         self.setData({
             userInfo: app.globalData.userInfo
         });
-        this.getStatistics()
     },
-    onShow:function(){
+    onShow: function() {
         this.getStatistics()
     },
     onPullDownRefresh: function() {

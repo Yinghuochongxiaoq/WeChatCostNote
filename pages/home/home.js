@@ -108,11 +108,8 @@ Page({
             deleteId: e.currentTarget.id
         });
     },
-    onLoad: function() {
-        this.getAllCostType()
-        this.searchCostNoteData(true)
-    },
-    onShow:function(){
+    onLoad: function() {},
+    onShow: function() {
         this.initPageData()
     },
     onPullDownRefresh() {
@@ -148,9 +145,9 @@ Page({
             method: 'GET',
             success: function(res) {
                 self.setData({
-                    loading: false
-                })
-                //停止刷新
+                        loading: false
+                    })
+                    //停止刷新
                 if (self.data.pulldownrefresh) {
                     wx.stopPullDownRefresh()
                 }
@@ -179,7 +176,7 @@ Page({
                     })
                 }
             },
-            fail:function(){
+            fail: function() {
                 self.setData({
                     loading: false
                 })
@@ -265,7 +262,7 @@ Page({
             imageUrl: '/images/share.jpg'   
         }   
     },
-    initPageData:function(){
+    initPageData: function() {
         this.setData({
             pageIndex: 1,
             pageSize: 10,

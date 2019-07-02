@@ -7,17 +7,17 @@
 <!-- 消费类型统计start -->
 <view class=" tui-tabbar-content" wx:if="{{chartType==0}}">
     <view class="tui-tabbar-group">
-        <text data-id="0" bindtap="changePieTabBar"
-            class="tui-tabbar-cell {{timePieIndex == 0 ? 'tui-active' : ''}}">本月</text>
-        <text data-id="1" bindtap="changePieTabBar"
-            class="tui-tabbar-cell {{timePieIndex == 1 ? 'tui-active' : ''}}">季度</text>
-        <text data-id="2" bindtap="changePieTabBar"
-            class="tui-tabbar-cell {{timePieIndex == 2 ? 'tui-active' : ''}}">半年</text>
-        <text data-id="3" bindtap="changePieTabBar"
-            class="tui-tabbar-cell {{timePieIndex == 3 ? 'tui-active' : ''}}">年</text>
+        <text data-id="0" bindtap="changePieTabBar" class="tui-tabbar-cell {{timePieIndex == 0 ? 'tui-active' : ''}}">本月</text>
+        <text data-id="1" bindtap="changePieTabBar" class="tui-tabbar-cell {{timePieIndex == 1 ? 'tui-active' : ''}}">季度</text>
+        <text data-id="2" bindtap="changePieTabBar" class="tui-tabbar-cell {{timePieIndex == 2 ? 'tui-active' : ''}}">半年</text>
+        <text data-id="3" bindtap="changePieTabBar" class="tui-tabbar-cell {{timePieIndex == 3 ? 'tui-active' : ''}}">年</text>
     </view>
 </view>
-
+<i-panel wx:if="{{chartType==0}}">
+    <i-notice-bar icon="systemprompt">
+        {{pieTip}}
+    </i-notice-bar>
+</i-panel>
 <view class="container" hidden="{{chartType!=0}}">
     <canvas canvas-id="pieCanvas" class="canvas" style="height:300px" bindtouchstart="touchHandler"></canvas>
 </view>
@@ -25,7 +25,7 @@
 <i-panel wx:if="{{chartType==0}}">
     <i-cell-group>
         <block wx:for="{{typeArray}}" wx:key="name">
-            <i-cell title="{{item.name}}" is-link i-class="border-bottom" value="{{item.data}}"></i-cell>
+            <i-cell title="{{item.name}}" is-link i-class="border-bottom" value="{{item.data}}元"></i-cell>
         </block>
     </i-cell-group>
 </i-panel>
@@ -34,24 +34,20 @@
 <!-- 月度消费start -->
 <view class="tui-tabbar-content" wx:if="{{chartType==1}}">
     <view class="tui-tabbar-group">
-        <text data-id="1" bindtap="changeLineTabBar"
-            class="tui-tabbar-cell {{timeLineIndex == 1 ? 'tui-active' : ''}}">季度</text>
-        <text data-id="2" bindtap="changeLineTabBar"
-            class="tui-tabbar-cell {{timeLineIndex == 2 ? 'tui-active' : ''}}">半年</text>
-        <text data-id="3" bindtap="changeLineTabBar"
-            class="tui-tabbar-cell {{timeLineIndex == 3 ? 'tui-active' : ''}}">年</text>
+        <text data-id="1" bindtap="changeLineTabBar" class="tui-tabbar-cell {{timeLineIndex == 1 ? 'tui-active' : ''}}">季度</text>
+        <text data-id="2" bindtap="changeLineTabBar" class="tui-tabbar-cell {{timeLineIndex == 2 ? 'tui-active' : ''}}">半年</text>
+        <text data-id="3" bindtap="changeLineTabBar" class="tui-tabbar-cell {{timeLineIndex == 3 ? 'tui-active' : ''}}">年</text>
     </view>
 </view>
 
 <view class="container" hidden="{{chartType!=1}}">
-    <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" bindtouchstart="touchLineHandler"
-        bindtouchmove="moveHandler" bindtouchend="touchEndHandler"></canvas>
+    <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" bindtouchstart="touchLineHandler" bindtouchmove="moveHandler" bindtouchend="touchEndHandler"></canvas>
 </view>
 
 <i-panel wx:if="{{chartType==1}}">
     <i-cell-group>
         <block wx:for="{{monthArray}}" wx:key="month">
-            <i-cell title="{{item.month}}" is-link i-class="border-bottom" value="{{item.sumCost}}"></i-cell>
+            <i-cell title="{{item.month}}" is-link i-class="border-bottom" value="{{item.sumCost}}元"></i-cell>
         </block>
     </i-cell-group>
 </i-panel>

@@ -7,10 +7,8 @@ Page({
 
         pulldownrefresh: false
     },
-    onLoad: function() {
-        this.getAllCostType()
-    },
-    onShow:function(){
+    onLoad: function() {},
+    onShow: function() {
         this.getAllCostType()
     },
     onPullDownRefresh() {

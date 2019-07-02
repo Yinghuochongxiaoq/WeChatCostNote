@@ -14,24 +14,30 @@ Page({
         userInfo: app.globalData.userInfo,
         pulldownrefresh: false,
         pieDo: false,
-        lineDo: false
+        lineDo: false,
+        pieTip: ''
     },
     //点击饼图
-    touchHandler: function (e) {
+    touchHandler: function(e) {
         console.log(pieChart.getCurrentDataIndex(e));
+        if (this.data.typeArray && this.data.typeArray.length > 0 && pieChart.getCurrentDataIndex(e) > -1) {
+            this.setData({
+                pieTip: this.data.typeArray[pieChart.getCurrentDataIndex(e)].name + '类型累计消费' + this.data.typeArray[pieChart.getCurrentDataIndex(e)].data + '元'
+            })
+        }
     },
-    onShow: function () {
+    onShow: function() {
         this.getPieData()
         this.getLineData()
     },
-    onPullDownRefresh: function () {
+    onPullDownRefresh: function() {
         this.setData({
             pulldownrefresh: true
         })
         this.getPieData()
         this.getLineData()
     },
-    onLoad: function (e) {
+    onLoad: function(e) {
         this.setData({
             userInfo: app.globalData.userInfo
         });
@@ -49,15 +55,15 @@ Page({
         this.drawLine(['无数据'], [0])
     },
     //获取饼图数据
-    getPieData: function () {
+    getPieData: function() {
         var self = this;
         self.setData({
             pieDo: true
         })
         wx.showLoading({
-            title: '数据加载中…'
-        })
-        // 请求数据，并渲染
+                title: '数据加载中…'
+            })
+            // 请求数据，并渲染
         wx.request({
             url: app.globalData.api + '/CostNote/ChartPieData',
             data: {
@@ -65,13 +71,22 @@ Page({
                 pieIndex: self.data.timePieIndex
             },
             method: 'GET',
-            success: function (res) {
+            success: function(res) {
                 if (res.data.resultCode == 0) {
                     if (res.data.data.length > 0) {
+                        var sumData = 0;
+                        for (var i = 0; i < res.data.data.length; i++) {
+                            sumData += res.data.data[i].data * 100;
+                        }
                         self.setData({
-                            typeArray: res.data.data
+                            typeArray: res.data.data,
+                            pieTip: '总计消费' + sumData / 100 + '元'
                         })
                         self.drawPie(res.data.data)
+                    } else {
+                        self.setData({
+                            pieTip: '暂无数据，快去记账吧~'
+                        })
                     }
                 } else {
                     wx.showToast({
@@ -83,9 +98,9 @@ Page({
             },
             complete: () => {
                 self.setData({
-                    pieDo: false
-                })
-                //停止刷新
+                        pieDo: false
+                    })
+                    //停止刷新
                 if (self.data.pulldownrefresh && !self.data.lineDo) {
                     wx.stopPullDownRefresh()
                 }
@@ -94,15 +109,15 @@ Page({
         })
     },
     //获取折线图数据
-    getLineData: function () {
+    getLineData: function() {
         var self = this;
         self.setData({
             lineDo: true
         })
         wx.showLoading({
-            title: '数据加载中…'
-        })
-        // 请求数据，并渲染
+                title: '数据加载中…'
+            })
+            // 请求数据，并渲染
         wx.request({
             url: app.globalData.api + '/CostNote/ChartLineData',
             data: {
@@ -110,7 +125,7 @@ Page({
                 lineIndex: self.data.timeLineIndex
             },
             method: 'GET',
-            success: function (res) {
+            success: function(res) {
                 if (res.data.resultCode == 0) {
                     if (res.data.data.nameArray.length > 0) {
                         var lineData = [];
@@ -135,9 +150,9 @@ Page({
             },
             complete: () => {
                 self.setData({
-                    lineDo: false
-                })
-                //停止刷新
+                        lineDo: false
+                    })
+                    //停止刷新
                 if (self.data.pulldownrefresh && !self.data.pieDo) {
                     wx.stopPullDownRefresh()
                 }
@@ -146,7 +161,7 @@ Page({
         })
     },
     //绘制饼图
-    drawPie: function (data) {
+    drawPie: function(data) {
         pieChart = new wxCharts({
             animation: true,
             canvasId: 'pieCanvas',
@@ -161,7 +176,7 @@ Page({
         });
     },
     //绘制折线图
-    drawLine: function (categories, data) {
+    drawLine: function(categories, data) {
         lineChart = new wxCharts({
             canvasId: 'lineCanvas',
             type: 'line',
@@ -170,7 +185,7 @@ Page({
             series: [{
                 name: '月度消费走势',
                 data: data,
-                format: function (val, name) {
+                format: function(val, name) {
                     return val.toFixed(2) + '元';
                 }
             }],
@@ -179,7 +194,7 @@ Page({
             },
             yAxis: {
                 title: '月度消费金额 (元)',
-                format: function (val) {
+                format: function(val) {
                     return val.toFixed(2);
                 },
                 min: 0
@@ -195,7 +210,7 @@ Page({
         });
     },
     //切换图形分类
-    handlerTypeChange: function ({
+    handlerTypeChange: function({
         detail
     }) {
         this.setData({
@@ -215,16 +230,16 @@ Page({
         })
         this.getLineData()
     },
-    touchLineHandler: function (e) {
+    touchLineHandler: function(e) {
         lineChart.scrollStart(e);
     },
-    moveHandler: function (e) {
+    moveHandler: function(e) {
         lineChart.scroll(e);
     },
-    touchEndHandler: function (e) {
+    touchEndHandler: function(e) {
         lineChart.scrollEnd(e);
         lineChart.showToolTip(e, {
-            format: function (item, category) {
+            format: function(item, category) {
                 return category + ' ' + item.name + ':' + item.data
             }
         });

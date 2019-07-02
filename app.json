@@ -6,7 +6,6 @@
         "pages/costchannel/edit",
         "pages/costtype/costtype",
         "pages/addcost/index",
-        "pages/logs/logs",
         "pages/chart/index",
         "pages/my/my",
         "pages/my/about",
