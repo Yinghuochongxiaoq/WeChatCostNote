@@ -1,7 +1,7 @@
 <!-- tab头 -->
 <i-tabs current="{{ chartType }}" bindchange="handlerTypeChange">
     <i-tab key="0" title="消费类型"></i-tab>
-    <i-tab key="1" title="月度消费"></i-tab>
+    <i-tab key="1" title="月度收支"></i-tab>
 </i-tabs>
 
 <!-- 消费类型统计start -->
@@ -25,7 +25,7 @@
 <i-panel wx:if="{{chartType==0}}">
     <i-cell-group>
         <block wx:for="{{typeArray}}" wx:key="name">
-            <i-cell title="{{item.name}}" is-link i-class="border-bottom" value="{{item.data}}元"></i-cell>
+            <i-cell title="{{item.name}}" i-class="border-bottom" value="{{item.data}}元"></i-cell>
         </block>
     </i-cell-group>
 </i-panel>
@@ -44,10 +44,18 @@
     <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" bindtouchstart="touchLineHandler" bindtouchmove="moveHandler" bindtouchend="touchEndHandler"></canvas>
 </view>
 
-<i-panel wx:if="{{chartType==1}}">
+<i-panel title="消费" wx:if="{{chartType==1}}">
     <i-cell-group>
         <block wx:for="{{monthArray}}" wx:key="month">
-            <i-cell title="{{item.month}}" is-link i-class="border-bottom" value="{{item.sumCost}}元"></i-cell>
+            <i-cell title="{{item.month}}" i-class="border-bottom ft-bg-green" value="{{item.sumCost}}元"></i-cell>
+        </block>
+    </i-cell-group>
+</i-panel>
+
+<i-panel title="收入" wx:if="{{chartType==1}}">
+    <i-cell-group>
+        <block wx:for="{{monthArray}}" wx:key="month">
+            <i-cell title="{{item.month}}" i-class="border-bottom ft-bg-danger" value="{{item.sumIn}}元"></i-cell>
         </block>
     </i-cell-group>
 </i-panel>

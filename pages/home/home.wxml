@@ -29,9 +29,9 @@
             </view>
         </view>
         <view class="list-right tui-fr">
-            <text class="list-item-title ft-bg-green">{{statisticsModel.allInCost}}</text>
+            <text class="list-item-title ft-bg-danger">{{statisticsModel.allInCost}}</text>
             <text class="list-item-type">收入</text>
-            <text class="list-item-title">{{statisticsModel.allOutCost}}</text>
+            <text class="list-item-title ft-bg-green">{{statisticsModel.allOutCost}}</text>
             <text class="list-item-type">支出</text>
         </view>
     </view>
@@ -51,7 +51,7 @@
             <view slot="content">
                 <view class="list-card" hover-class="list-card-active">
                     <view class="list-item-left">
-                        <text class="number_border tui-fl {{item.costInOrOut==1?' bg-green':' bg-danger'}}">{{item.costInOrOut==1?"收":"支"}}</text>
+                        <text class="number_border tui-fl {{item.costInOrOut==1?' bg-danger':' bg-green'}}">{{item.costInOrOut==1?"收":"支"}}</text>
                     </view>
                     <view class="list-right tui-fl">
                         <text class="list-item-title">{{item.costThing}}</text>
@@ -59,7 +59,7 @@
                         <text class="list-item-time">{{item.costTime}}</text>
                     </view>
                     <view class="list-item-cost">
-                        <view class="list-text-ft tui-fr {{item.costInOrOut==1?' ft-bg-green':' ft-bg-danger'}}">{{item.costInOrOut==1?"+":"-"}}{{item.cost}}</view>
+                        <view class="list-text-ft tui-fr {{item.costInOrOut==1?' ft-bg-danger':' ft-bg-green'}}">{{item.costInOrOut==1?"+":"-"}}{{item.cost}}</view>
                     </view>
                 </view>
             </view>

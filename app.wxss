@@ -17,19 +17,19 @@ page {
 }
 
 .ft-bg-green {
-    color: #1BB97D;
+    color: #1BB97D !important;
 }
 
 .bg-green {
-    background: #1BB97D;
+    background: #1BB97D !important;
 }
 
 .ft-bg-danger {
-    color: #FF7B0E;
+    color: #FF7B0E !important;
 }
 
 .bg-danger {
-    background: #FF7B0E;
+    background: #FF7B0E !important;
 }
 
 .mg-10 {

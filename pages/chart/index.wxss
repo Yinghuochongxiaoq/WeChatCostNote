@@ -1,4 +1,5 @@
 /*tabbar style  */
+
 .tui-tabbar-content {
     padding: 10px;
 }
@@ -35,6 +36,11 @@
     border-top: 1px solid #c8c7cc;
 }
 
-.border-bottom{
+.border-bottom {
     border-bottom: #dddee1 solid 1px;
+}
+
+.canvas {
+    width: 100%;
+    height: 200px;
 }

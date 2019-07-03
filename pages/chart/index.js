@@ -44,6 +44,7 @@ Page({
         try {
             var res = wx.getSystemInfoSync();
             windowWidth = res.windowWidth;
+            console.log('获取到屏幕宽度' + windowWidth)
         } catch (e) {
             console.error('getSystemInfoSync failed!');
         }
@@ -52,7 +53,7 @@ Page({
             name: '无数据',
             data: 1
         }]);
-        this.drawLine(['无数据'], [0])
+        this.drawLine(['无数据'], [0], [0])
     },
     //获取饼图数据
     getPieData: function() {
@@ -132,13 +133,14 @@ Page({
                         for (var i = 0; i < res.data.data.nameArray.length; i++) {
                             lineData.push({
                                 month: res.data.data.nameArray[i],
-                                sumCost: res.data.data.dataArray[i]
+                                sumCost: res.data.data.dataOutArray[i],
+                                sumIn: res.data.data.dataInArray[i]
                             })
                         }
                         self.setData({
                             monthArray: lineData
                         })
-                        self.drawLine(res.data.data.nameArray, res.data.data.dataArray)
+                        self.drawLine(res.data.data.nameArray, res.data.data.dataOutArray, res.data.data.dataInArray)
                     }
                 } else {
                     wx.showToast({
@@ -176,7 +178,7 @@ Page({
         });
     },
     //绘制折线图
-    drawLine: function(categories, data) {
+    drawLine: function(categories, dataOut, dataIn) {
         lineChart = new wxCharts({
             canvasId: 'lineCanvas',
             type: 'line',
@@ -184,7 +186,13 @@ Page({
             animation: false,
             series: [{
                 name: '月度消费走势',
-                data: data,
+                data: dataOut,
+                format: function(val, name) {
+                    return val.toFixed(2) + '元';
+                }
+            }, {
+                name: '月度收入走势',
+                data: dataIn,
                 format: function(val, name) {
                     return val.toFixed(2) + '元';
                 }
@@ -193,14 +201,14 @@ Page({
                 disableGrid: false
             },
             yAxis: {
-                title: '月度消费金额 (元)',
+                title: '月度消费/收入金额 (元)',
                 format: function(val) {
                     return val.toFixed(2);
                 },
                 min: 0
             },
             width: windowWidth,
-            height: 180,
+            height: 200,
             dataLabel: true,
             dataPointShape: true,
             enableScroll: true,
