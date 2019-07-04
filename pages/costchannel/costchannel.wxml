@@ -1,3 +1,4 @@
+<wxs module="filters" src="../../utils/filter.wxs"></wxs>
 <!-- 汇总数据 -->
 <view class="top-panel">
     <view class="list-card" hover-class="list-card-active">
@@ -20,7 +21,7 @@
 <view wx:if="{{channelAcount.length>0}}">
     <i-panel>
         <i-cell-group wx:for="{{channelAcount}}" wx:key="costChannelName">
-            <i-cell title="{{item.costChannelName}}" is-link url="./edit?id={{item.costChannel}}" i-class="{{item.costCount<=0?' ft-bg-green':' ft-bg-danger'}}" value="{{item.costCount}}">
+            <i-cell title="{{item.costChannelName}}" is-link url="./edit?id={{item.costChannel}}" i-class="{{item.costCount<=0?' ft-bg-green':' ft-bg-danger'}}" value="{{filters.toFix(item.costCount)}}">
             </i-cell>
 
         </i-cell-group>

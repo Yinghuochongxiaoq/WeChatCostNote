@@ -1,3 +1,4 @@
+<wxs module="filters" src="../../utils/filter.wxs"></wxs>
 <view>
     <view class="search-list-inline list-inline">
         <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{costTypemultiIndex}}" range="{{costTypemultiArray}}">
@@ -59,7 +60,7 @@
                         <text class="list-item-time">{{item.costTime}}</text>
                     </view>
                     <view class="list-item-cost">
-                        <view class="list-text-ft tui-fr {{item.costInOrOut==1?' ft-bg-danger':' ft-bg-green'}}">{{item.costInOrOut==1?"+":"-"}}{{item.cost}}</view>
+                        <view class="list-text-ft tui-fr {{item.costInOrOut==1?' ft-bg-danger':' ft-bg-green'}}">{{item.costInOrOut==1?"+":"-"}}{{filters.toFix(item.cost)}}</view>
                     </view>
                 </view>
             </view>

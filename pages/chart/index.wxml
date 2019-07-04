@@ -1,3 +1,4 @@
+<wxs module="filters" src="../../utils/filter.wxs"></wxs>
 <!-- tab头 -->
 <i-tabs current="{{ chartType }}" bindchange="handlerTypeChange">
     <i-tab key="0" title="消费类型"></i-tab>
@@ -25,7 +26,7 @@
 <i-panel wx:if="{{chartType==0}}">
     <i-cell-group>
         <block wx:for="{{typeArray}}" wx:key="name">
-            <i-cell title="{{item.name}}" i-class="border-bottom" value="{{item.data}}元"></i-cell>
+            <i-cell title="{{item.name}}" i-class="border-bottom" value="{{filters.toFix(item.data)}}元"></i-cell>
         </block>
     </i-cell-group>
 </i-panel>
@@ -47,7 +48,7 @@
 <i-panel title="消费" wx:if="{{chartType==1}}">
     <i-cell-group>
         <block wx:for="{{monthArray}}" wx:key="month">
-            <i-cell title="{{item.month}}" i-class="border-bottom ft-bg-green" value="{{item.sumCost}}元"></i-cell>
+            <i-cell title="{{item.month}}" i-class="border-bottom ft-bg-green" value="{{filters.toFix(item.sumCost)}}元"></i-cell>
         </block>
     </i-cell-group>
 </i-panel>
@@ -55,7 +56,7 @@
 <i-panel title="收入" wx:if="{{chartType==1}}">
     <i-cell-group>
         <block wx:for="{{monthArray}}" wx:key="month">
-            <i-cell title="{{item.month}}" i-class="border-bottom ft-bg-danger" value="{{item.sumIn}}元"></i-cell>
+            <i-cell title="{{item.month}}" i-class="border-bottom ft-bg-danger" value="{{filters.toFix(item.sumIn)}}元"></i-cell>
         </block>
     </i-cell-group>
 </i-panel>

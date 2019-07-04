@@ -165,7 +165,7 @@ Page({
             title: '记录你的一点一滴~',
             desc: '记录你的一点一滴~',
             path: 'pages/index/index',
-            imageUrl: '/images/share.jpg'   
-        }   
+            imageUrl: app.globalData.shareImgUrl
+        }    
     }
 })

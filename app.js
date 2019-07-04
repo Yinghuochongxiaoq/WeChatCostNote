@@ -34,6 +34,7 @@ App({
     },
     globalData: {
         userInfo: null,
+        shareImgUrl: 'https://aivabc.com/Uploadfile/ShareDetailImage/20190704/6369786934483499313738901.jpg',
         api: 'https://api.aivabc.com:8080/api',
         // api: 'http://localhost:8001/api',
     }

@@ -179,27 +179,27 @@ Page({
     },
     //绘制折线图
     drawLine: function(categories, dataOut, dataIn) {
-        if(dataOut.length>1){
-            var lineOutData=[];
-            for(var i=0;i<dataOut.length;i++){
-                if(!dataOut[i]){
+        if (dataOut.length > 1) {
+            var lineOutData = [];
+            for (var i = 0; i < dataOut.length; i++) {
+                if (!dataOut[i]) {
                     lineOutData.push(null)
-                }else{
+                } else {
                     lineOutData.push(dataOut[i])
                 }
             }
-            dataOut=lineOutData;
+            dataOut = lineOutData;
         }
-        if(dataIn.length>1){
-            var lineInData=[];
-            for(var i=0;i<dataIn.length;i++){
-                if(!dataIn[i]){
+        if (dataIn.length > 1) {
+            var lineInData = [];
+            for (var i = 0; i < dataIn.length; i++) {
+                if (!dataIn[i]) {
                     lineInData.push(null)
-                }else{
+                } else {
                     lineInData.push(dataIn[i])
                 }
             }
-            dataIn=lineInData;
+            dataIn = lineInData;
         }
         lineChart = new wxCharts({
             canvasId: 'lineCanvas',
@@ -273,5 +273,13 @@ Page({
                 return category + ' ' + item.name + ':' + item.data
             }
         });
+    },
+    onShareAppMessage() {     
+        return {    
+            title: '记录你的一点一滴~',
+            desc: '记录你的一点一滴~',
+            path: 'pages/index/index',
+            imageUrl: app.globalData.shareImgUrl
+        }    
     }
 });
