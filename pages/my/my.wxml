@@ -15,3 +15,4 @@
         </i-cell-group>
     </i-panel>
 </view>
+<i-button bind:click="handleToHome" type="success">重新登录</i-button>

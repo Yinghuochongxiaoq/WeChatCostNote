@@ -8,6 +8,11 @@ Page({
             userInfo: app.globalData.userInfo
         });
     },
+    handleToHome:function(){
+        wx.reLaunch({
+            url: '/pages/index/index'
+        })
+    },
     onShareAppMessage() {     
         return {    
             title: '记录你的一点一滴~',

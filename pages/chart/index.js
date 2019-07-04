@@ -179,11 +179,33 @@ Page({
     },
     //绘制折线图
     drawLine: function(categories, dataOut, dataIn) {
+        if(dataOut.length>1){
+            var lineOutData=[];
+            for(var i=0;i<dataOut.length;i++){
+                if(!dataOut[i]){
+                    lineOutData.push(null)
+                }else{
+                    lineOutData.push(dataOut[i])
+                }
+            }
+            dataOut=lineOutData;
+        }
+        if(dataIn.length>1){
+            var lineInData=[];
+            for(var i=0;i<dataIn.length;i++){
+                if(!dataIn[i]){
+                    lineInData.push(null)
+                }else{
+                    lineInData.push(dataIn[i])
+                }
+            }
+            dataIn=lineInData;
+        }
         lineChart = new wxCharts({
             canvasId: 'lineCanvas',
             type: 'line',
             categories: categories,
-            animation: false,
+            animation: true,
             series: [{
                 name: '月度消费走势',
                 data: dataOut,
