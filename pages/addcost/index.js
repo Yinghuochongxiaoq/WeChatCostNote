@@ -36,9 +36,6 @@ Page({
         isSaving: false
     },
     onLoad() {
-        //获取类型，账户
-        this.getAllCostType()
-
         // 获取完整的年月日 时分秒，以及默认显示的数组
         var obj1 = dateTimePicker.dateTimePicker(this.data.startYear, this.data.endYear);
         // 精确到分的处理，将数组的秒去掉
@@ -51,6 +48,10 @@ Page({
             "costcontentmodel.Token": app.globalData.userInfo.token,
             "costcontentmodel.CostTime": obj1.dateTimeArray[0][obj1.dateTime[0]] + '-' + obj1.dateTimeArray[1][obj1.dateTime[1]] + '-' + obj1.dateTimeArray[2][obj1.dateTime[2]] + ' ' + obj1.dateTimeArray[3][obj1.dateTime[3]] + ':' + obj1.dateTimeArray[4][obj1.dateTime[4]] + ':00'
         });
+    },
+    onShow: function() {
+        //获取类型，账户
+        this.getAllCostType()
     },
     bindChannelPickerChange: function(e) {
         this.setData({
