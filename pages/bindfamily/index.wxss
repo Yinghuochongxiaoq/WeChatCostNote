@@ -1,0 +1,17 @@
+.one-tag {
+    font-size: 14px;
+    margin: 30px 5px 20px 15px;
+}
+
+.container {
+    display: block;
+    width: 235px;
+    height: 40px;
+    margin: 20px auto;
+    position: relative;
+    border: 1px solid #eee;
+    font-weight: bolder;
+    font-size: 14px;
+    color: red;
+    padding-top: 13px;
+}
