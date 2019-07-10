@@ -1,7 +1,7 @@
 <wxs module="filters" src="../../utils/filter.wxs"></wxs>
-<view>
     <view class="search-list-inline list-inline">
-        <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{costTypemultiIndex}}" range="{{costTypemultiArray}}">
+<scroll-view scroll-x="true" style=" white-space: nowrap;" >
+        <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{costTypemultiIndex}}" range="{{costTypemultiArray}}" style="display: inline-block;">
             <view class="list-inline">
                 <view class="picker pd-10">
                     交易类型:{{costTypemultiArray[0][costTypemultiIndex[0]]}},{{costTypemultiArray[1][costTypemultiIndex[1]]}}
@@ -9,7 +9,7 @@
                 <view class='arrow'></view>
             </view>
         </picker>
-        <picker bindchange="bindChannelPickerChange" value="{{channelmultiIndex}}" range="{{channelmultiArray}}">
+        <picker bindchange="bindChannelPickerChange" value="{{channelmultiIndex}}" range="{{channelmultiArray}}" style="display: inline-block;">
             <view class="list-inline">
                 <view class="picker pd-10">
                     账户:{{channelmultiArray[channelmultiIndex]}}
@@ -17,8 +17,14 @@
                 <view class='arrow'></view>
             </view>
         </picker>
+        <view bindtap="powerDrawer" style="display: inline-block;">
+                <view class="picker pd-10" style="display: inline-block;">
+                    成员:
+                </view>
+                <view class='arrow' style="display: inline-block;"></view>
+            </view>
+</scroll-view>
     </view>
-</view>
 
 <!-- 汇总数据 -->
 <view class="top-panel">

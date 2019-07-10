@@ -36,6 +36,9 @@ Page({
         //全局保存需要删除的记录
         deleteId: 0
     },
+    powerDrawer:function(){
+        debugger
+    },
     //取消删除
     handleCancel() {
         this.setData({

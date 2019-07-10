@@ -9,6 +9,9 @@
         "i-panel": "../../iView/panel/index",
         "i-steps": "../../iView/steps/index",
         "i-step": "../../iView/step/index",
-        "i-action-sheet": "../../iView/action-sheet/index"
+        "i-action-sheet": "../../iView/action-sheet/index",
+        "i-avatar": "../../iView/avatar/index",
+    "i-row": "../../iView/row/index",
+    "i-col": "../../iView/col/index"
     }
 }
