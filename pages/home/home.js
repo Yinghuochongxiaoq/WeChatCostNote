@@ -38,18 +38,29 @@ Page({
         //成员选择框
         showModalStatus: false,
         //成员昵称
-        memberNickName:'全部'
+        memberNickName: '全部',
+        //家庭成员
+        familyMembers: [],
+        //是否显示家庭成员
+        isShowFamilyMember: false
+    },
+    onLoad: function() {
+        this.setData({
+            familyMembers: app.globalData.userInfo.wechatMemberList,
+            isShowFamilyMember: app.globalData.userInfo.wechatMemberList && app.globalData.userInfo.wechatMemberList.length > 0
+        })
     },
     //上拉选择成员
-    powerDrawer: function (e) {
+    powerDrawer: function(e) {
+        debugger
         var currentStatue = e.currentTarget.dataset.statue;
         this.util(currentStatue)
     },
     //关闭遮罩层
-    powerDrawer_close: function (e) {
+    powerDrawer_close: function(e) {
         this.util('close')
     },
-    util: function (currentStatue) {
+    util: function(currentStatue) {
         /* 动画部分 */
         // 第1步：创建动画实例 
         var animation = wx.createAnimation({
@@ -70,10 +81,10 @@ Page({
         })
 
         // 第5步：设置定时器到指定时候后，执行第二组动画
-        setTimeout(function () {
+        setTimeout(function() {
             // 执行第二组动画：Y轴不偏移，停
             animation.translateY(0).step()
-            // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象
+                // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象
             this.setData({
                 animationData: animation
             })
@@ -118,14 +129,14 @@ Page({
                 id: self.data.deleteId
             },
             method: 'GET',
-            success: function (res) {
+            success: function(res) {
                 if (res.data.resultCode == 0) {
                     wx.showToast({
-                        title: '删除成功',
-                        icon: 'success',
-                        duration: 2000
-                    })
-                    //刷新页面
+                            title: '删除成功',
+                            icon: 'success',
+                            duration: 2000
+                        })
+                        //刷新页面
                     self.onPullDownRefresh()
                 } else {
                     wx.showToast({
@@ -142,7 +153,7 @@ Page({
                     deleteId: 0
                 });
             },
-            fail: function () {
+            fail: function() {
                 wx.showToast({
                     title: '网络异常',
                     icon: 'none',
@@ -165,8 +176,7 @@ Page({
             deleteId: e.currentTarget.id
         });
     },
-    onLoad: function () {},
-    onShow: function () {
+    onShow: function() {
         this.initPageData()
     },
     onPullDownRefresh() {
@@ -200,11 +210,11 @@ Page({
                 costChannel: self.data.costChannel
             },
             method: 'GET',
-            success: function (res) {
+            success: function(res) {
                 self.setData({
-                    loading: false
-                })
-                //停止刷新
+                        loading: false
+                    })
+                    //停止刷新
                 if (self.data.pulldownrefresh) {
                     wx.stopPullDownRefresh()
                 }
@@ -233,7 +243,7 @@ Page({
                     })
                 }
             },
-            fail: function () {
+            fail: function() {
                 self.setData({
                     loading: false
                 })
@@ -248,7 +258,7 @@ Page({
                 token: app.globalData.userInfo.token
             },
             method: 'GET',
-            success: function (res) {
+            success: function(res) {
                 if (res.data.resultCode == 0) {
                     var list = ['全部']
                     var idList = [-1]
@@ -272,7 +282,7 @@ Page({
             }
         })
     },
-    bindChannelPickerChange: function (e) {
+    bindChannelPickerChange: function(e) {
         this.setData({
             channelmultiIndex: e.detail.value,
             costChannel: this.data.channelIdList[e.detail.value],
@@ -281,7 +291,7 @@ Page({
         })
         this.searchCostNoteData(true)
     },
-    bindMultiPickerChange: function (e) {
+    bindMultiPickerChange: function(e) {
         this.setData({
             costTypemultiIndex: e.detail.value,
             spendType: this.data.inoroutIdList[e.detail.value[0]],
@@ -291,7 +301,7 @@ Page({
         })
         this.searchCostNoteData(true)
     },
-    bindMultiPickerColumnChange: function (e) {
+    bindMultiPickerColumnChange: function(e) {
         switch (e.detail.column) {
             case 0:
                 var list = ['全部']
@@ -319,7 +329,7 @@ Page({
             imageUrl: app.globalData.shareImgUrl
         }
     },
-    initPageData: function () {
+    initPageData: function() {
         this.setData({
             pageIndex: 1,
             pageSize: 10,

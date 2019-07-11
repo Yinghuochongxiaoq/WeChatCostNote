@@ -9,6 +9,7 @@
         "i-cell": "../../iView/cell/index",
         "i-card": "../../iView/card/index",
         "i-icon": "../../iView/icon/index",
-        "i-action-sheet": "../../iView/action-sheet/index"
+        "i-action-sheet": "../../iView/action-sheet/index",
+        "i-avatar": "../../iView/avatar/index"
     }
 }

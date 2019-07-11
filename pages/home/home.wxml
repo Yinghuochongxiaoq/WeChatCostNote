@@ -1,6 +1,12 @@
 <wxs module="filters" src="../../utils/filter.wxs"></wxs>
-    <view class="search-list-inline list-inline">
-<scroll-view scroll-x="true" style=" white-space: nowrap;" >
+<view class="search-list-inline list-inline">
+    <scroll-view scroll-x="true" style=" white-space: nowrap;">
+        <view bindtap="powerDrawer" data-statue="open" style="display: inline-block;" wx:if="{{isShowFamilyMember}}">
+            <view class="picker pd-10" style="display: inline-block;">
+                成员:{{memberNickName}}
+            </view>
+            <view class='arrow' style="display: inline-block;"></view>
+        </view>
         <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{costTypemultiIndex}}" range="{{costTypemultiArray}}" style="display: inline-block;">
             <view class="list-inline">
                 <view class="picker pd-10">
@@ -17,28 +23,25 @@
                 <view class='arrow'></view>
             </view>
         </picker>
-        <view bindtap="powerDrawer" style="display: inline-block;">
-                <view class="picker pd-10" style="display: inline-block;">
-                    成员:{{memberNickName}}
-                </view>
-                <view class='arrow' style="display: inline-block;"></view>
-            </view>
-</scroll-view>
-    </view>
+    </scroll-view>
+</view>
 
 <!--遮罩层mask-->
 <view class="drawer_screen" bindtap="powerDrawer_close" data-statu="close" wx:if="{{showModalStatus}}"></view>
 <!--content-->
 <!--使用animation属性指定需要执行的动画-->
 <view animation="{{animationData}}" class="drawer_attr_box" wx:if="{{showModalStatus}}">
-  <!--drawer content-->
-  <view class="drawer_content">
-    <view class="drawer_title line"><i-avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" size="small"></i-avatar>菜单1</view>
-    <view class="drawer_title line">菜单2</view>
-    <view class="drawer_title line">菜单3</view>
-    <view class="drawer_title line">菜单4</view>
-    <view class="drawer_title">菜单5</view>
-  </view>
+    <!--drawer content-->
+    <view class="drawer_content">
+        <view class="drawer_title line">
+            全部
+        </view>
+        <block wx:for="{{familyMembers}}" wx:key="accountId">
+            <view class="drawer_title line">
+                <i-avatar src="{{item.avatarUrl}}" size="small"></i-avatar>{{item.nickName}}
+            </view>
+        </block>
+    </view>
 </view>
 
 <!-- 汇总数据 -->
