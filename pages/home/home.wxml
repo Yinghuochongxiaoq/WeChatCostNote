@@ -19,12 +19,27 @@
         </picker>
         <view bindtap="powerDrawer" style="display: inline-block;">
                 <view class="picker pd-10" style="display: inline-block;">
-                    成员:
+                    成员:{{memberNickName}}
                 </view>
                 <view class='arrow' style="display: inline-block;"></view>
             </view>
 </scroll-view>
     </view>
+
+<!--遮罩层mask-->
+<view class="drawer_screen" bindtap="powerDrawer_close" data-statu="close" wx:if="{{showModalStatus}}"></view>
+<!--content-->
+<!--使用animation属性指定需要执行的动画-->
+<view animation="{{animationData}}" class="drawer_attr_box" wx:if="{{showModalStatus}}">
+  <!--drawer content-->
+  <view class="drawer_content">
+    <view class="drawer_title line"><i-avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" size="small"></i-avatar>菜单1</view>
+    <view class="drawer_title line">菜单2</view>
+    <view class="drawer_title line">菜单3</view>
+    <view class="drawer_title line">菜单4</view>
+    <view class="drawer_title">菜单5</view>
+  </view>
+</view>
 
 <!-- 汇总数据 -->
 <view class="top-panel">
@@ -44,6 +59,7 @@
     </view>
 </view>
 
+<!-- 确认删除 -->
 <i-action-sheet visible="{{ visibleShowDelete }}" actions="{{ actions2 }}" show-cancel bind:cancel="handleCancel" bind:click="handleClickDelete" mask-closable="{{ false }}">
     <view slot="header" style="padding: 16px">
         <view style="color: #444;font-size: 16px">确定删除吗？</view>
@@ -78,12 +94,14 @@
         </i-swipeout>
     </view>
 </view>
+<!-- 无数据 -->
 <view wx:else class="mg-10">
     <view class="list-column">
         <icon size="40" type="warn" role="img"></icon>
         <view>还没有数据哦~</view>
     </view>
 </view>
+<!-- 加载层 -->
 <view wx:if="{{loading}}">
     <i-load-more />
 </view>

@@ -34,10 +34,64 @@ Page({
         //控制滑动 设置uncloseable为true时点击按钮不能关闭,必须联合toggle来实现
         toggle: false,
         //全局保存需要删除的记录
-        deleteId: 0
+        deleteId: 0,
+        //成员选择框
+        showModalStatus: false,
+        //成员昵称
+        memberNickName:'全部'
     },
-    powerDrawer:function(){
-        debugger
+    //上拉选择成员
+    powerDrawer: function (e) {
+        var currentStatue = e.currentTarget.dataset.statue;
+        this.util(currentStatue)
+    },
+    //关闭遮罩层
+    powerDrawer_close: function (e) {
+        this.util('close')
+    },
+    util: function (currentStatue) {
+        /* 动画部分 */
+        // 第1步：创建动画实例 
+        var animation = wx.createAnimation({
+            duration: 200, //动画时长
+            timingFunction: "linear", //线性
+            delay: 0 //0则不延迟
+        });
+
+        // 第2步：这个动画实例赋给当前的动画实例
+        this.animation = animation;
+
+        // 第3步：执行第一组动画：Y轴偏移240px后(盒子高度是240px)，停
+        animation.translateY(240).step();
+
+        // 第4步：导出动画对象赋给数据对象储存
+        this.setData({
+            animationData: animation.export()
+        })
+
+        // 第5步：设置定时器到指定时候后，执行第二组动画
+        setTimeout(function () {
+            // 执行第二组动画：Y轴不偏移，停
+            animation.translateY(0).step()
+            // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象
+            this.setData({
+                animationData: animation
+            })
+
+            //关闭抽屉
+            if (currentStatue == "close") {
+                this.setData({
+                    showModalStatus: false
+                });
+            }
+        }.bind(this), 200)
+
+        // 显示抽屉
+        if (currentStatue == "open") {
+            this.setData({
+                showModalStatus: true
+            });
+        }
     },
     //取消删除
     handleCancel() {
@@ -64,14 +118,14 @@ Page({
                 id: self.data.deleteId
             },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 if (res.data.resultCode == 0) {
                     wx.showToast({
-                            title: '删除成功',
-                            icon: 'success',
-                            duration: 2000
-                        })
-                        //刷新页面
+                        title: '删除成功',
+                        icon: 'success',
+                        duration: 2000
+                    })
+                    //刷新页面
                     self.onPullDownRefresh()
                 } else {
                     wx.showToast({
@@ -88,7 +142,7 @@ Page({
                     deleteId: 0
                 });
             },
-            fail: function() {
+            fail: function () {
                 wx.showToast({
                     title: '网络异常',
                     icon: 'none',
@@ -111,8 +165,8 @@ Page({
             deleteId: e.currentTarget.id
         });
     },
-    onLoad: function() {},
-    onShow: function() {
+    onLoad: function () {},
+    onShow: function () {
         this.initPageData()
     },
     onPullDownRefresh() {
@@ -146,11 +200,11 @@ Page({
                 costChannel: self.data.costChannel
             },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 self.setData({
-                        loading: false
-                    })
-                    //停止刷新
+                    loading: false
+                })
+                //停止刷新
                 if (self.data.pulldownrefresh) {
                     wx.stopPullDownRefresh()
                 }
@@ -179,7 +233,7 @@ Page({
                     })
                 }
             },
-            fail: function() {
+            fail: function () {
                 self.setData({
                     loading: false
                 })
@@ -194,7 +248,7 @@ Page({
                 token: app.globalData.userInfo.token
             },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 if (res.data.resultCode == 0) {
                     var list = ['全部']
                     var idList = [-1]
@@ -218,7 +272,7 @@ Page({
             }
         })
     },
-    bindChannelPickerChange: function(e) {
+    bindChannelPickerChange: function (e) {
         this.setData({
             channelmultiIndex: e.detail.value,
             costChannel: this.data.channelIdList[e.detail.value],
@@ -227,7 +281,7 @@ Page({
         })
         this.searchCostNoteData(true)
     },
-    bindMultiPickerChange: function(e) {
+    bindMultiPickerChange: function (e) {
         this.setData({
             costTypemultiIndex: e.detail.value,
             spendType: this.data.inoroutIdList[e.detail.value[0]],
@@ -237,7 +291,7 @@ Page({
         })
         this.searchCostNoteData(true)
     },
-    bindMultiPickerColumnChange: function(e) {
+    bindMultiPickerColumnChange: function (e) {
         switch (e.detail.column) {
             case 0:
                 var list = ['全部']
@@ -257,15 +311,15 @@ Page({
 
         }
     },
-    onShareAppMessage() {     
-        return {    
+    onShareAppMessage() {
+        return {
             title: '记录你的一点一滴~',
             desc: '记录你的一点一滴~',
             path: 'pages/index/index',
             imageUrl: app.globalData.shareImgUrl
-        }    
+        }
     },
-    initPageData: function() {
+    initPageData: function () {
         this.setData({
             pageIndex: 1,
             pageSize: 10,
