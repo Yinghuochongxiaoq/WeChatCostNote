@@ -27,17 +27,17 @@
 </view>
 
 <!--遮罩层mask-->
-<view class="drawer_screen" bindtap="powerDrawer_close" data-statu="close" wx:if="{{showModalStatus}}"></view>
+<view class="drawer_screen" bindtap="powerDrawer" data-statue="close" wx:if="{{showModalStatus}}"></view>
 <!--content-->
 <!--使用animation属性指定需要执行的动画-->
 <view animation="{{animationData}}" class="drawer_attr_box" wx:if="{{showModalStatus}}">
     <!--drawer content-->
     <view class="drawer_content">
-        <view class="drawer_title line">
-            全部
+        <view class="drawer_title line" bindtap="chooseMember" data-statue="close" data-memberid="-1">
+            一大家子
         </view>
         <block wx:for="{{familyMembers}}" wx:key="accountId">
-            <view class="drawer_title line">
+            <view class="drawer_title line" bindtap="chooseMember" data-statue="close" data-memberid="{{item.accountId}}">
                 <i-avatar src="{{item.avatarUrl}}" size="small"></i-avatar>{{item.nickName}}
             </view>
         </block>

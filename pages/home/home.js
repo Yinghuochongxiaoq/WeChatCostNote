@@ -35,6 +35,7 @@ Page({
         toggle: false,
         //全局保存需要删除的记录
         deleteId: 0,
+        
         //成员选择框
         showModalStatus: false,
         //成员昵称
@@ -42,7 +43,9 @@ Page({
         //家庭成员
         familyMembers: [],
         //是否显示家庭成员
-        isShowFamilyMember: false
+        isShowFamilyMember: false,
+        //选择成员id
+        chooseMemberId:-1
     },
     onLoad: function() {
         this.setData({
@@ -50,15 +53,29 @@ Page({
             isShowFamilyMember: app.globalData.userInfo.wechatMemberList && app.globalData.userInfo.wechatMemberList.length > 0
         })
     },
-    //上拉选择成员
-    powerDrawer: function(e) {
+    //选择成员
+    chooseMember:function(e){
         debugger
+        var memberId=e.currentTarget.dataset.memberid;
+        //选择了新的成员
+        if(memberId!=this.data.chooseMemberId){
+            this.setData({
+                costTypemultiIndex: [0,0],
+                spendType: this.data.inoroutIdList[0],
+                costType: this.data.costTypeIdList[0],
+                pageIndex: 1,
+                pageSize: 10,
+                chooseMemberId:memberId
+            })
+        }
+        this.searchCostNoteData(true)
         var currentStatue = e.currentTarget.dataset.statue;
         this.util(currentStatue)
     },
-    //关闭遮罩层
-    powerDrawer_close: function(e) {
-        this.util('close')
+    //上拉选择成员
+    powerDrawer: function(e) {
+        var currentStatue = e.currentTarget.dataset.statue;
+        this.util(currentStatue)
     },
     util: function(currentStatue) {
         /* 动画部分 */
