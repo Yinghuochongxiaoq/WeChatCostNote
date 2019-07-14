@@ -6,76 +6,70 @@ Page({
         isSaving: false,
         verticalCode: '',
         bindVerticalCode: '',
-
+        //绑定操作
         visibleSendBind: false,
         bindActions: [{
             name: '绑定',
             color: '#ed3f14'
         }],
 
+        //解除绑定
+        visibleUnBind: false,
+        unbindActions: [{
+            name: '解除绑定',
+            color: '#ed3f14'
+        }],
 
-        showModalStatus: false
+        //重新绑定
+        visibleReBind: false,
+        rebindActions: [{
+            name: '重新绑定',
+            color: '#ed3f14'
+        }],
+
+        //家庭成员
+        familyMembers: [],
+        //是否显示家庭成员
+        isShowFamilyMember: false,
+        //当前用户id
+        currentMemberId: -1,
+        //绑定状态0：未绑定；1：正常绑定；2：解绑3天以内
+        bindState: 0
     },
-    powerDrawer: function (e) {
-        var currentStatue = e.currentTarget.dataset.statue;
-        this.util(currentStatue)
-      },
-      powerDrawer_two:function(e){
-          debugger
-          this.util('close')
-      },
-      util: function(currentStatue){
-        /* 动画部分 */
-        // 第1步：创建动画实例 
-        var animation = wx.createAnimation({
-          duration: 200,  //动画时长
-          timingFunction: "linear", //线性
-          delay: 0  //0则不延迟
-        });
-        
-        // 第2步：这个动画实例赋给当前的动画实例
-        this.animation = animation;
-     
-        // 第3步：执行第一组动画：Y轴偏移240px后(盒子高度是240px)，停
-        animation.translateY(240).step();
-     
-        // 第4步：导出动画对象赋给数据对象储存
+    onLoad: function(options) {
         this.setData({
-          animationData: animation.export()
-        })
-        
-        // 第5步：设置定时器到指定时候后，执行第二组动画
-        setTimeout(function () {
-          // 执行第二组动画：Y轴不偏移，停
-          animation.translateY(0).step()
-          // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象
-          this.setData({
-            animationData: animation
-          })
-          
-          //关闭抽屉
-          if (currentStatue == "close") {
-            this.setData(
-              {
-                showModalStatus: false
-              }
-            );
-          }
-        }.bind(this), 200)
-      
-        // 显示抽屉
-        if (currentStatue == "open") {
-          this.setData(
-            {
-              showModalStatus: true
+            userInfo: app.globalData.userInfo,
+            currentMemberId: app.globalData.userInfo.accountId
+        });
+    },
+    onShow: function() {
+        this.getMemberInfo();
+    },
+    //获取用户信息
+    getMemberInfo: function() {
+        var self = this;
+        wx.request({
+            url: app.globalData.api + '/CostNote/GetCurrentUserFamilyMembers',
+            data: { token: app.globalData.userInfo.token },
+            method: 'GET',
+            success: function(res) {
+                if (res.data.resultCode == 0) {
+
+                    self.setData({
+                        familyMembers: res.data.data.members,
+                        isShowFamilyMember: res.data.data.state != 0,
+                        bindState: res.data.data.state
+                    });
+                } else {
+                    wx.showToast({
+                        title: res.data.message,
+                        icon: 'none',
+                        duration: 2000
+                    })
+                }
             }
-          );
-        }
-      },
-
-
-    onLoad: function(options) {},
-    onShow: function() {},
+        })
+    },
     handleChange({
         detail
     }) {
@@ -134,8 +128,9 @@ Page({
             bindVerticalCode: e.detail.detail.value
         })
     },
+    //点击绑定
     handleOpenBind: function() {
-        if(!this.data.bindVerticalCode){
+        if (!this.data.bindVerticalCode) {
             wx.showToast({
                 title: '邀请码不能为空',
                 icon: 'none',
@@ -147,11 +142,13 @@ Page({
             visibleSendBind: true
         });
     },
+    //取消确认
     handleCancelBind: function() {
         this.setData({
             visibleSendBind: false
         });
     },
+    //确认
     handleDoBind: function() {
         const action = [...this.data.bindActions];
         action[0].loading = true;
@@ -173,6 +170,7 @@ Page({
                         icon: 'success',
                         duration: 2000
                     })
+                    self.reLogin();
                 } else {
                     wx.showToast({
                         title: res.data.message,
@@ -188,6 +186,116 @@ Page({
                     bindActions: action
                 });
             }
+        })
+    },
+
+    //点击解除绑定
+    unbindHandler: function() {
+        this.setData({
+            visibleUnBind: true
+        });
+    },
+    //取消确认
+    handleCancelUnBind: function() {
+        this.setData({
+            visibleUnBind: false
+        });
+    },
+    //确认取消绑定
+    handleDoUnBind: function() {
+        const action = [...this.data.unbindActions];
+        action[0].loading = true;
+        this.setData({
+            unbindActions: action
+        });
+        var self = this;
+        wx.request({
+            url: app.globalData.api + '/CostNote/UnBindFamily',
+            data: {
+                token: app.globalData.userInfo.token
+            },
+            method: 'GET',
+            success: function(res) {
+                if (res.data.resultCode == 0) {
+                    wx.showToast({
+                        title: '解除绑定成功',
+                        icon: 'success',
+                        duration: 2000
+                    })
+                    self.reLogin();
+                } else {
+                    wx.showToast({
+                        title: res.data.message,
+                        icon: 'none',
+                        duration: 2000
+                    })
+                }
+            },
+            complete: function() {
+                action[0].loading = false;
+                self.setData({
+                    visibleUnBind: false,
+                    unbindActions: action
+                });
+            }
+        })
+    },
+
+    //点击重新绑定
+    rebindHandler: function() {
+        this.setData({
+            visibleReBind: true
+        });
+    },
+    //重新绑定取消确认
+    handleCancelReBind: function() {
+        this.setData({
+            visibleReBind: false
+        });
+    },
+    //确认重新绑定绑定
+    handleDoReBind: function() {
+        const action = [...this.data.rebindActions];
+        action[0].loading = true;
+        this.setData({
+            rebindActions: action
+        });
+        var self = this;
+        wx.request({
+            url: app.globalData.api + '/CostNote/ReBindFamily',
+            data: {
+                token: app.globalData.userInfo.token
+            },
+            method: 'GET',
+            success: function(res) {
+                if (res.data.resultCode == 0) {
+                    wx.showToast({
+                        title: '绑定成功',
+                        icon: 'success',
+                        duration: 2000
+                    })
+                    self.reLogin();
+                } else {
+                    wx.showToast({
+                        title: res.data.message,
+                        icon: 'none',
+                        duration: 2000
+                    })
+                }
+            },
+            complete: function() {
+                action[0].loading = false;
+                self.setData({
+                    visibleReBind: false,
+                    rebindActions: action
+                });
+            }
+        })
+    },
+    //重新登录
+    reLogin: function() {
+        wx.reLaunch({
+            url: '/pages/index/index'
         })
     },
     onShareAppMessage() {     

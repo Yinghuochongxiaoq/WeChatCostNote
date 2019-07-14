@@ -1,32 +1,61 @@
 <wxs module="filters" src="../../utils/filter.wxs"></wxs>
-<!-- 汇总数据 -->
-<view class="top-panel">
-    <view class="list-card" hover-class="list-card-active">
-        <view class="list-item-cost">
-            <view class="list-text-ft tui-fl">
-                <text class="ft-bg-danger ft-bolder"> {{statisticsModel.allCouldCost}}</text>
-                <text class="block-ft">可支配余额</text>
+<!-- 橫向滚动 -->
+<view class="container" wx:if="{{statisticsModel && statisticsModel.length>0}}">
+    <!-- tab导航栏 -->
+    <!-- scroll-left属性可以控制滚动条位置 -->
+    <!-- scroll-with-animation滚动添加动画过渡 -->
+    <scroll-view scroll-x="true" class="nav" scroll-left="{{navScrollLeft}}" scroll-with-animation="{{true}}" wx:if="{{isShowFamilyMember}}">
+        <block wx:for="{{familyMembers}}" wx:for-index="idx" wx:for-item="navItem" wx:key="idx">
+            <view class="nav-item {{currentTab == idx ?'active':''}}" style="width: {{100/familyMembers.length}}%" data-current="{{idx}}" bindtap="switchNav">
+                <i-avatar src="{{navItem.avatarUrl}}" shape="square" size="small" wx:if="{{navItem.avatarUrl}}"></i-avatar>{{navItem.nickName}}</view>
+        </block>
+    </scroll-view>
+    <!-- 页面内容 -->
+    <swiper class="tab-box {{isShowFamilyMember?'pd-80':''}}" current="{{currentTab}}" duration="300" bindchange="switchTab">
+        <swiper-item wx:for="{{statisticsModel}}" wx:for-item="tabItem" wx:for-index="idx" wx:key="idx" class="tab-content">
+
+            <!-- 汇总数据 -->
+            <view class="top-panel">
+                <view class="list-card" hover-class="list-card-active">
+                    <view class="list-item-cost">
+                        <view class="list-text-ft tui-fl">
+                            <text class="ft-bg-danger ft-bolder"> {{tabItem.statisticsModel.allCouldCost}}</text>
+                            <text class="block-ft">可支配余额</text>
+                        </view>
+                    </view>
+                    <view class="list-right tui-fr">
+                        <text class="list-item-title ft-bg-green">{{tabItem.statisticsModel.allInCost}}</text>
+                        <text class="list-item-type">收入</text>
+                        <text class="list-item-title">{{tabItem.statisticsModel.allOutCost}}</text>
+                        <text class="list-item-type">支出</text>
+                    </view>
+                </view>
             </view>
-        </view>
-        <view class="list-right tui-fr">
-            <text class="list-item-title ft-bg-green">{{statisticsModel.allInCost}}</text>
-            <text class="list-item-type">收入</text>
-            <text class="list-item-title">{{statisticsModel.allOutCost}}</text>
-            <text class="list-item-type">支出</text>
-        </view>
-    </view>
+
+            <!--列表页账单-->
+            <view wx:if="{{tabItem.channelAcount.length>0}}">
+                <i-panel>
+                    <i-cell-group wx:for="{{tabItem.channelAcount}}" wx:key="costChannelName">
+                        <i-cell title="{{item.costChannelName}}" is-link url="./edit?id={{item.costChannel}}" i-class="{{item.costCount<=0?' ft-bg-green':' ft-bg-danger'}}" value="{{filters.toFix(item.costCount)}}" wx:if="{{userInfo.accountId==tabItem.userId}}">
+                        </i-cell>
+
+                        <i-cell title="{{item.costChannelName}}" i-class="{{item.costCount<=0?' ft-bg-green':' ft-bg-danger'}}" value="{{filters.toFix(item.costCount)}}" wx:else>
+                        </i-cell>
+
+                    </i-cell-group>
+                </i-panel>
+            </view>
+            <view wx:else class="mg-10">
+                <view class="list-column">
+                    <icon size="40" type="warn" role="img"></icon>
+                    <view>还没有数据哦~</view>
+                </view>
+            </view>
+
+        </swiper-item>
+    </swiper>
 </view>
 
-<!--列表页账单-->
-<view wx:if="{{channelAcount.length>0}}">
-    <i-panel>
-        <i-cell-group wx:for="{{channelAcount}}" wx:key="costChannelName">
-            <i-cell title="{{item.costChannelName}}" is-link url="./edit?id={{item.costChannel}}" i-class="{{item.costCount<=0?' ft-bg-green':' ft-bg-danger'}}" value="{{filters.toFix(item.costCount)}}">
-            </i-cell>
-
-        </i-cell-group>
-    </i-panel>
-</view>
 <view wx:else class="mg-10">
     <view class="list-column">
         <icon size="40" type="warn" role="img"></icon>

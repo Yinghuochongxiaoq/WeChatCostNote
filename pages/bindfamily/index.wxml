@@ -1,6 +1,7 @@
 <i-tabs current="{{ handlderIndex }}" bindchange="handleChange">
     <i-tab key="0" title="邀请成员"></i-tab>
     <i-tab key="1" title="绑定家庭"></i-tab>
+    <i-tab key="2" title="家庭成员"></i-tab>
 </i-tabs>
 
 <!-- 邀请成员start -->
@@ -27,48 +28,92 @@
     </view>
 </i-action-sheet>
 <!-- 绑定家庭end -->
-<view class="one-tag">操作步骤：</view>
-<i-steps current="{{verticalCurrent}}" direction="vertical">
-    <i-step>
-        <view slot="title">
-            生成邀请码
-        </view>
-        <view slot="content">
-            生成邀请码，该邀请码不区分大小写，有效时间为5分钟，且只能使用一次
-        </view>
-    </i-step>
-    <i-step>
-        <view slot="title">
-            分享邀请码
-        </view>
-        <view slot="content">
-            分享第一步中的邀请码给家庭成员，家庭成员需要在五分钟内完成
-        </view>
-    </i-step>
-    <i-step>
-        <view slot="title">
-            绑定
-        </view>
-        <view slot="content">
-            家庭成员拿到分享的邀请码在我的->绑定家庭成员->绑定家庭 中填写输入框中，点击绑定按钮绑定，完成绑定操作,重新登录即可查看家庭成员信息
-        </view>
-    </i-step>
-</i-steps>
 
-
-<!--button-->
-<view class="btn" bindtap="powerDrawer" data-statue="open">button</view>
-<!--mask-->
-<view class="drawer_screen" bindtap="powerDrawer_two" data-statu="close" wx:if="{{showModalStatus}}"></view>
-<!--content-->
-<!--使用animation属性指定需要执行的动画-->
-<view animation="{{animationData}}" class="drawer_attr_box" wx:if="{{showModalStatus}}">
-  <!--drawer content-->
-  <view class="drawer_content">
-    <view class="drawer_title line"><i-avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" size="small"></i-avatar>菜单1</view>
-    <view class="drawer_title line">菜单2</view>
-    <view class="drawer_title line">菜单3</view>
-    <view class="drawer_title line">菜单4</view>
-    <view class="drawer_title">菜单5</view>
-  </view>
+<!-- 步骤提示start -->
+<view wx:if="{{handlderIndex==0 || handlderIndex==1}}">
+    <view class="one-tag">操作步骤：</view>
+    <i-steps current="{{verticalCurrent}}" direction="vertical">
+        <i-step>
+            <view slot="title">
+                生成邀请码
+            </view>
+            <view slot="content">
+                生成邀请码，该邀请码不区分大小写，有效时间为5分钟，且只能使用一次
+            </view>
+        </i-step>
+        <i-step>
+            <view slot="title">
+                分享邀请码
+            </view>
+            <view slot="content">
+                分享第一步中的邀请码给家庭成员，家庭成员需要在五分钟内完成
+            </view>
+        </i-step>
+        <i-step>
+            <view slot="title">
+                绑定
+            </view>
+            <view slot="content">
+                家庭成员拿到分享的邀请码在我的->绑定家庭成员->绑定家庭 中填写输入框中，点击绑定按钮绑定，完成绑定操作后将自动重新登录即可查看家庭成员信息
+            </view>
+        </i-step>
+    </i-steps>
 </view>
+<!-- 步骤提示end -->
+
+<!-- 家庭成员start -->
+<view wx:if="{{handlderIndex==2}}">
+    <view wx:if="{{isShowFamilyMember}}">
+        <i-notice-bar icon="systemprompt">
+            解除绑定后可在72小时内重新绑定
+        </i-notice-bar>
+        <block wx:for="{{familyMembers}}" wx:for-index="idx" wx:for-item="navItem" wx:key="idx">
+            <view class="i-card">
+                <view class="i-card-header">
+                    <view class="i-card-header-content">
+                        <image class="i-card-header-thumb" src="{{navItem.avatarUrl}}" mode="aspectFit">
+                        </image>
+                        <view class="i-card-header-text"> {{navItem.nickName}}</view>
+                    </view>
+                    <ivew class="i-card-header-extra" wx:if="{{currentMemberId==navItem.accountId}}" bindtap="{{bindState==1?'unbindHandler':'rebindHandler'}}">{{bindState==1?'解除绑定':'重新绑定'}}</ivew>
+                </view>
+                <view class="i-card-footer">加入时间:{{navItem.createTime}}</view>
+            </view>
+        </block>
+    </view>
+    <view wx:else class="mg-10">
+        <view class="list-column">
+            <icon size="40" type="warn" role="img"></icon>
+            <view>还没有家庭成员哦~</view>
+        </view>
+    </view>
+</view>
+<i-action-sheet visible="{{ visibleUnBind }}" actions="{{ unbindActions }}" show-cancel bind:cancel="handleCancelUnBind" bind:click="handleDoUnBind" mask-closable="{{ false }}">
+    <view slot="header" style="padding: 16px">
+        <view style="color: #444;font-size: 16px">确定吗？</view>
+        <text>解除绑定后可在72小时内恢复</text>
+    </view>
+</i-action-sheet>
+
+<i-action-sheet visible="{{ visibleReBind }}" actions="{{ rebindActions }}" show-cancel bind:cancel="handleCancelReBind" bind:click="handleDoReBind" mask-closable="{{ false }}">
+    <view slot="header" style="padding: 16px">
+        <view style="color: #444;font-size: 16px">确定吗？</view>
+        <text>绑定后将与家庭成员共享数据哦</text>
+    </view>
+</i-action-sheet>
+
+
+<template name="familyMemberTemp">
+        <view class="i-card">
+                <view class="i-card-header">
+                    <view class="i-card-header-content">
+                        <image class="i-card-header-thumb" src="{{avatarUrl}}" mode="aspectFit">
+                        </image>
+                        <view class="i-card-header-text"> {{nickName}}</view>
+                    </view>
+                    <ivew class="i-card-header-extra" wx:if="{{currentMemberId==accountId}}" bindtap="{{bindState==1?'unbindHandler':'rebindHandler'}}">{{bindState==1?'解除绑定':'重新绑定'}}</ivew>
+                </view>
+            <view class="i-card-footer">加入时间:{{createTime}}</view>
+        </view>
+</template>
+<!-- 家庭成员end -->

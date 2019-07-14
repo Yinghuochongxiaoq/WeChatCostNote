@@ -44,6 +44,18 @@ page {
     padding: 10rpx;
 }
 
+.pd-80 {
+    padding-top: 80rpx;
+}
+
+.white-space {
+    white-space: nowrap;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
 .arrow {
     width: 8px;
     height: 8px;

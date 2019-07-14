@@ -1,63 +1,81 @@
 <wxs module="filters" src="../../utils/filter.wxs"></wxs>
-<!-- tab头 -->
-<i-tabs current="{{ chartType }}" bindchange="handlerTypeChange">
-    <i-tab key="0" title="消费类型"></i-tab>
-    <i-tab key="1" title="月度收支"></i-tab>
-</i-tabs>
+<!-- tab导航栏 -->
+<!-- scroll-left属性可以控制滚动条位置 -->
+<!-- scroll-with-animation滚动添加动画过渡 -->
+<scroll-view scroll-x="true" class="nav" scroll-left="{{navScrollLeft}}" scroll-with-animation="{{true}}" wx:if="{{isShowFamilyMember}}">
+    <block wx:for="{{familyMembers}}" wx:for-index="idx" wx:for-item="navItem" wx:key="idx">
+        <view class="nav-item {{currentTab == idx ?'active':''}}" style="width: {{100/familyMembers.length}}%" data-current="{{idx}}" data-memberid="{{navItem.accountId}}" bindtap="switchNav">
+            <i-avatar src="{{navItem.avatarUrl}}" shape="square" size="small" wx:if="{{navItem.avatarUrl}}"></i-avatar>{{navItem.nickName}}</view>
+    </block>
+</scroll-view>
+<view class="{{isShowFamilyMember?'pd-80':''}}">
+    <!-- tab头 -->
+    <i-tabs current="{{ chartType }}" bindchange="handlerTypeChange">
+        <i-tab key="0" title="消费类型"></i-tab>
+        <i-tab key="1" title="月度收支"></i-tab>
+    </i-tabs>
 
-<!-- 消费类型统计start -->
-<view class=" tui-tabbar-content" wx:if="{{chartType==0}}">
-    <view class="tui-tabbar-group">
-        <text data-id="0" bindtap="changePieTabBar" class="tui-tabbar-cell {{timePieIndex == 0 ? 'tui-active' : ''}}">本月</text>
-        <text data-id="1" bindtap="changePieTabBar" class="tui-tabbar-cell {{timePieIndex == 1 ? 'tui-active' : ''}}">季度</text>
-        <text data-id="2" bindtap="changePieTabBar" class="tui-tabbar-cell {{timePieIndex == 2 ? 'tui-active' : ''}}">半年</text>
-        <text data-id="3" bindtap="changePieTabBar" class="tui-tabbar-cell {{timePieIndex == 3 ? 'tui-active' : ''}}">年</text>
+    <!-- 消费类型统计start -->
+    <view class=" tui-tabbar-content" wx:if="{{chartType==0}}">
+        <view class="tui-tabbar-group">
+            <text data-id="0" bindtap="changePieTabBar" class="tui-tabbar-cell {{timePieIndex == 0 ? 'tui-active' : ''}}">本月</text>
+            <text data-id="1" bindtap="changePieTabBar" class="tui-tabbar-cell {{timePieIndex == 1 ? 'tui-active' : ''}}">季度</text>
+            <text data-id="2" bindtap="changePieTabBar" class="tui-tabbar-cell {{timePieIndex == 2 ? 'tui-active' : ''}}">半年</text>
+            <text data-id="3" bindtap="changePieTabBar" class="tui-tabbar-cell {{timePieIndex == 3 ? 'tui-active' : ''}}">年</text>
+        </view>
     </view>
-</view>
-<i-panel wx:if="{{chartType==0}}">
-    <i-notice-bar icon="systemprompt">
-        {{pieTip}}
-    </i-notice-bar>
-</i-panel>
-<view class="container" hidden="{{chartType!=0}}">
-    <canvas canvas-id="pieCanvas" class="canvas" style="height:300px" bindtouchstart="touchHandler"></canvas>
-</view>
-
-<i-panel wx:if="{{chartType==0}}">
-    <i-cell-group>
-        <block wx:for="{{typeArray}}" wx:key="name">
-            <i-cell title="{{item.name}}" i-class="border-bottom" value="{{filters.toFix(item.data)}}元"></i-cell>
-        </block>
-    </i-cell-group>
-</i-panel>
-<!-- 消费类型统计end -->
-
-<!-- 月度消费start -->
-<view class="tui-tabbar-content" wx:if="{{chartType==1}}">
-    <view class="tui-tabbar-group">
-        <text data-id="1" bindtap="changeLineTabBar" class="tui-tabbar-cell {{timeLineIndex == 1 ? 'tui-active' : ''}}">季度</text>
-        <text data-id="2" bindtap="changeLineTabBar" class="tui-tabbar-cell {{timeLineIndex == 2 ? 'tui-active' : ''}}">半年</text>
-        <text data-id="3" bindtap="changeLineTabBar" class="tui-tabbar-cell {{timeLineIndex == 3 ? 'tui-active' : ''}}">年</text>
+    <i-panel wx:if="{{chartType==0}}">
+        <i-notice-bar icon="systemprompt">
+            {{pieTip}}
+        </i-notice-bar>
+    </i-panel>
+    <view class="container" hidden="{{chartType!=0}}">
+        <canvas canvas-id="pieCanvas" class="canvas" style="height:300px" bindtouchstart="touchHandler"></canvas>
     </view>
+
+    <i-panel wx:if="{{chartType==0}}">
+        <i-cell-group>
+            <block wx:for="{{typeArray}}" wx:key="name">
+                <i-cell title="{{item.name}}" i-class="border-bottom" value="{{filters.toFix(item.data)}}元"></i-cell>
+            </block>
+        </i-cell-group>
+    </i-panel>
+    <!-- 消费类型统计end -->
+
+    <!-- 月度消费start -->
+    <view class="tui-tabbar-content" wx:if="{{chartType==1}}">
+        <view class="tui-tabbar-group">
+            <text data-id="1" bindtap="changeLineTabBar" class="tui-tabbar-cell {{timeLineIndex == 1 ? 'tui-active' : ''}}">季度</text>
+            <text data-id="2" bindtap="changeLineTabBar" class="tui-tabbar-cell {{timeLineIndex == 2 ? 'tui-active' : ''}}">半年</text>
+            <text data-id="3" bindtap="changeLineTabBar" class="tui-tabbar-cell {{timeLineIndex == 3 ? 'tui-active' : ''}}">年</text>
+        </view>
+    </view>
+
+    <view class="container" hidden="{{chartType!=1}}">
+        <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" bindtouchstart="touchLineHandler" bindtouchmove="moveHandler" bindtouchend="touchEndHandler"></canvas>
+    </view>
+
+    <i-panel title="消费" wx:if="{{chartType==1}}">
+        <i-cell-group wx:if="{{monthArray && monthArray.length>0}}">
+            <block wx:for="{{monthArray}}" wx:key="month">
+                <i-cell title="{{item.month}}" i-class="border-bottom ft-bg-green" value="{{filters.toFix(item.sumCost)}}元"></i-cell>
+            </block>
+        </i-cell-group>
+
+        <i-notice-bar icon="systemprompt" wx:else>
+            无数据
+        </i-notice-bar>
+    </i-panel>
+
+    <i-panel title="收入" wx:if="{{chartType==1}}">
+        <i-cell-group wx:if="{{monthArray && monthArray.length>0}}">
+            <block wx:for="{{monthArray}}" wx:key="month">
+                <i-cell title="{{item.month}}" i-class="border-bottom ft-bg-danger" value="{{filters.toFix(item.sumIn)}}元"></i-cell>
+            </block>
+        </i-cell-group>
+        <i-notice-bar icon="systemprompt" wx:else>
+            无数据
+        </i-notice-bar>
+    </i-panel>
+    <!-- 月度消费end -->
 </view>
-
-<view class="container" hidden="{{chartType!=1}}">
-    <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" bindtouchstart="touchLineHandler" bindtouchmove="moveHandler" bindtouchend="touchEndHandler"></canvas>
-</view>
-
-<i-panel title="消费" wx:if="{{chartType==1}}">
-    <i-cell-group>
-        <block wx:for="{{monthArray}}" wx:key="month">
-            <i-cell title="{{item.month}}" i-class="border-bottom ft-bg-green" value="{{filters.toFix(item.sumCost)}}元"></i-cell>
-        </block>
-    </i-cell-group>
-</i-panel>
-
-<i-panel title="收入" wx:if="{{chartType==1}}">
-    <i-cell-group>
-        <block wx:for="{{monthArray}}" wx:key="month">
-            <i-cell title="{{item.month}}" i-class="border-bottom ft-bg-danger" value="{{filters.toFix(item.sumIn)}}元"></i-cell>
-        </block>
-    </i-cell-group>
-</i-panel>
-<!-- 月度消费end -->

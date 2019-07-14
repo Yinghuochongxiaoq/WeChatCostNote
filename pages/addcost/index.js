@@ -88,7 +88,8 @@ Page({
         wx.request({
             url: app.globalData.api + '/CostNote/GetCostChannelType',
             data: {
-                token: app.globalData.userInfo.token
+                token: app.globalData.userInfo.token,
+                memberId: app.globalData.userInfo.accountId
             },
             method: 'GET',
             success: function(res) {

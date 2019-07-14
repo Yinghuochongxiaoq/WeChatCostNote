@@ -35,7 +35,7 @@ Page({
         toggle: false,
         //全局保存需要删除的记录
         deleteId: 0,
-        
+
         //成员选择框
         showModalStatus: false,
         //成员昵称
@@ -45,7 +45,7 @@ Page({
         //是否显示家庭成员
         isShowFamilyMember: false,
         //选择成员id
-        chooseMemberId:-1
+        chooseMemberId: -1
     },
     onLoad: function() {
         this.setData({
@@ -54,18 +54,37 @@ Page({
         })
     },
     //选择成员
-    chooseMember:function(e){
-        debugger
-        var memberId=e.currentTarget.dataset.memberid;
+    chooseMember: function(e) {
+        var memberId = e.currentTarget.dataset.memberid;
+        if (this.data.channelObjectMultiArray && this.data.channelObjectMultiArray.length > 0) {
+            //不相等进行切换
+            if (memberId != this.data.chooseMemberId) {
+                var channelNamelist = ['全部']
+                var channelIdList = [-1]
+                for (var i = 0; i < this.data.channelObjectMultiArray.length; i++) {
+                    if (memberId == -1 || memberId == this.data.channelObjectMultiArray[i].userId) {
+                        channelNamelist.push(this.data.channelObjectMultiArray[i].costChannelName)
+                        channelIdList.push(this.data.channelObjectMultiArray[i].id)
+                    }
+                }
+                this.setData({
+                    channelmultiArray: channelNamelist,
+                    channelIdList: channelIdList
+                })
+            }
+        }
         //选择了新的成员
-        if(memberId!=this.data.chooseMemberId){
+        if (memberId != this.data.chooseMemberId) {
             this.setData({
-                costTypemultiIndex: [0,0],
+                costTypemultiIndex: [0, 0],
                 spendType: this.data.inoroutIdList[0],
                 costType: this.data.costTypeIdList[0],
+                costChannel: -1,
+                channelmultiIndex: 0,
                 pageIndex: 1,
                 pageSize: 10,
-                chooseMemberId:memberId
+                chooseMemberId: memberId,
+                memberNickName: e.currentTarget.dataset.membername
             })
         }
         this.searchCostNoteData(true)
@@ -81,7 +100,7 @@ Page({
         /* 动画部分 */
         // 第1步：创建动画实例 
         var animation = wx.createAnimation({
-            duration: 200, //动画时长
+            duration: 150, //动画时长
             timingFunction: "linear", //线性
             delay: 0 //0则不延迟
         });
@@ -224,7 +243,8 @@ Page({
                 pageSize: self.data.pageSize,
                 costType: self.data.costType,
                 spendType: self.data.spendType,
-                costChannel: self.data.costChannel
+                costChannel: self.data.costChannel,
+                memberId: self.data.chooseMemberId
             },
             method: 'GET',
             success: function(res) {
@@ -324,7 +344,9 @@ Page({
                 var list = ['全部']
                 var idList = [-1]
                 for (var i = 0; i < this.data.costTypeObjectMultiArray.length; i++) {
-                    if (this.data.costTypeObjectMultiArray[i].spendType + 1 == e.detail.value) {
+                    if ((this.data.chooseMemberId == -1 ||
+                            this.data.costTypeObjectMultiArray[i].userId == this.data.chooseMemberId) &&
+                        this.data.costTypeObjectMultiArray[i].spendType + 1 == e.detail.value) {
                         list.push(this.data.costTypeObjectMultiArray[i].name)
                         idList.push(this.data.costTypeObjectMultiArray[i].id)
                     }

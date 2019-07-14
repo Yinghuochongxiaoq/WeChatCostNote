@@ -11,7 +11,8 @@
         "i-step": "../../iView/step/index",
         "i-action-sheet": "../../iView/action-sheet/index",
         "i-avatar": "../../iView/avatar/index",
-    "i-row": "../../iView/row/index",
-    "i-col": "../../iView/col/index"
+        "i-row": "../../iView/row/index",
+        "i-col": "../../iView/col/index",
+        "i-notice-bar": "../../iView/notice-bar/index"
     }
 }
