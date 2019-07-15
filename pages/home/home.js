@@ -45,7 +45,10 @@ Page({
         //是否显示家庭成员
         isShowFamilyMember: false,
         //选择成员id
-        chooseMemberId: -1
+        chooseMemberId: -1,
+
+        //通知信息列表
+        msgList: []
     },
     onLoad: function() {
         this.setData({
@@ -319,6 +322,23 @@ Page({
             }
         })
     },
+    getNoticeMsg() {
+        var self = this;
+        wx.request({
+            url: app.globalData.api + '/CostNote/GetHomePageNotice',
+            data: {
+                token: app.globalData.userInfo.token
+            },
+            method: 'GET',
+            success: function(res) {
+                if (res.data.resultCode == 0) {
+                    self.setData({
+                        msgList: res.data.data.noticeList
+                    })
+                }
+            }
+        })
+    },
     bindChannelPickerChange: function(e) {
         this.setData({
             channelmultiIndex: e.detail.value,
@@ -374,6 +394,7 @@ Page({
             pageSize: 10,
             pulldownrefresh: true
         })
+        this.getNoticeMsg()
         this.getAllCostType()
         this.searchCostNoteData(true)
     }

@@ -10,6 +10,7 @@
         "i-card": "../../iView/card/index",
         "i-icon": "../../iView/icon/index",
         "i-action-sheet": "../../iView/action-sheet/index",
-        "i-avatar": "../../iView/avatar/index"
+        "i-avatar": "../../iView/avatar/index",
+        "i-notice-bar": "../../iView/notice-bar/index"
     }
 }
