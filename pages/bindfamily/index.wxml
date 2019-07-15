@@ -64,22 +64,17 @@
 <!-- 家庭成员start -->
 <view wx:if="{{handlderIndex==2}}">
     <view wx:if="{{isShowFamilyMember}}">
-        <i-notice-bar icon="systemprompt">
-            解除绑定后可在72小时内重新绑定
+        <i-notice-bar icon="systemprompt" loop closable>
+            解除绑定后可在72小时内重新绑定，超过72小时将需要重新邀请加入家庭
         </i-notice-bar>
-        <block wx:for="{{familyMembers}}" wx:for-index="idx" wx:for-item="navItem" wx:key="idx">
-            <view class="i-card">
-                <view class="i-card-header">
-                    <view class="i-card-header-content">
-                        <image class="i-card-header-thumb" src="{{navItem.avatarUrl}}" mode="aspectFit">
-                        </image>
-                        <view class="i-card-header-text"> {{navItem.nickName}}</view>
-                    </view>
-                    <ivew class="i-card-header-extra" wx:if="{{currentMemberId==navItem.accountId}}" bindtap="{{bindState==1?'unbindHandler':'rebindHandler'}}">{{bindState==1?'解除绑定':'重新绑定'}}</ivew>
-                </view>
-                <view class="i-card-footer">加入时间:{{navItem.createTime}}</view>
-            </view>
-        </block>
+        <!-- 绑定第一个数据，在解绑的前72小时中，本人位于第一个位置 -->
+        <template is="familyMemberTemp" data="{{navItem:familyMembers[0],currentMemberId:currentMemberId,bindState:bindState}}"></template>
+        <view class="otherMember">
+            <block wx:for="{{familyMembers}}" wx:for-index="idx" wx:for-item="navItem" wx:key="idx">
+                <template is="familyMemberTemp" data="{{navItem,currentMemberId:currentMemberId,bindState:bindState}}" wx:if="{{idx>0}}"></template>
+            </block>
+            <i-spin size="large" fix wx:if="{{ bindState==2 }}"></i-spin>
+        </view>
     </view>
     <view wx:else class="mg-10">
         <view class="list-column">
@@ -102,18 +97,17 @@
     </view>
 </i-action-sheet>
 
-
 <template name="familyMemberTemp">
         <view class="i-card">
                 <view class="i-card-header">
                     <view class="i-card-header-content">
-                        <image class="i-card-header-thumb" src="{{avatarUrl}}" mode="aspectFit">
+                        <image class="i-card-header-thumb" src="{{navItem.avatarUrl}}" mode="aspectFit">
                         </image>
-                        <view class="i-card-header-text"> {{nickName}}</view>
+                        <view class="i-card-header-text"> {{navItem.nickName}}</view>
                     </view>
-                    <ivew class="i-card-header-extra" wx:if="{{currentMemberId==accountId}}" bindtap="{{bindState==1?'unbindHandler':'rebindHandler'}}">{{bindState==1?'解除绑定':'重新绑定'}}</ivew>
+                    <ivew class="i-card-header-extra" wx:if="{{currentMemberId==navItem.accountId}}" bindtap="{{bindState==1?'unbindHandler':'rebindHandler'}}">{{bindState==1?'解除绑定':'重新绑定'}}</ivew>
                 </view>
-            <view class="i-card-footer">加入时间:{{createTime}}</view>
+            <view class="i-card-footer">加入时间:{{navItem.createTime}}</view>
         </view>
 </template>
 <!-- 家庭成员end -->
