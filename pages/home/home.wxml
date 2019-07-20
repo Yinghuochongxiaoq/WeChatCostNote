@@ -94,9 +94,14 @@
                         <text class="number_border tui-fl {{item.costInOrOut==1?' bg-danger':' bg-green'}}">{{item.costInOrOut==1?"收":"支"}}</text>
                     </view>
                     <view class="list-right tui-fl">
-                        <text class="list-item-title">{{item.costThing}}</text>
-                        <text class="list-item-type">{{item.costChannelName+'  /  '+(item.costTypeName||'--')}}</text>
-                        <text class="list-item-time">{{item.costTime}}</text>
+                        <view class="list-item-title" wx:if="{{item.costThing}}">
+                            <i-icon type="transaction_fill" size="16" color="#80848f"></i-icon>{{item.costThing}}</view>
+                        <view class="list-item-type">
+                            <i-icon type="barrage" size="16" color="#80848f"></i-icon>{{item.costChannelName+' / '+(item.costTypeName||'--')}}</view>
+                        <view class="list-item-time" wx:if="{{item.costAddress}}">
+                            <i-icon type="coordinates" size="16" color="#80848f"></i-icon>{{item.costAddress}}</view>
+                        <view class="list-item-time">
+                            <i-icon type="time" size="16" color="#80848f"></i-icon>{{item.costTime}}</view>
                     </view>
                     <view class="list-item-cost">
                         <view class="list-text-ft tui-fr {{item.costInOrOut==1?' ft-bg-danger':' ft-bg-green'}}">{{item.costInOrOut==1?"+":"-"}}{{filters.toFix(item.cost)}}</view>

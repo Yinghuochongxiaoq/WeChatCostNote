@@ -49,5 +49,13 @@
         "position": "bottom"
     },
     "sitemapLocation": "sitemap.json",
-    "debug": true
+    "debug": true,
+    "permission": {
+        "scope.userLocation": {
+            "desc": "您的位置信息将用于记录消费地址"
+        },
+        "scope.userInfo": {
+            "desc": "获取您的公开信息用于标识您本人以及展示头像"
+        }
+    }
 }

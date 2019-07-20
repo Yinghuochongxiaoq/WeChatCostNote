@@ -45,8 +45,15 @@
             <view class='arrow'></view>
         </view>
     </picker>
-
-    <i-input value="{{costcontentmodel.CostAddress}}" title="位置" bind:change="changeCostAddress" placeholder="地址/位置" maxlength="100" />
+    <view class="white-space">
+        <view class="inline-block i-cell i-input">
+            <view class="i-cell-hd i-input-title inline-block">位置</view>
+            <input value="{{costcontentmodel.CostAddress}}" class="i-input-input i-cell-bd inline-block" maxlength="100" placeholder="地址/位置" type="text" bindinput="changeCostAddress" />
+            <view class="inline-block ft-bg-danger fts-30 i-cell-ft" bindtap="getAddress">
+                <i-icon type="coordinates" size="16"></i-icon>选择位置
+            </view>
+        </view>
+    </view>
     <i-input value="{{ costcontentmodel.CostThing }}" title="处理事件" bind:change="changeCostThing" placeholder="处理事件(最多50字)" maxlength="50" />
     <i-button bind:click="handleSaveClick" type="success" loading="{{isSaving}}">{{isSaving?'保存中...':'保存'}}</i-button>
 </i-panel>
