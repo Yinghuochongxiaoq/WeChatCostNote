@@ -13,7 +13,7 @@
     <!-- 页面内容 -->
     <swiper class="tab-box {{isShowFamilyMember?'pd-80':''}}" current="{{currentTab}}" duration="300" bindchange="switchTab">
         <swiper-item wx:for="{{statisticsModel}}" wx:for-item="tabItem" wx:for-index="idx" wx:key="idx" class="tab-content">
-
+            <scroll-view>
             <!-- 汇总数据 -->
             <view class="top-panel">
                 <view class="list-card" hover-class="list-card-active">
@@ -51,7 +51,8 @@
                     <view>还没有数据哦~</view>
                 </view>
             </view>
-
+            <i-button bind:click="handleNavigateClick" type="success">增加新账户</i-button>
+        </scroll-view>
         </swiper-item>
     </swiper>
 </view>
@@ -63,4 +64,3 @@
     </view>
 </view>
 <i-load-more loading="{{ false }}" />
-<i-button bind:click="handleNavigateClick" type="success">增加新账户</i-button>

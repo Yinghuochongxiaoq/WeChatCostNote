@@ -33,7 +33,9 @@ Page({
         startYear: 2000,
         endYear: 2050,
 
-        isSaving: false
+        isSaving: false,
+        //加载了地图
+        isLoadingMap:false
     },
     onLoad() {
         // 获取完整的年月日 时分秒，以及默认显示的数组
@@ -56,6 +58,9 @@ Page({
     //选择获取地理位置
     getAddress: function() {
         var that = this;
+        that.setData({
+            isLoadingMap:true
+        })
         that.getPermission(that); //传入that值可以在app.js页面直接设置内容getPermission可以写在全局函数中    
     },
     //获取用户地理位置权限
@@ -78,6 +83,10 @@ Page({
                                     if (tip.confirm) {
                                         wx.openSetting({
                                             success: function(data) {
+                                                //防止重新加载收支类型覆盖原有已选项
+                                                obj.setData({
+                                                    isLoadingMap:true
+                                                })
                                                 if (data.authSetting["scope.userLocation"] === true) {
                                                     wx.showToast({
                                                         title: '授权成功',
@@ -164,6 +173,12 @@ Page({
         })
     },
     getAllCostType() {
+        if(this.data.isLoadingMap){
+            this.setData({
+                isLoadingMap:false
+            });
+            return;
+        }
         var self = this;
         wx.request({
             url: app.globalData.api + '/CostNote/GetCostChannelType',
@@ -258,6 +273,7 @@ Page({
                     })
                     self.initPage()
                     self.onLoad()
+                    self.onShow()
                 } else {
                     wx.showToast({
                         title: res.data.message,
@@ -304,7 +320,9 @@ Page({
             startYear: 2000,
             endYear: 2050,
 
-            isSaving: false
+            isSaving: false,
+            //加载了地图
+            isLoadingMap:false
         };
         this.setData(initData)
     },

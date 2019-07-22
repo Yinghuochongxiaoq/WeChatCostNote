@@ -9,5 +9,5 @@
         "i-switch": "../../iView/switch/index",
         "i-avatar": "../../iView/avatar/index"
     },
-    "enablePullDownRefresh": true
+    "enablePullDownRefresh": false
 }
