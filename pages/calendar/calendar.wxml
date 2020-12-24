@@ -43,7 +43,7 @@
 </view>
 <view style="margin: 16px">打卡明细</view>
 <block wx:for="{{answer}}" wx:for-index="index">
-  <i-card full title="卡片标题" extra="额外内容" thumb="https://i.loli.net/2017/08/21/599a521472424.jpg" i-class="card-demo">
+  <i-card full title="{{item.work}}" extra="{{item.date}}" i-class="card-demo">
     <view slot="content" class="{{item.seeMore?'elips':''}} content" data-index="{{index}}">
       {{item.describeInfo}}
     </view>
@@ -63,3 +63,9 @@
   </i-card>
 </block>
 <i-load-more tip="我是有底线的" loading="{{ false }}" />
+
+<i-modal title="标题" visible="{{ visible1 }}" bind:ok="handleClose1" bind:cancel="handleClose1">
+  <view>
+    一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本
+  </view>
+</i-modal>

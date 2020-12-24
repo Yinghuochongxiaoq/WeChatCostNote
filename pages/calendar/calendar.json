@@ -4,6 +4,7 @@
     "ui-calendar": "/components/ui-calendar",
     "i-button": "../../iView/button/index",
     "i-card": "../../iView/card/index",
-    "i-load-more": "../../iView/load-more/index"
+    "i-load-more": "../../iView/load-more/index",
+    "i-modal": "../iView/modal/index"
   }
 }

@@ -83,10 +83,6 @@
   position: relative;
 }
 
-.card-demo image {
-  border-radius: 50%;
-}
-
 /*上箭头*/
 .top-arrow1,
 .top-arrow2 {

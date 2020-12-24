@@ -46,6 +46,7 @@ Page({
       calendarSelectedDate: date.toString(),
       calendarSelectedDateStr: util.dateUtil.format(date, 'Y年M月D日'),
       days: days,
+      visible1: true
     });
   },
 
@@ -64,14 +65,17 @@ Page({
     sign_day_number: 23,
     calendarHeight: 740,
     answer: [{
-        "describeInfo": "内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶"
+        "describeInfo": "内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶",
+        "work": "工作量1",
+        "date": "2020-12-01"
       }, {
         "describeInfo": "内容不错，如果这里有很多的内容诶内容不错"
       },
       {
         "describeInfo": "内容不错，如果这里有很多的内容诶内容不错内容不错，如果这里有很多的内容诶内容不错"
       }
-    ]
+    ],
+    visible1: false
   },
 
   /**
@@ -268,5 +272,10 @@ Page({
     //   },
     //   error: function (object, error) {}
     // });
+  },
+  handleClose1() {
+    this.setData({
+      visible1: false
+    });
   }
-})
+});
