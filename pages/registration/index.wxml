@@ -1,0 +1,23 @@
+<view class="c-row search-line" data-flag="start" ontap="showCitylist">
+  <view class="c-span3">
+    出发{{sss}}</view>
+  <view class="c-span9 js-start search-line-txt">
+    {{cityStartName}}</view>
+</view>
+<view class="c-row search-line" data-flag="arrive" ontap="showCitylist">
+  <view class="c-span3">
+    到达</view>
+  <view class="c-span9 js-arrive search-line-txt">
+    {{cityArriveName}}</view>
+</view>
+<view class="c-row search-line" data-flag="arrive" ontap="showCalendar">
+  <view class="c-span3">
+    出发日期</view>
+  <view class="c-span9 js-arrive search-line-txt">
+    {{calendarSelectedDateStr}}</view>
+</view>
+<view class="c-row " data-flag="arrive">
+
+  <span class="btn-primary full-width js_search_list" ontap="goList">查询</span>
+</view>
+<include src="../mod/calendar.wxml" />

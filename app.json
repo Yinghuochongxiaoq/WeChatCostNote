@@ -1,5 +1,7 @@
 {
     "pages": [
+        "pages/calendar/calendar",
+        "pages/registration/index",
         "pages/index/index",
         "pages/home/home",
         "pages/costchannel/costchannel",

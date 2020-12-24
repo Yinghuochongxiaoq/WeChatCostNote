@@ -1,15 +1,15 @@
 //app.js
 App({
-    onLaunch: function() {
+    onLaunch: function () {
         if (wx.canIUse('getUpdateManager')) {
             const updateManager = wx.getUpdateManager()
-            updateManager.onCheckForUpdate(function(res) {
+            updateManager.onCheckForUpdate(function (res) {
                 if (res.hasUpdate) {
-                    updateManager.onUpdateReady(function() {
+                    updateManager.onUpdateReady(function () {
                         wx.showModal({
                             title: '更新提示',
                             content: '新版本已经准备好，是否重启应用？',
-                            success: function(res) {
+                            success: function (res) {
                                 debugger
                                 if (res.confirm) {
                                     updateManager.applyUpdate()
@@ -17,7 +17,7 @@ App({
                             }
                         })
                     })
-                    updateManager.onUpdateFailed(function() {
+                    updateManager.onUpdateFailed(function () {
                         wx.showModal({
                             title: '已经有新版本了哟~',
                             content: '新版本已经上线了，请您删除当前小程序，重新搜索打开'
@@ -35,7 +35,7 @@ App({
     globalData: {
         userInfo: null,
         shareImgUrl: 'https://aivabc.com/Uploadfile/ShareDetailImage/20190704/6369786934483499313738901.jpg',
-        api: 'https://api.aivabc.com:8080/api',
-        // api: 'http://localhost:8001/api',
+        // api: 'https://api.aivabc.com:8080/api',
+        api: 'http://localhost:8004/api',
     }
 })

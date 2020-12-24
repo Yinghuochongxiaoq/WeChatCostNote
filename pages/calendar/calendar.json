@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "工作打卡日历",
+  "usingComponents": {
+    "ui-calendar": "/components/ui-calendar",
+    "i-button": "../../iView/button/index",
+    "i-card": "../../iView/card/index",
+    "i-load-more": "../../iView/load-more/index"
+  }
+}
