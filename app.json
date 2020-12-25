@@ -1,7 +1,5 @@
 {
     "pages": [
-        "pages/calendar/calendar",
-        "pages/registration/index",
         "pages/index/index",
         "pages/home/home",
         "pages/costchannel/costchannel",
@@ -12,7 +10,9 @@
         "pages/my/my",
         "pages/my/about",
         "pages/costtype/edit",
-        "pages/bindfamily/index"
+        "pages/bindfamily/index",
+        "pages/calendar/calendar",
+        "pages/registration/index"
     ],
     "window": {
         "backgroundTextStyle": "light",

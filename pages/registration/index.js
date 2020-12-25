@@ -21,7 +21,9 @@ Page(_page.initPage({
       return;
     }
   },
-  onLoad: function () {
+  onLoad: function (options) {
+    console.log(options);
+    console.log(options.data);
     this.setData({
       sss: 222
     });

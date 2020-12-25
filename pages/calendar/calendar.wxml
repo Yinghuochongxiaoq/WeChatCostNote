@@ -1,4 +1,4 @@
-<view class="cm-modal " style="position: relative;min-height: {{calendarHeight}}rpx;">
+<view class="cm-modal " style="min-height: {{calendarHeight}}rpx;">
   <view class="calendar-wrapper-box">
     <view class="box-hd">
       <text class="fl icon-back js_back " bindtap="preMonth"></text>
@@ -19,8 +19,8 @@
           <block wx:key="tt" wx:for="{{days}}" wx:for-index="index" wx:for-item="everyday">
             <view wx:if="{{everyday.date == null}}" class="item "></view>
             <view bindtap="onCalendarDayTap" wx:else data-year="{{cur_year}}" data-month="{{cur_month-1}}"
-              data-day="{{index+1-firstDayOfWeek}}"
-              class="item {{everyday.isCurrentDay?'radius-bg-danger':''}} {{everyday.isSelected?'active':''}}">
+              data-day="{{index+1-firstDayOfWeek}}" data-id="{{everyday.id}}"
+              class="item item-border {{everyday.isCurrentDay?'radius-bg-danger':''}} {{everyday.isSelected?'active':''}}">
               <view class="cm-field-title">
                 {{everyday.date}}
               </view>
@@ -41,7 +41,7 @@
   </view>
   <text>请再接再厉，继续努力</text>
 </view>
-<view style="margin: 16px">打卡明细</view>
+<view wx:if="{{answer && answer.length>0}}" style="margin: 16px">打卡明细</view>
 <block wx:for="{{answer}}" wx:for-index="index">
   <i-card full title="{{item.work}}" extra="{{item.date}}" i-class="card-demo">
     <view slot="content" class="{{item.seeMore?'elips':''}} content" data-index="{{index}}">
@@ -64,8 +64,12 @@
 </block>
 <i-load-more tip="我是有底线的" loading="{{ false }}" />
 
-<i-modal title="标题" visible="{{ visible1 }}" bind:ok="handleClose1" bind:cancel="handleClose1">
-  <view>
-    一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本一些文本
-  </view>
+<!-- 详情弹窗 -->
+<i-modal title="{{showDetailTitle}}" visible="{{ showDetail }}" actions="{{ showDetailActions }}"
+  bind:click="detailHandleClick">
+  <view>{{showDetailContent}}</view>
+</i-modal>
+<!-- 删除弹窗 -->
+<i-modal title="删除确认" visible="{{ showDelete }}" actions="{{ showDeleteActions }}" bind:click="deleteHandlerClick">
+  <view>删除后无法恢复哦</view>
 </i-modal>

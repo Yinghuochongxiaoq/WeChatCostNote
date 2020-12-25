@@ -5,16 +5,20 @@
 </i-tabs>
 <i-panel>
     <view class="i-cell i-input list-inline">
-        <view class="i-cell-hd i-input-title">{{costcontentmodel.SpendType==0?'支出时间':(costcontentmodel.SpendType==1?'收入时间':'转移时间')}}</view>
-        <picker mode="multiSelector" value="{{dateTime1}}" bindchange="changeDateTime" bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray1}}" class="weight-90">
+        <view class="i-cell-hd i-input-title">
+            {{costcontentmodel.SpendType==0?'支出时间':(costcontentmodel.SpendType==1?'收入时间':'转移时间')}}</view>
+        <picker mode="multiSelector" value="{{dateTime1}}" bindchange="changeDateTime"
+            bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray1}}" class="weight-90">
             <view class="i-input-input i-cell-bd">
-                {{dateTimeArray1[0][dateTime1[0]]}}-{{dateTimeArray1[1][dateTime1[1]]}}-{{dateTimeArray1[2][dateTime1[2]]}} {{dateTimeArray1[3][dateTime1[3]]}}:{{dateTimeArray1[4][dateTime1[4]]}}
+                {{dateTimeArray1[0][dateTime1[0]]}}-{{dateTimeArray1[1][dateTime1[1]]}}-{{dateTimeArray1[2][dateTime1[2]]}}
+                {{dateTimeArray1[3][dateTime1[3]]}}:{{dateTimeArray1[4][dateTime1[4]]}}
             </view>
         </picker>
         <view class='arrow'></view>
     </view>
 
-    <picker value="{{costTypemultiIndex}}" bindchange="changeCostTypeChange" range="{{costTypemultiArray}}" wx:if="{{costcontentmodel.SpendType!=2}}">
+    <picker value="{{costTypemultiIndex}}" bindchange="changeCostTypeChange" range="{{costTypemultiArray}}"
+        wx:if="{{costcontentmodel.SpendType!=2}}">
         <view class="i-cell i-input list-inline">
             <view class="i-cell-hd i-input-title">{{costcontentmodel.SpendType==0?'支出类型':'收入类型'}}</view>
             <view class="picker weight-90">
@@ -24,7 +28,9 @@
         </view>
     </picker>
 
-    <i-input value="{{ costcontentmodel.Cost }}" title="{{costcontentmodel.SpendType==0?'支出金额':(costcontentmodel.SpendType==1?'收入金额':'转移金额')}}" bind:change="changeCost" maxlength="10" autofocus placeholder="金额" />
+    <i-input value="{{ costcontentmodel.Cost }}"
+        title="{{costcontentmodel.SpendType==0?'支出金额':(costcontentmodel.SpendType==1?'收入金额':'转移金额')}}"
+        bind:change="changeCost" maxlength="10" autofocus placeholder="金额" />
 
     <picker bindchange="bindChannelPickerChange" value="{{channelmultiIndex}}" range="{{channelmultiArray}}">
         <view class="i-cell i-input list-inline">
@@ -36,7 +42,8 @@
         </view>
     </picker>
 
-    <picker bindchange="bindLinkChannelPickerChange" value="{{linkchannelIndex}}" range="{{channelmultiArray}}" wx:if="{{costcontentmodel.SpendType==2}}">
+    <picker bindchange="bindLinkChannelPickerChange" value="{{linkchannelIndex}}" range="{{channelmultiArray}}"
+        wx:if="{{costcontentmodel.SpendType==2}}">
         <view class="i-cell i-input list-inline">
             <view class="i-cell-hd i-input-title">收款账户</view>
             <view class="picker weight-90">
@@ -48,12 +55,15 @@
     <view class="white-space">
         <view class="inline-block i-cell i-input">
             <view class="i-cell-hd i-input-title inline-block">位置</view>
-            <input value="{{costcontentmodel.CostAddress}}" class="i-input-input i-cell-bd inline-block" maxlength="100" placeholder="地址/位置" type="text" bindinput="changeCostAddress" />
+            <input value="{{costcontentmodel.CostAddress}}" class="i-input-input i-cell-bd inline-block" maxlength="100"
+                placeholder="地址/位置" type="text" bindinput="changeCostAddress" />
             <view class="inline-block ft-bg-danger fts-30 i-cell-ft" bindtap="getAddress">
                 <i-icon type="coordinates" size="16"></i-icon>选择位置
             </view>
         </view>
     </view>
-    <i-input value="{{ costcontentmodel.CostThing }}" title="处理事件" bind:change="changeCostThing" placeholder="处理事件(最多50字)" maxlength="50" />
-    <i-button bind:click="handleSaveClick" type="success" loading="{{isSaving}}">{{isSaving?'保存中...':'保存'}}</i-button>
+    <i-input value="{{ costcontentmodel.CostThing }}" title="处理事件" bind:change="changeCostThing"
+        placeholder="处理事件(最多50字)" maxlength="50" />
+    <i-button bind:click="handleSaveClick" disabled="{{isSaving}}" type="success" loading="{{isSaving}}">
+        {{isSaving?'保存中...':'保存'}}</i-button>
 </i-panel>

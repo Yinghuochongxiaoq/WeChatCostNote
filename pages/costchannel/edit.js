@@ -13,24 +13,24 @@ Page({
         typeIndex: 0,
         isSaving: false
     },
-    onLoad: function(options) {
+    onLoad: function (options) {
         var id = options.id;
         if (id && id > 0) {
-            this.getCostChannelModel(id)
+            this.getCostChannelModel(id);
         }
     },
-    bindTypeChange: function(e) {
+    bindTypeChange: function (e) {
         this.setData({
             typeIndex: e.detail.value,
             "model.isValid": this.data.typeIds[e.detail.value]
         })
     },
-    changeChannelSort: function(e) {
+    changeChannelSort: function (e) {
         this.setData({
             "model.sort": e.detail.detail.value
         })
     },
-    getCostChannelModel: function(id) {
+    getCostChannelModel: function (id) {
         var self = this;
         wx.request({
             url: app.globalData.api + '/CostNote/GetCostChannelModel',
@@ -39,7 +39,7 @@ Page({
                 id: id
             },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 if (res.data.resultCode == 0) {
                     self.setData({
                         model: res.data.data,
@@ -55,17 +55,17 @@ Page({
             }
         })
     },
-    changeName: function(e) {
+    changeName: function (e) {
         this.setData({
             "model.costChannelName": e.detail.detail.value
         })
     },
-    changeNo: function(e) {
+    changeNo: function (e) {
         this.setData({
             "model.costChannelNo": e.detail.detail.value
         })
     },
-    handleSaveClick: function(e) {
+    handleSaveClick: function (e) {
         var self = this;
         self.setData({
             isSaving: true
@@ -81,7 +81,7 @@ Page({
                 isValid: self.data.model.isValid
             },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 if (res.data.resultCode == 0) {
                     self.setData({
                         model: {
@@ -108,12 +108,12 @@ Page({
             }
         })
     },
-    onShareAppMessage() {     
-        return {    
+    onShareAppMessage() {
+        return {
             title: '记录你的一点一滴~',
             desc: '记录你的一点一滴~',
             path: 'pages/index/index',
             imageUrl: app.globalData.shareImgUrl
-        }    
+        }
     }
 })

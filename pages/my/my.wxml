@@ -6,12 +6,17 @@
         {{userInfo.nickName}}
     </view>
 </view>
+<view class="sign_activity" bindtap="handleToAddDailyHistory">
+    <i-icon size="30" type="activity" style="color: red"></i-icon>{{!single?'点此打卡':'今日已打卡,点击查看详情'}}
+</view>
+
 <view class="wode_item_wrap">
     <i-panel>
         <i-cell-group>
             <i-cell title="账户设置" is-link link-type="reLaunch" url="/pages/costchannel/costchannel"></i-cell>
             <i-cell title="消费类型设置" is-link url="/pages/costtype/costtype"></i-cell>
             <i-cell title="绑定家庭成员" is-link url="/pages/bindfamily/index"></i-cell>
+            <i-cell title="打卡记录" is-link url="/pages/calendar/calendar"></i-cell>
             <i-cell title="关于我们" is-link url="./about"></i-cell>
         </i-cell-group>
     </i-panel>

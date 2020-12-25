@@ -5,7 +5,7 @@ page {
 }
 
 .personal_info {
-    padding: 20px 0;
+    padding: 20rpx 0;
     background-color: #FFF;
 }
 
@@ -23,6 +23,13 @@ page {
     margin-top: 15px;
     text-align: center;
     color: #696969;
+}
+
+.sign_activity {
+    text-align: center;
+    background-color: #FFF;
+    margin-top: 30rpx;
+    padding: 30rpx;
 }
 
 .wode_item_wrap {

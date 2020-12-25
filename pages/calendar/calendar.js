@@ -4,9 +4,10 @@ var util = require('../../utils/util.js');
 const {
   watch,
   computed
-} = require('../../utils/vuefy.js')
-var selectedDate = new Date().toString();
+} = require('../../utils/vuefy.js');
+var app = getApp();
 var currentDate = new Date();
+var selectedDate = currentDate.toString();
 Page({
   /**
    * 上月数据
@@ -35,25 +36,34 @@ Page({
     var date = new Date(data.year, data.month, data.day);
     var that = this;
     if (this.calendarHook) this.calendarHook(date);
+    var showDetail = false;
+    var showDetailTitle = '';
+    var showDetailContent = '';
+    var validDayId = 0;
     var days = that.data.days;
     if (days) {
       days.forEach(function (f) {
         f.isSelected = false;
       });
       days[date.getDate() + that.data.firstDayOfWeek - 1].isSelected = true;
+      if (days[date.getDate() + that.data.firstDayOfWeek - 1].isSign) {
+        showDetail = true;
+        showDetailTitle = util.dateUtil.format(date, 'Y.M.D') + days[date.getDate() + that.data.firstDayOfWeek - 1].work;
+        showDetailContent = days[date.getDate() + that.data.firstDayOfWeek - 1].describeInfo;
+        validDayId = days[date.getDate() + that.data.firstDayOfWeek - 1].id;
+      }
     }
     that.setData({
-      calendarSelectedDate: date.toString(),
-      calendarSelectedDateStr: util.dateUtil.format(date, 'Y年M月D日'),
       days: days,
-      visible1: true
+      showDetail: showDetail,
+      showDetailTitle: showDetailTitle,
+      showDetailContent: showDetailContent,
+      validDayId: validDayId
     });
   },
 
   data: {
     calendarDisplayTime: selectedDate,
-    calendarSelectedDate: selectedDate,
-    calendarSelectedDateStr: util.dateUtil.format(new Date(selectedDate), 'Y年M月D日'),
     weekDayArr: ['日', '一', '二', '三', '四', '五', '六'],
     objectId: '',
     days: [],
@@ -62,20 +72,35 @@ Page({
     cur_month: 0,
     count: 0,
     firstDayOfWeek: 0,
-    sign_day_number: 23,
+    sign_day_number: 0,
     calendarHeight: 740,
-    answer: [{
-        "describeInfo": "内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶内容不错，如果这里有很多的内容诶",
-        "work": "工作量1",
-        "date": "2020-12-01"
-      }, {
-        "describeInfo": "内容不错，如果这里有很多的内容诶内容不错"
+    answer: [],
+    showDetail: false,
+    showDetailTitle: '',
+    showDetailContent: '',
+    showDetailActions: [{
+        name: '修改',
+        color: '#2d8cf0',
       },
       {
-        "describeInfo": "内容不错，如果这里有很多的内容诶内容不错内容不错，如果这里有很多的内容诶内容不错"
+        name: '删除',
+        color: '#FF7B0E'
+      },
+      {
+        name: '取消',
+        color: '#19be6b'
       }
     ],
-    visible1: false
+    showDelete: false,
+    showDeleteActions: [{
+        name: '取消'
+      },
+      {
+        name: '删除',
+        color: '#ed3f14',
+        loading: false
+      }
+    ]
   },
 
   /**
@@ -91,24 +116,12 @@ Page({
         return Math.ceil(this.data.days.length / 7) * 100 + 140;
       }
     });
-    var that = this;
-    var query = wx.createSelectorQuery();
-    query.selectAll('.content').fields({
-      size: true,
-    }).exec(function (res) {
-      console.log(res[0], '所有节点信息');
-      //固定高度值 单位：PX
-      var lineHeight = 26;
-      for (var i = 0; i < res[0].length; i++) {
-        if ((res[0][i].height / lineHeight) > 2) {
-          that.data.answer[i].auto = true;
-          that.data.answer[i].seeMore = true;
-        }
-      }
-      that.setData({
-        answer: that.data.answer
-      });
-    });
+  },
+  /**
+   * 刷新页面
+   */
+  onPullDownRefresh: function () {
+    this.initData(new Date(this.data.calendarDisplayTime));
   },
 
   /**
@@ -145,15 +158,33 @@ Page({
    * @param {Date}} date 
    */
   initData: function (date) {
+    var that = this;
     var cur_year = date.getFullYear();
     var cur_month = date.getMonth() + 1;
-    this.calculateEmptyGrids(cur_year, cur_month);
-    this.calculateDays(cur_year, cur_month);
+    that.calculateEmptyGrids(cur_year, cur_month);
+    that.calculateDays(cur_year, cur_month);
     //获取当前用户当前任务的人签到状态
-    this.onGetSignUp();
-    this.setData({
+    that.onGetSignUp(cur_year, cur_month);
+    that.setData({
       cur_year: cur_year,
       cur_month: cur_month
+    });
+    var query = wx.createSelectorQuery();
+    query.selectAll('.content').fields({
+      size: true,
+    }).exec(function (res) {
+      console.log(res[0], '所有节点信息');
+      //固定高度值 单位：PX
+      var lineHeight = 26;
+      for (var i = 0; i < res[0].length; i++) {
+        if ((res[0][i].height / lineHeight) > 2) {
+          that.data.answer[i].auto = true;
+          that.data.answer[i].seeMore = true;
+        }
+      }
+      that.setData({
+        answer: that.data.answer
+      });
     });
   },
   /**
@@ -193,7 +224,7 @@ Page({
           isSign: false,
           isSelected: false,
           isCurrentDay: false
-        }
+        };
         that.data.days.push(obj);
       }
       that.setData({
@@ -257,25 +288,153 @@ Page({
   },
 
   //获取当前用户该任务的签到数组
-  onGetSignUp: function () {
-    // var that = this;
-    // var Task_User = Bmob.Object.extend("task_user");
-    // var q = new Bmob.Query(Task_User);
-    // q.get(that.data.objectId, {
-    //   success: function (result) {
-    //     that.setData({
-    //       signUp: result.get("signUp"),
-    //       count: result.get("score")
-    //     });
-    //     //获取后就判断签到情况
-    //     that.onJudgeSign();
-    //   },
-    //   error: function (object, error) {}
-    // });
-  },
-  handleClose1() {
-    this.setData({
-      visible1: false
+  onGetSignUp: function (year, month) {
+    var self = this;
+    wx.request({
+      url: app.globalData.api + '/CostNote/GetUserDailyHistoryList',
+      data: {
+        token: app.globalData.userInfo.token,
+        year: year,
+        month: month
+      },
+      method: 'GET',
+      success: function (res) {
+        if (res.data.resultCode == 0) {
+          var dataList = res.data.data.resultList;
+          var countNumber = res.data.data.countNumber;
+          var answer = [];
+          var daysArr = self.data.days;
+          if (daysArr && dataList && dataList.length > 0) {
+            dataList.forEach(function (f) {
+              daysArr[f.dailyDay + self.data.firstDayOfWeek - 1].isSign = true;
+              daysArr[f.dailyDay + self.data.firstDayOfWeek - 1].describeInfo = f.dailyContent;
+              daysArr[f.dailyDay + self.data.firstDayOfWeek - 1].work = "工作量: " + f.dailyNumber + "天";
+              daysArr[f.dailyDay + self.data.firstDayOfWeek - 1].id = f.id;
+              answer.push({
+                "describeInfo": f.dailyContent,
+                "work": "工作量: " + f.dailyNumber + "天",
+                "date": f.dailyDate
+              });
+            });
+          }
+          self.setData({
+            sign_day_number: countNumber,
+            days: daysArr,
+            answer: answer
+          });
+        } else {
+          wx.showToast({
+            title: res.data.message,
+            icon: 'none',
+            duration: 2000
+          });
+        }
+      },
+      fail: function () {
+        wx.showToast({
+          title: '网络异常',
+          icon: 'none',
+          duration: 2000
+        });
+      }
     });
+  },
+  /**
+   * 点击详情信息中的按钮
+   * @param {any} param0 
+   */
+  detailHandleClick: function ({
+    detail
+  }) {
+    var index = detail.index;
+    if (index === 0) {
+      if (this.data.validDayId > 0) {
+        wx.navigateTo({
+          url: '/pages/registration/index' + "?id=" + this.data.validDayId
+        });
+      }
+    } else if (index === 1) {
+      this.setData({
+        showDelete: true
+      });
+    } else if (index === 2) {
+      this.setData({
+        showDetail: false,
+        showDetailTitle: '',
+        showDetailContent: ''
+      });
+    }
+  },
+  /**
+   * 删除记录逻辑
+   * @param {any} param0 
+   */
+  deleteHandlerClick: function ({
+    detail
+  }) {
+    var self = this;
+    if (detail.index === 0) {
+      self.setData({
+        showDelete: false
+      });
+    } else {
+      if (self.data.validDayId < 1) {
+        self.setData({
+          showDelete: false
+        });
+      }
+      var action = [...this.data.showDeleteActions];
+      action[1].loading = true;
+
+      self.setData({
+        showDeleteActions: action
+      });
+      //提交删除
+      wx.request({
+        url: app.globalData.api + '/CostNote/DeleteDetailHistoryInfo',
+        data: {
+          token: app.globalData.userInfo.token,
+          id: self.data.validDayId
+        },
+        method: 'GET',
+        success: function (res) {
+          if (res.data.resultCode == 0) {
+            wx.showToast({
+              title: '删除成功',
+              icon: 'success',
+              duration: 2000
+            });
+            //刷新页面
+            self.onPullDownRefresh();
+          } else {
+            wx.showToast({
+              title: res.data.message,
+              icon: 'none',
+              duration: 2000
+            });
+          }
+          action[1].loading = false;
+          self.setData({
+            showDelete: false,
+            showDeleteActions: action,
+            showDetail: false,
+            showDetailTitle: '',
+            showDetailContent: ''
+          });
+        },
+        fail: function () {
+          wx.showToast({
+            title: '网络异常',
+            icon: 'none',
+            duration: 2000
+          })
+          action[1].loading = false;
+          self.setData({
+            showDelete: false,
+            showDeleteActions: action
+          });
+        }
+      });
+    }
   }
 });
