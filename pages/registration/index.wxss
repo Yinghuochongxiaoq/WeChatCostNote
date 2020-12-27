@@ -1,7 +1,6 @@
 @import '../mod/calendar.wxss';
-
 view {
-    font-size: 28rpx;
+    font-size: 30rpx;
     color: #333;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
@@ -36,7 +35,6 @@ view {
     box-sizing: border-box;
 }
 
-
 .c-row {
     width: auto;
     display: -webkit-box;
@@ -58,6 +56,7 @@ view {
     width: 25%;
     -webkit-box-flex: 3;
     -webkit-flex: 3 3 auto;
+    font-weight: 600;
 }
 
 .c-span9 {
@@ -66,12 +65,11 @@ view {
     -webkit-flex: 9 9 auto;
 }
 
+.search-line-nosign,
 .search-line {
     position: relative;
     height: 96rpx;
     line-height: 96rpx;
-    font-size: 30rpx;
-    font-weight: 600;
     border-bottom: 1rpx solid #e6e6e6;
 }
 
@@ -101,33 +99,10 @@ view {
     white-space: nowrap;
 }
 
-.city-wrapper {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1500;
-    bottom: 0;
-    background: #fff;
-
-}
-
-.city-list {
-    background-color: #fff;
-}
-
-.city-list .list-name {
-    height: 60rpx;
-    line-height: 60rpx;
-    background-color: #ededed;
-    padding: 0 10px;
-    font-size: 32rpx;
-    font-wight: 400;
-}
-
-.city-list .list-item {
-    border-bottom: 1px solid #ededed;
-    font-size: 30rpx;
-    line-height: 40rpx;
-    padding: 20rpx 60rpx 20rpx 50rpx
+.workContent {
+    flex: 1;
+    line-height: 96rpx;
+    padding: 0px 0;
+    min-height: 96rpx;
+    height: auto;
 }

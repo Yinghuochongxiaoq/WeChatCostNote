@@ -1,11 +1,11 @@
 {
-  "navigationBarTitleText": "工作打卡日历",
-  "usingComponents": {
-    "ui-calendar": "/components/ui-calendar",
-    "i-button": "../../iView/button/index",
-    "i-card": "../../iView/card/index",
-    "i-icon": "../../iView/icon/index",
-    "i-load-more": "../../iView/load-more/index",
-    "i-modal": "../iView/modal/index"
-  }
+    "navigationBarTitleText": "工作打卡日历",
+    "usingComponents": {
+        "ui-calendar": "/components/ui-calendar",
+        "i-button": "../../iView/button/index",
+        "i-card": "../../iView/card/index",
+        "i-icon": "../../iView/icon/index",
+        "i-load-more": "../../iView/load-more/index",
+        "i-modal": "../../iView/modal/index"
+    }
 }

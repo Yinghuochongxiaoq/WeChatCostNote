@@ -7,27 +7,27 @@ const util = require('../../utils/util.js');
 var selectedDate = new Date().toString();
 
 module.exports = {
-    showCalendar: function () {
+    showCalendar: function() {
         this.setData({
             isCalendarShow: ''
         });
     },
-    hideCalendar: function () {
+    hideCalendar: function() {
         this.setData({
             isCalendarShow: 'none'
         });
     },
-    preMonth: function () {
+    preMonth: function() {
         this.setData({
             calendarDisplayTime: util.dateUtil.preMonth(this.data.calendarDisplayTime).toString()
         });
     },
-    nextMonth: function () {
+    nextMonth: function() {
         this.setData({
             calendarDisplayTime: util.dateUtil.nextMonth(this.data.calendarDisplayTime).toString()
         });
     },
-    onCalendarDayTap: function (e) {
+    onCalendarDayTap: function(e) {
         var data = e.detail;
         var date = new Date(data.year, data.month, data.day);
         console.log(date);
@@ -36,16 +36,17 @@ module.exports = {
         if (this.calendarHook) this.calendarHook(date);
         this.setData({
             isCalendarShow: 'none',
+            calendarDisplayTime: date.toString(),
             calendarSelectedDate: date.toString(),
             calendarSelectedDateStr: util.dateUtil.format(date, 'Y年M月D日')
         });
     },
-    onContainerHide: function () {
+    onContainerHide: function() {
         this.hideCalendar();
     },
 
     data: {
-        isCalendarShow: '',
+        isCalendarShow: 'none',
         calendarDisplayMonthNum: 1,
         calendarDisplayTime: selectedDate,
         calendarSelectedDate: selectedDate,

@@ -1,75 +1,79 @@
 <view class="cm-modal " style="min-height: {{calendarHeight}}rpx;">
-  <view class="calendar-wrapper-box">
-    <view class="box-hd">
-      <text class="fl icon-back js_back " bindtap="preMonth"></text>
-      <text class="fr icon-next js_next" bindtap="nextMonth"></text>
-    </view>
-    <view class="cm-calendar">
-      <view class="cm-calendar-hd ">
-        <block wx:for="{{weekDayArr}}" wx:key="weekDayKey">
-          <view class="item">{{item}}</view>
-        </block>
-      </view>
-      <view class="cm-calendar-bd ">
-        <view class="cm-month calendar-cm-month">
-          {{cur_year || "--"}} 年 {{cur_month || "--"}} 月
+    <view class="calendar-wrapper-box">
+        <view class="box-hd">
+            <text class="fl icon-back js_back " bindtap="preMonth"></text>
+            <text class="fr icon-next js_next" bindtap="nextMonth"></text>
         </view>
-        <view class="cm-day-list">
-
-          <block wx:key="tt" wx:for="{{days}}" wx:for-index="index" wx:for-item="everyday">
-            <view wx:if="{{everyday.date == null}}" class="item "></view>
-            <view bindtap="onCalendarDayTap" wx:else data-year="{{cur_year}}" data-month="{{cur_month-1}}"
-              data-day="{{index+1-firstDayOfWeek}}" data-id="{{everyday.id}}"
-              class="item item-border {{everyday.isCurrentDay?'radius-bg-danger':''}} {{everyday.isSelected?'active':''}}">
-              <view class="cm-field-title">
-                {{everyday.date}}
-              </view>
+        <view class="cm-calendar">
+            <view class="cm-calendar-hd ">
+                <block wx:for="{{weekDayArr}}" wx:key="weekDayKey">
+                    <view class="item">{{item}}</view>
+                </block>
             </view>
-          </block>
-          <view class="   cm-item--disabled " data-cndate="" data-date="">
-          </view>
+            <view class="cm-calendar-bd ">
+                <view class="cm-month calendar-cm-month">
+                    {{cur_year || "--"}} 年 {{cur_month || "--"}} 月
+                </view>
+                <view class="cm-day-list">
+
+                    <block wx:key="tt" wx:for="{{days}}" wx:for-index="index" wx:for-item="everyday">
+                        <view wx:if="{{everyday.date == null}}" class="item "></view>
+                        <view bindtap="onCalendarDayTap" wx:else data-year="{{cur_year}}" data-month="{{cur_month-1}}" data-day="{{index+1-firstDayOfWeek}}" data-id="{{everyday.id}}" class="item item-border {{everyday.isSign?'radius-is-sign':''}} {{everyday.isCurrentDay?'radius-bg-danger':''}} {{everyday.isSelected?'active':''}}">
+                            <view class="cm-field-title">
+                                {{everyday.date}}
+                            </view>
+                        </view>
+                    </block>
+                    <view class="cm-item--disabled " data-cndate="" data-date="">
+                    </view>
+                </view>
+            </view>
         </view>
-      </view>
     </view>
-  </view>
 </view>
 <view class='count'>
-  <text>您本月已坚持打卡</text>
-  <view class='day_number'>
-    <text class='number'>{{sign_day_number}}</text>
-    <text class='day'>天</text>
-  </view>
-  <text>请再接再厉，继续努力</text>
+    <view class='tuli'>
+        <text>图例：</text>
+        <text class="number_border tuli-size bg-danger"></text>
+        <text>今天</text>
+        <text class="number_border tuli-size is-sign-item"></text>
+        <text>已打卡</text>
+        <text class="number_border tuli-size active-item"></text>
+        <text>选中</text>
+    </view>
+    <text>您本月已坚持打卡</text>
+    <view class='day_number'>
+        <text class='number'>{{sign_day_number}}</text>
+        <text class='day'>天</text>
+    </view>
+    <text>请再接再厉，继续努力</text>
 </view>
 <view wx:if="{{answer && answer.length>0}}" style="margin: 16px">打卡明细</view>
 <block wx:for="{{answer}}" wx:for-index="index">
-  <i-card full title="{{item.work}}" extra="{{item.date}}" i-class="card-demo">
-    <view slot="content" class="{{item.seeMore?'elips':''}} content" data-index="{{index}}">
-      {{item.describeInfo}}
-    </view>
-    <view slot="footer" class="foot-center" data-index="{{index}}" wx:if="{{item.auto && item.seeMore}}"
-      bindtap="foldHandler">
-      <text class="bottom-arrow1"></text>
-      <text class="bottom-arrow2"></text>
-      <text>展开</text>
-    </view>
+    <i-card full title="{{item.work}}" extra="{{item.date}}" i-class="card-demo">
+        <view slot="content" class="{{item.seeMore?'elips':''}} content" data-index="{{index}}">
+            {{item.describeInfo}}
+        </view>
+        <view slot="footer" class="foot-center" data-index="{{index}}" wx:if="{{item.auto && item.seeMore}}" bindtap="foldHandler">
+            <text class="bottom-arrow1"></text>
+            <text class="bottom-arrow2"></text>
+            <text>展开</text>
+        </view>
 
-    <view slot="footer" class="foot-center" data-index="{{index}}" wx:if="{{item.auto && !item.seeMore}}"
-      bindtap="unfoldHandler">
-      <text class="top-arrow1"></text>
-      <text class="top-arrow2"></text>
-      <text>收起</text>
-    </view>
-  </i-card>
+        <view slot="footer" class="foot-center" data-index="{{index}}" wx:if="{{item.auto && !item.seeMore}}" bindtap="unfoldHandler">
+            <text class="top-arrow1"></text>
+            <text class="top-arrow2"></text>
+            <text>收起</text>
+        </view>
+    </i-card>
 </block>
 <i-load-more tip="我是有底线的" loading="{{ false }}" />
 
 <!-- 详情弹窗 -->
-<i-modal title="{{showDetailTitle}}" visible="{{ showDetail }}" actions="{{ showDetailActions }}"
-  bind:click="detailHandleClick">
-  <view>{{showDetailContent}}</view>
+<i-modal title="{{showDetailTitle}}" visible="{{ showDetail }}" actions="{{ showDetailActions }}" bind:click="detailHandleClick">
+    <view>{{showDetailContent}}</view>
 </i-modal>
 <!-- 删除弹窗 -->
 <i-modal title="删除确认" visible="{{ showDelete }}" actions="{{ showDeleteActions }}" bind:click="deleteHandlerClick">
-  <view>删除后无法恢复哦</view>
+    <view>删除后无法恢复哦</view>
 </i-modal>

@@ -11,8 +11,8 @@
         "pages/my/about",
         "pages/costtype/edit",
         "pages/bindfamily/index",
-        "pages/calendar/calendar",
-        "pages/registration/index"
+        "pages/registration/index",
+        "pages/calendar/calendar"
     ],
     "window": {
         "backgroundTextStyle": "light",

@@ -1,6 +1,9 @@
 {
-  "usingComponents": {
-    "ui-container": "/components/ui-container",
-    "ui-calendar": "/components/ui-calendar"
-  }
+    "navigationBarTitleText": "添加打卡记录",
+    "usingComponents": {
+        "ui-container": "/components/ui-container",
+        "ui-calendar": "/components/ui-calendar",
+        "i-button": "../../iView/button/index",
+        "i-input-number": "../../iView/input-number/index"
+    }
 }

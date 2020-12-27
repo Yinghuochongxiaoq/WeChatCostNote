@@ -1,23 +1,21 @@
-<view class="c-row search-line" data-flag="start" ontap="showCitylist">
-  <view class="c-span3">
-    出发{{sss}}</view>
-  <view class="c-span9 js-start search-line-txt">
-    {{cityStartName}}</view>
-</view>
-<view class="c-row search-line" data-flag="arrive" ontap="showCitylist">
-  <view class="c-span3">
-    到达</view>
-  <view class="c-span9 js-arrive search-line-txt">
-    {{cityArriveName}}</view>
+<view class="c-row search-line-nosign">
+    <view class="c-span3">工作量:</view>
+    <view class="c-span9 js-start search-line-txt">
+        <i-input-number value="{{ number }}" min="0.1" max="1" step="0.1" bindchange="handleChangeWorkNumber" />
+    </view>
 </view>
 <view class="c-row search-line" data-flag="arrive" ontap="showCalendar">
-  <view class="c-span3">
-    出发日期</view>
-  <view class="c-span9 js-arrive search-line-txt">
-    {{calendarSelectedDateStr}}</view>
+    <view class="c-span3">
+        打卡日期:</view>
+    <view class="c-span9 js-arrive search-line-txt">
+        {{calendarSelectedDateStr}}</view>
 </view>
-<view class="c-row " data-flag="arrive">
-
-  <span class="btn-primary full-width js_search_list" ontap="goList">查询</span>
+<view class="c-row search-line-nosign">
+    <view class="c-span3">工作内容:</view>
+    <view class="c-span9 js-start search-line-txt">
+        <input value="{{ workContent }}" placeholder="请输入您的工作内容" class='workContent' name="workContent" maxlength='500' type="textarea" bindchange="handleChangeWorkContent" />
+    </view>
 </view>
+<i-button bind:click="handleSaveClick" size="small" disabled="{{isSaving}}" type="success" loading="{{isSaving}}">
+    {{isSaving?'保存中...':'打卡'}}</i-button>
 <include src="../mod/calendar.wxml" />
