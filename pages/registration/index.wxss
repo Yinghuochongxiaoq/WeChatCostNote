@@ -1,4 +1,5 @@
 @import '../mod/calendar.wxss';
+
 view {
     font-size: 30rpx;
     color: #333;
@@ -99,10 +100,23 @@ view {
     white-space: nowrap;
 }
 
+.holdContent {
+    height: 250rpx;
+}
+
 .workContent {
     flex: 1;
-    line-height: 96rpx;
-    padding: 0px 0;
+    line-height: 40rpx;
     min-height: 96rpx;
-    height: auto;
+    height: 250rpx;
+    border: 1rpx solid #e6e6e6;
+}
+
+.currentWordNumber {
+    text-align: right;
+    margin: 0 40rpx;
+}
+
+.hidden {
+    display: none;
 }

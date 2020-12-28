@@ -18,7 +18,9 @@
 
                     <block wx:key="tt" wx:for="{{days}}" wx:for-index="index" wx:for-item="everyday">
                         <view wx:if="{{everyday.date == null}}" class="item "></view>
-                        <view bindtap="onCalendarDayTap" wx:else data-year="{{cur_year}}" data-month="{{cur_month-1}}" data-day="{{index+1-firstDayOfWeek}}" data-id="{{everyday.id}}" class="item item-border {{everyday.isSign?'radius-is-sign':''}} {{everyday.isCurrentDay?'radius-bg-danger':''}} {{everyday.isSelected?'active':''}}">
+                        <view bindtap="onCalendarDayTap" wx:else data-year="{{cur_year}}" data-month="{{cur_month-1}}"
+                            data-day="{{index+1-firstDayOfWeek}}" data-id="{{everyday.id}}"
+                            class="item item-border {{everyday.isSign?'radius-is-sign':''}} {{everyday.isCurrentDay?'radius-bg-danger':''}} {{everyday.isSelected?'active':''}}">
                             <view class="cm-field-title">
                                 {{everyday.date}}
                             </view>
@@ -54,13 +56,15 @@
         <view slot="content" class="{{item.seeMore?'elips':''}} content" data-index="{{index}}">
             {{item.describeInfo}}
         </view>
-        <view slot="footer" class="foot-center" data-index="{{index}}" wx:if="{{item.auto && item.seeMore}}" bindtap="foldHandler">
+        <view slot="footer" class="foot-center" data-index="{{index}}" wx:if="{{item.auto && item.seeMore}}"
+            bindtap="foldHandler">
             <text class="bottom-arrow1"></text>
             <text class="bottom-arrow2"></text>
             <text>展开</text>
         </view>
 
-        <view slot="footer" class="foot-center" data-index="{{index}}" wx:if="{{item.auto && !item.seeMore}}" bindtap="unfoldHandler">
+        <view slot="footer" class="foot-center" data-index="{{index}}" wx:if="{{item.auto && !item.seeMore}}"
+            bindtap="unfoldHandler">
             <text class="top-arrow1"></text>
             <text class="top-arrow2"></text>
             <text>收起</text>
@@ -70,7 +74,8 @@
 <i-load-more tip="我是有底线的" loading="{{ false }}" />
 
 <!-- 详情弹窗 -->
-<i-modal title="{{showDetailTitle}}" visible="{{ showDetail }}" actions="{{ showDetailActions }}" bind:click="detailHandleClick">
+<i-modal title="{{showDetailTitle}}" visible="{{ showDetail }}" actions="{{ showDetailActions }}"
+    bind:click="detailHandleClick">
     <view>{{showDetailContent}}</view>
 </i-modal>
 <!-- 删除弹窗 -->

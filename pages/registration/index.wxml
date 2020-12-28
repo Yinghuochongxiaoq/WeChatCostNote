@@ -1,7 +1,7 @@
 <view class="c-row search-line-nosign">
     <view class="c-span3">工作量:</view>
     <view class="c-span9 js-start search-line-txt">
-        <i-input-number value="{{ number }}" min="0.1" max="1" step="0.1" bindchange="handleChangeWorkNumber" />
+        <i-input-number value="{{ number }}" min="0.1" max="3" step="0.1" bindchange="handleChangeWorkNumber" />
     </view>
 </view>
 <view class="c-row search-line" data-flag="arrive" ontap="showCalendar">
@@ -12,9 +12,16 @@
 </view>
 <view class="c-row search-line-nosign">
     <view class="c-span3">工作内容:</view>
-    <view class="c-span9 js-start search-line-txt">
-        <input value="{{ workContent }}" placeholder="请输入您的工作内容" class='workContent' name="workContent" maxlength='500' type="textarea" bindchange="handleChangeWorkContent" />
-    </view>
+</view>
+
+<view class="c-row {{textareaDisable?'holdContent':''}}">
+    <textarea bindinput="handleChangeWorkContent" value="{{ workContent }}" maxlength='{{noteMaxLen}}'
+        disabled="{{textareaDisable}}" show-confirm-bar="{{false}}" class="workContent {{textareaDisable?'hidden':''}}"
+        placeholder="请输入您的工作内容">
+    </textarea>
+</view>
+<view class="currentWordNumber">
+    <text>({{currentNoteLen|0}}/{{noteMaxLen}})</text>
 </view>
 <i-button bind:click="handleSaveClick" size="small" disabled="{{isSaving}}" type="success" loading="{{isSaving}}">
     {{isSaving?'保存中...':'打卡'}}</i-button>

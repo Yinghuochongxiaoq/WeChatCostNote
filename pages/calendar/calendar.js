@@ -12,7 +12,7 @@ Page({
     /**
      * 上月数据
      */
-    preMonth: function() {
+    preMonth: function () {
         this.setData({
             calendarDisplayTime: util.dateUtil.preMonth(this.data.calendarDisplayTime).toString()
         });
@@ -21,7 +21,7 @@ Page({
     /**
      * 下月数据
      */
-    nextMonth: function() {
+    nextMonth: function () {
         this.setData({
             calendarDisplayTime: util.dateUtil.nextMonth(this.data.calendarDisplayTime).toString()
         });
@@ -31,7 +31,7 @@ Page({
      * 点击当前单元
      * @param {any} e 
      */
-    onCalendarDayTap: function(e) {
+    onCalendarDayTap: function (e) {
         var data = e.currentTarget.dataset;
         var date = new Date(data.year, data.month, data.day);
         var that = this;
@@ -42,7 +42,7 @@ Page({
         var validDayId = 0;
         var days = that.data.days;
         if (days) {
-            days.forEach(function(f) {
+            days.forEach(function (f) {
                 f.isSelected = false;
             });
             days[date.getDate() + that.data.firstDayOfWeek - 1].isSelected = true;
@@ -106,13 +106,12 @@ Page({
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad: function(options) {
+    onLoad: function (options) {
         this.setData({
             objectId: options.objectId
         });
-        this.initData(new Date(this.data.calendarDisplayTime));
         computed(this, {
-            calendarHeight: function() {
+            calendarHeight: function () {
                 return Math.ceil(this.data.days.length / 7) * 100 + 140;
             }
         });
@@ -120,13 +119,13 @@ Page({
     /**
      * 重新回到页面
      */
-    onShow: function() {
+    onShow: function () {
         this.initData(new Date(this.data.calendarDisplayTime));
     },
     /**
      * 刷新页面
      */
-    onPullDownRefresh: function() {
+    onPullDownRefresh: function () {
         this.initData(new Date(this.data.calendarDisplayTime));
     },
 
@@ -134,7 +133,7 @@ Page({
      * 展开更多
      * @param {e} e 
      */
-    foldHandler: function(e) {
+    foldHandler: function (e) {
         var that = this;
         var index = e.currentTarget.dataset.index;
         if (that.data.answer.length - 1 >= index) {
@@ -148,7 +147,7 @@ Page({
      * 收起更多
      * @param {e} e 
      */
-    unfoldHandler: function(e) {
+    unfoldHandler: function (e) {
         var that = this;
         var index = e.currentTarget.dataset.index;
         if (that.data.answer.length - 1 >= index) {
@@ -163,7 +162,7 @@ Page({
      * 数据加载
      * @param {Date}} date 
      */
-    initData: function(date) {
+    initData: function (date) {
         var that = this;
         var cur_year = date.getFullYear();
         var cur_month = date.getMonth() + 1;
@@ -175,30 +174,33 @@ Page({
             cur_year: cur_year,
             cur_month: cur_month
         });
-        var query = wx.createSelectorQuery();
-        query.selectAll('.content').fields({
-            size: true,
-        }).exec(function(res) {
-            console.log(res[0], '所有节点信息');
-            //固定高度值 单位：PX
-            var lineHeight = 26;
-            for (var i = 0; i < res[0].length; i++) {
-                if ((res[0][i].height / lineHeight) > 2) {
-                    that.data.answer[i].auto = true;
-                    that.data.answer[i].seeMore = true;
+        //可能出现还没有绑定数据到视图中，计算结果为空的情况
+        setTimeout(function () {
+            var query = wx.createSelectorQuery();
+            query.selectAll('.content').fields({
+                size: true,
+            }).exec(function (res) {
+                console.log(res[0], '所有节点信息');
+                //固定高度值 单位：PX
+                var lineHeight = 26;
+                for (var i = 0; i < res[0].length; i++) {
+                    if ((res[0][i].height / lineHeight) > 2) {
+                        that.data.answer[i].auto = true;
+                        that.data.answer[i].seeMore = true;
+                    }
                 }
-            }
-            that.setData({
-                answer: that.data.answer
+                that.setData({
+                    answer: that.data.answer
+                });
             });
-        });
+        }, 1000);
     },
     /**
      * 获取当月共多少天
      * @param {number} year 
      * @param {number} month 
      */
-    getThisMonthDays: function(year, month) {
+    getThisMonthDays: function (year, month) {
         return new Date(year, month, 0).getDate()
     },
 
@@ -207,7 +209,7 @@ Page({
      * @param {number} year 
      * @param {number} month 
      */
-    getFirstDayOfWeek: function(year, month) {
+    getFirstDayOfWeek: function (year, month) {
         return new Date(Date.UTC(year, month - 1, 1)).getDay();
     },
 
@@ -216,7 +218,7 @@ Page({
      * @param {number} year 
      * @param {number} month 
      */
-    calculateEmptyGrids: function(year, month) {
+    calculateEmptyGrids: function (year, month) {
         var that = this;
         //计算每个月时要清零
         that.setData({
@@ -251,7 +253,7 @@ Page({
      * @param {number} year 
      * @param {number} month 
      */
-    calculateDays: function(year, month) {
+    calculateDays: function (year, month) {
         var that = this;
         var thisMonthDays = this.getThisMonthDays(year, month);
         for (var i = 1; i <= thisMonthDays; i++) {
@@ -273,7 +275,7 @@ Page({
      * @param {number} year 
      * @param {number} month 
      */
-    onGetSignUp: function(year, month) {
+    onGetSignUp: function (year, month) {
         var self = this;
         wx.request({
             url: app.globalData.api + '/CostNote/GetUserDailyHistoryList',
@@ -283,14 +285,14 @@ Page({
                 month: month
             },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 if (res.data.resultCode == 0) {
                     var dataList = res.data.data.resultList;
                     var countNumber = res.data.data.countNumber;
                     var answer = [];
                     var daysArr = self.data.days;
                     if (daysArr && dataList && dataList.length > 0) {
-                        dataList.forEach(function(f) {
+                        dataList.forEach(function (f) {
                             daysArr[f.dailyDay + self.data.firstDayOfWeek - 1].isSign = true;
                             daysArr[f.dailyDay + self.data.firstDayOfWeek - 1].describeInfo = f.dailyContent;
                             daysArr[f.dailyDay + self.data.firstDayOfWeek - 1].work = "工作量: " + f.dailyNumber + "天";
@@ -315,7 +317,7 @@ Page({
                     });
                 }
             },
-            fail: function() {
+            fail: function () {
                 wx.showToast({
                     title: '网络异常',
                     icon: 'none',
@@ -328,7 +330,7 @@ Page({
      * 点击详情信息中的按钮
      * @param {any} param0 
      */
-    detailHandleClick: function({
+    detailHandleClick: function ({
         detail
     }) {
         var index = detail.index;
@@ -359,7 +361,7 @@ Page({
      * 删除记录逻辑
      * @param {any} param0 
      */
-    deleteHandlerClick: function({
+    deleteHandlerClick: function ({
         detail
     }) {
         var self = this;
@@ -387,7 +389,7 @@ Page({
                     id: self.data.validDayId
                 },
                 method: 'GET',
-                success: function(res) {
+                success: function (res) {
                     if (res.data.resultCode == 0) {
                         wx.showToast({
                             title: '删除成功',
@@ -412,7 +414,7 @@ Page({
                         showDetailContent: ''
                     });
                 },
-                fail: function() {
+                fail: function () {
                     wx.showToast({
                         title: '网络异常',
                         icon: 'none',
