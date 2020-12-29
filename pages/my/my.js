@@ -48,16 +48,21 @@ Page({
             url: '/pages/index/index'
         });
     },
-    handleToAddDailyHistory: function () {
-        if (this.data.single) {
+    handleToAddOrListDailyHistory: function () {
+        console.log("handleToAddOrListDailyHistory");
+        if (!this.data.single) {
+            this.handleToAddDailyHistory();
+        } else {
             wx.navigateTo({
                 url: "/pages/calendar/calendar",
             });
-        } else {
-            wx.navigateTo({
-                url: "/pages/registration/index",
-            });
         }
+    },
+    handleToAddDailyHistory: function () {
+        console.log("handleToAddDailyHistory");
+        wx.navigateTo({
+            url: "/pages/registration/index",
+        });
     },
     onShareAppMessage() {
         return {

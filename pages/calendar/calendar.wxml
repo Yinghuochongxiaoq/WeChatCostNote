@@ -48,7 +48,7 @@
         <text class='number'>{{sign_day_number}}</text>
         <text class='day'>天</text>
     </view>
-    <text>请再接再厉，继续努力</text>
+
 </view>
 <view wx:if="{{answer && answer.length>0}}" style="margin: 16px">打卡明细</view>
 <block wx:for="{{answer}}" wx:for-index="index">

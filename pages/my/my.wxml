@@ -6,8 +6,16 @@
         {{userInfo.nickName}}
     </view>
 </view>
-<view class="sign_activity" bindtap="handleToAddDailyHistory">
-    <i-icon size="30" type="activity" style="color: red"></i-icon>{{!single?'点此打卡':'今日已打卡,点击查看详情'}}
+<view class="sign_activity">
+    <view class="c-span9 right-border" bindtap="handleToAddOrListDailyHistory">
+        <i-icon size="25" type="activity" color="#19be6b"></i-icon>
+        <text>{{!single?'点此打卡':'已打卡,查看详情'}}</text>
+    </view>
+    <view class="c-span3" bindtap="handleToAddDailyHistory">
+        <i-icon type="add" size="25" color="#19be6b" />
+        <text>点此补打</text>
+
+    </view>
 </view>
 
 <view class="wode_item_wrap">
