@@ -120,3 +120,43 @@ view {
 .hidden {
     display: none;
 }
+
+/* 图片上传 */
+.img {
+    display: inline-block;
+}
+
+.img-v {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 40rpx
+}
+
+.image {
+    border-style: solid;
+    border-color: #e6e6e6;
+    margin-right: 10rpx;
+    margin-top: 10rpx;
+    position: relative;
+}
+
+.moment_img {
+    width: 210rpx;
+    height: 210rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.add_image {
+    width: 150rpx;
+    height: 150rpx;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+}

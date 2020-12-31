@@ -13,6 +13,10 @@ const formatNumber = n => {
   n = n.toString();
   return n[1] ? n : '0' + n;
 };
+const strToJson = str => {
+  var json = JSON.parse(str);
+  return json;
+};
 
 var getBiggerzIndex = (function () {
   //定义弹出层ui的最小zIndex
@@ -244,5 +248,6 @@ var dateUtil = {
 module.exports = {
   formatTime: formatTime,
   getBiggerzIndex: getBiggerzIndex,
+  strToJson: strToJson,
   dateUtil: dateUtil
 };

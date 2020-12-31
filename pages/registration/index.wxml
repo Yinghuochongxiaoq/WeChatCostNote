@@ -23,6 +23,18 @@
 <view class="currentWordNumber">
     <text>({{currentNoteLen|0}}/{{noteMaxLen}})</text>
 </view>
-<i-button bind:click="handleSaveClick" size="small" disabled="{{isSaving}}" type="success" loading="{{isSaving}}">
+<view class="">
+    <view class="img-v">
+        <view class='image' wx:for="{{imgs}}" wx:for-item="item" wx:key="*this">
+            <image class='moment_img' src="{{item}}" data-index="{{index}}" mode="aspectFill" bindtap="previewImg">
+                <icon type='cancel' class="delete-btn" data-index="{{index}}" catchtap="deleteImg"></icon>
+            </image>
+        </view>
+        <view class='image moment_img' bindtap="chooseImg" style='display:{{lenMore?"none":"flex"}}'>
+            <image class="add_image" src='../../images/icon-add.png'></image>
+        </view>
+    </view>
+</view>
+<i-button bind:click="send" size="small" disabled="{{isSaving}}" type="success" loading="{{isSaving}}">
     {{isSaving?'保存中...':'打卡'}}</i-button>
 <include src="../mod/calendar.wxml" />

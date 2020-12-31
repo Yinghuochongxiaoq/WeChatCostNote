@@ -36,6 +36,8 @@ App({
         userInfo: null,
         shareImgUrl: 'https://aivabc.com/Uploadfile/ShareDetailImage/20190704/6369786934483499313738901.jpg',
         // api: 'https://api.aivabc.com:8080/api',
+        // uploadFileUrl: 'https://api.aivabc.com:8080/UploadServer/HandlerFile/HandlerFile.ashx?fun=001&others=',
+        uploadFileUrl: 'http://localhost:8004/UploadServer/HandlerFile/HandlerFile.ashx?fun=001&others=',
         api: 'http://localhost:8004/api',
     }
 })
