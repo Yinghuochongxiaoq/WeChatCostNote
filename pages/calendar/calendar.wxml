@@ -50,24 +50,33 @@
     </view>
 
 </view>
-<view wx:if="{{answer && answer.length>0}}" style="margin: 16px">打卡明细</view>
-<block wx:for="{{answer}}" wx:for-index="index">
+<view wx:if="{{answer && answer.length>0}}" class="li-title">打卡明细</view>
+<block wx:for="{{answer}}" wx:for-index="detailIndex">
     <i-card full title="{{item.work}}" extra="{{item.date}}" i-class="card-demo">
-        <view slot="content" class="{{item.seeMore?'elips':''}} content" data-index="{{index}}">
-            {{item.describeInfo}}
+        <view slot="content" class="{{item.seeMore?'elips':''}}" data-index="{{detailIndex}}">
+            <view class="{{item.seeMore?'elips':''}} content">{{item.describeInfo}}</view>
+            <!-- 图片 -->
+            <view wx:if='{{item.mediaList.length>0}}' class='img-v'
+                style="{{item.auto && item.seeMore?'height: 90rpx;':''}}">
+                <view class='image' wx:for='{{item.mediaList}}' wx:key="id" wx:for-item="mediaItem">
+                    <image class='moment_img' src="{{mediaItem.fullUrl}}" data-index="{{detailIndex}}"
+                        data-img_index="{{index}}" mode="aspectFill" bindtap="previewImg" lazy-load="true">
+                    </image>
+                </view>
+            </view>
         </view>
-        <view slot="footer" class="foot-center" data-index="{{index}}" wx:if="{{item.auto && item.seeMore}}"
+        <view slot="footer" class="foot-center" data-index="{{detailIndex}}" wx:if="{{item.auto && item.seeMore}}"
             bindtap="foldHandler">
             <text class="bottom-arrow1"></text>
             <text class="bottom-arrow2"></text>
-            <text>展开</text>
+            <text style="color: #19be6b;">展开</text>
         </view>
 
-        <view slot="footer" class="foot-center" data-index="{{index}}" wx:if="{{item.auto && !item.seeMore}}"
+        <view slot="footer" class="foot-center" data-index="{{detailIndex}}" wx:if="{{item.auto && !item.seeMore}}"
             bindtap="unfoldHandler">
             <text class="top-arrow1"></text>
             <text class="top-arrow2"></text>
-            <text>收起</text>
+            <text style="color:#19be6b;">收起</text>
         </view>
     </i-card>
 </block>

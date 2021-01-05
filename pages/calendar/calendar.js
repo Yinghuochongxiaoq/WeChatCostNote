@@ -130,6 +130,30 @@ Page({
     },
 
     /**
+     * 预览图片
+     * @param {any} e 
+     */
+    previewImg: function (e) {
+        //获取记录的下标
+        var index = e.currentTarget.dataset.index;
+        var img_index = e.currentTarget.dataset.img_index;
+        //所有图片
+        var mediaList = this.data.answer[index].mediaList;
+        if (mediaList && mediaList.length > 0) {
+            var imgs = [];
+            mediaList.forEach(item => {
+                imgs.push(item.fullUrl);
+            });
+            wx.previewImage({
+                //当前显示图片
+                current: imgs[img_index],
+                //所有图片
+                urls: imgs
+            });
+        }
+    },
+
+    /**
      * 展开更多
      * @param {e} e 
      */
@@ -300,7 +324,8 @@ Page({
                             answer.push({
                                 "describeInfo": f.dailyContent,
                                 "work": "工作量: " + f.dailyNumber + "天",
-                                "date": f.dailyDate
+                                "date": f.dailyDate,
+                                "mediaList": f.mediaList
                             });
                         });
                     }

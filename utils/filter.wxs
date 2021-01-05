@@ -1,7 +1,11 @@
 var filters = {
   toFix: function (value) {
+    if(typeof(value)=='undefined'){
+        return value
+    }else{
     //此处2为保留两位小数
     return value.toFixed(2)
+    }
   }
 }
 module.exports = {

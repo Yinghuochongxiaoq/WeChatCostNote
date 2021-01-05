@@ -3,6 +3,7 @@ const _page = require('../../utils/abstract-page.js');
 var modCalendar = require('../mod/calendar.js');
 var util = require('../../utils/util.js');
 var media_index = 0;
+var media_count = 3;
 const {
     watch,
     computed
@@ -22,19 +23,48 @@ Page(_page.initPage({
         textareaDisable: false,
         date: new Date().toString(),
         lenMore: 0,
-        image_count: 3,
         imgs: [],
         media_list: [],
         isUploadFile: false
     },
     methods: {},
     onLoad: function (options) {
-        //初始化数据，如果传入的id大于0时
-        if (options.id) {
-            this.init(options.id);
-        } else {
-            this.defaultData();
-        }
+        var that = this;
+        wx.request({
+            url: app.globalData.api + '/CostNote/GetUploadConfig',
+            data: {
+                token: app.globalData.userInfo.token
+            },
+            method: 'GET',
+            success: function (res) {
+                if (res.data.resultCode == 0) {
+                    if (res.data.data) {
+                        media_count = res.data.data.media_count;
+                    }
+                } else {
+                    wx.showToast({
+                        title: res.data.message,
+                        icon: 'none',
+                        duration: 2000
+                    });
+                }
+            },
+            fail: function () {
+                wx.showToast({
+                    title: '网络异常',
+                    icon: 'none',
+                    duration: 2000
+                });
+            },
+            complete: function () {
+                //初始化数据，如果传入的id大于0时
+                if (options.id) {
+                    that.init(options.id);
+                } else {
+                    that.defaultData();
+                }
+            }
+        });
         computed(this, {
             textareaDisable: function () {
                 console.log("当前时间:" + new Date() + "显示日历:" + this.data.isCalendarShow + "判断值：" + (this.data.isCalendarShow != 'none'));
@@ -63,12 +93,8 @@ Page(_page.initPage({
                         if (res.data.data && res.data.data.mediaList && res.data.data.mediaList.length > 0) {
                             var interfaceMediaList = res.data.data.mediaList;
                             for (var i = 0; i < interfaceMediaList.length; i++) {
-                                if (img_url.length >= that.data.image_count) {
-                                    that.setData({
-                                        imgs: img_url,
-                                        media_list: media_list
-                                    });
-                                    return false;
+                                if (img_url.length >= media_count) {
+                                    break;
                                 } else {
                                     media_list.push({
                                         type: "image",
@@ -92,6 +118,7 @@ Page(_page.initPage({
                             id: res.data.data.id,
                             imgs: img_url,
                             media_list: media_list,
+                            lenMore: img_url.length >= media_count ? 1 : 0,
                             date: res.data.data.dailyDate,
                             calendarDisplayTime: res.data.data.dailyDate,
                             calendarSelectedDate: res.data.data.dailyDate,
@@ -155,6 +182,11 @@ Page(_page.initPage({
                     index: media_list[i].index
                 });
             }
+        }
+        //没有需要重新处理的图片
+        if (media_list_need.length < 1) {
+            that.handleSaveClick();
+            return false;
         }
         for (var j = 0; j < media_list_need.length; j++) {
             var file_url = media_list_need[j].tempFilePath;
@@ -223,24 +255,29 @@ Page(_page.initPage({
             method: 'POST',
             success: function (res) {
                 if (res.data.resultCode == 0) {
-                    wx.showToast({
-                        title: res.data.message,
-                        icon: 'success',
-                        duration: 2000
-                    });
+                    wx.hideLoading();
                     that.defaultData();
                     setTimeout(function () {
+                        wx.showToast({
+                            title: res.data.message,
+                            icon: 'success',
+                            duration: 2000
+                        });
                         wx.navigateBack();
-                    }, 2000);
+                    }, 1000);
                 } else {
-                    wx.showToast({
-                        title: res.data.message,
-                        icon: 'none',
-                        duration: 2000
-                    });
+                    wx.hideLoading();
+                    setTimeout(function () {
+                        wx.showToast({
+                            title: res.data.message,
+                            icon: 'none',
+                            duration: 2000
+                        });
+                    }, 200);
                 }
             },
             fail: function () {
+                wx.hideLoading();
                 wx.showToast({
                     title: '网络异常',
                     icon: 'none',
@@ -262,7 +299,7 @@ Page(_page.initPage({
     chooseImg: function (e) {
         var that = this;
         var imgs = this.data.imgs;
-        if (imgs.length >= this.data.image_count) {
+        if (imgs.length >= media_count) {
             this.setData({
                 lenMore: 1
             });
@@ -273,7 +310,7 @@ Page(_page.initPage({
             });
         }
         wx.chooseImage({
-            count: this.data.image_count,
+            count: media_count,
             // 可以指定是原图还是压缩图，默认二者都有
             sizeType: ['original', 'compressed'],
             // 可以指定来源是相册还是相机，默认二者都有
@@ -286,13 +323,21 @@ Page(_page.initPage({
                 var media_list = that.data.media_list;
                 console.log(tempFilePaths + '----');
                 for (var i = 0; i < tempFilePaths.length; i++) {
-                    if (img_url.length >= that.data.image_count) {
+                    if (img_url.length >= media_count) {
                         that.setData({
                             imgs: img_url,
                             media_list: media_list
                         });
                         break;
                     } else {
+                        if (tempFiles[i].size > 5242880) {
+                            wx.showToast({
+                                title: '图片大小不能超过5M',
+                                icon: 'none',
+                                duration: 2000
+                            });
+                            continue;
+                        }
                         media_list.push({
                             type: "image",
                             size: tempFiles[i].size,
@@ -308,7 +353,7 @@ Page(_page.initPage({
                 that.setData({
                     imgs: img_url,
                     media_list: media_list,
-                    lenMore: img_url.length >= that.data.image_count ? 1 : 0
+                    lenMore: img_url.length >= media_count ? 1 : 0
                 });
             }
         });
@@ -326,7 +371,7 @@ Page(_page.initPage({
         this.setData({
             imgs: imgs,
             media_list: media_list,
-            lenMore: imgs.length >= this.data.image_count ? 1 : 0
+            lenMore: imgs.length >= media_count ? 1 : 0
         });
     },
     /**
@@ -360,7 +405,6 @@ Page(_page.initPage({
             textareaDisable: false,
             date: new Date().toString(),
             lenMore: 0,
-            image_count: 3,
             imgs: [],
             media_list: [],
             isUploadFile: false

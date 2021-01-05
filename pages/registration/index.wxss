@@ -122,10 +122,6 @@ view {
 }
 
 /* 图片上传 */
-.img {
-    display: inline-block;
-}
-
 .img-v {
     width: 100%;
     display: flex;

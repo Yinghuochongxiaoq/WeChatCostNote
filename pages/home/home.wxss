@@ -34,6 +34,10 @@ page {
     background: #FBF9FE;
 }
 
+.list-item-left {
+    min-width: 60rpx;
+}
+
 .tui-fl {
     float: left;
 }
@@ -54,6 +58,7 @@ page {
     font-size: 30rpx;
     white-space: nowrap;
     text-overflow: ellipsis;
+    max-width: 450rpx;
 }
 
 .list-item-time,

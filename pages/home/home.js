@@ -27,7 +27,7 @@ Page({
 
         pulldownrefresh: false,
         visibleShowDelete: false,
-        actions2: [{
+        deleteActions: [{
             name: '删除',
             color: '#ed3f14'
         }],
@@ -48,16 +48,23 @@ Page({
         chooseMemberId: -1,
 
         //通知信息列表
-        msgList: []
+        msgList: [],
+
+        showDetail: false,
+        showDetailModel: {},
+        showDetailActions: [{
+            name: '确定',
+            color: '#2d8cf0',
+        }],
     },
-    onLoad: function() {
+    onLoad: function () {
         this.setData({
             familyMembers: app.globalData.userInfo.wechatMemberList,
             isShowFamilyMember: app.globalData.userInfo.wechatMemberList && app.globalData.userInfo.wechatMemberList.length > 0
         })
     },
     //选择成员
-    chooseMember: function(e) {
+    chooseMember: function (e) {
         var memberId = e.currentTarget.dataset.memberid;
         if (this.data.channelObjectMultiArray && this.data.channelObjectMultiArray.length > 0) {
             //不相等进行切换
@@ -95,11 +102,11 @@ Page({
         this.util(currentStatue)
     },
     //上拉选择成员
-    powerDrawer: function(e) {
+    powerDrawer: function (e) {
         var currentStatue = e.currentTarget.dataset.statue;
         this.util(currentStatue)
     },
-    util: function(currentStatue) {
+    util: function (currentStatue) {
         /* 动画部分 */
         // 第1步：创建动画实例 
         var animation = wx.createAnimation({
@@ -117,13 +124,13 @@ Page({
         // 第4步：导出动画对象赋给数据对象储存
         this.setData({
             animationData: animation.export()
-        })
+        });
 
         // 第5步：设置定时器到指定时候后，执行第二组动画
-        setTimeout(function() {
+        setTimeout(function () {
             // 执行第二组动画：Y轴不偏移，停
             animation.translateY(0).step()
-                // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象
+            // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象
             this.setData({
                 animationData: animation
             })
@@ -144,7 +151,7 @@ Page({
         }
     },
     //取消删除
-    handleCancel() {
+    handleCancel: function () {
         this.setData({
             visibleShowDelete: false,
             toggle: this.data.toggle ? false : true,
@@ -152,13 +159,13 @@ Page({
         });
     },
     //确认删除
-    handleClickDelete() {
+    handleClickDelete: function () {
         self = this;
-        const action = [...self.data.actions2];
+        const action = [...self.data.deleteActions];
         action[0].loading = true;
 
         self.setData({
-            actions2: action
+            deleteActions: action
         });
         //提交删除
         wx.request({
@@ -168,31 +175,31 @@ Page({
                 id: self.data.deleteId
             },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 if (res.data.resultCode == 0) {
                     wx.showToast({
-                            title: '删除成功',
-                            icon: 'success',
-                            duration: 2000
-                        })
-                        //刷新页面
+                        title: '删除成功',
+                        icon: 'success',
+                        duration: 2000
+                    })
+                    //刷新页面
                     self.onPullDownRefresh()
                 } else {
                     wx.showToast({
                         title: res.data.message,
                         icon: 'none',
                         duration: 2000
-                    })
+                    });
                 }
                 action[0].loading = false;
                 self.setData({
                     visibleShowDelete: false,
-                    actions2: action,
+                    deleteActions: action,
                     toggle: self.data.toggle ? false : true,
                     deleteId: 0
                 });
             },
-            fail: function() {
+            fail: function () {
                 wx.showToast({
                     title: '网络异常',
                     icon: 'none',
@@ -201,41 +208,80 @@ Page({
                 action[0].loading = false;
                 self.setData({
                     visibleShowDelete: false,
-                    actions2: action,
+                    deleteActions: action,
                     toggle: self.data.toggle ? false : true,
                     deleteId: 0
                 });
             }
-        })
+        });
     },
-    actionsTap(e) {
+    deleteActionsTap: function (e) {
         console.log(e)
         this.setData({
             visibleShowDelete: true,
             deleteId: e.currentTarget.id
         });
     },
-    onShow: function() {
-        this.initPageData()
+    /**
+     * 记录详情点击
+     * @param {any} e 
+     */
+    onDetailTap: function (e) {
+        var data = e.currentTarget.dataset;
+        var that = this;
+        var tempModelDetail = null;
+        console.log(data);
+        if (data) {
+            tempModelDetail = that.data.dataList[data.index];
+        }
+        if (tempModelDetail) {
+            that.setData({
+                showDetail: true,
+                showDetailModel: tempModelDetail,
+            });
+        } else {
+            that.setData({
+                showDetail: false,
+                showDetailModel: {},
+            });
+        }
     },
-    onPullDownRefresh() {
-        this.initPageData()
+    /**
+     * 点击详情信息中的按钮
+     * @param {any} param0 
+     */
+    detailHandleClick: function ({
+        detail
+    }) {
+        var index = detail.index;
+        if (index === 0) {
+            this.setData({
+                showDetail: false,
+                showDetailModel: {}
+            });
+        }
     },
-    onReachBottom() {
+    onShow: function () {
+        this.initPageData();
+    },
+    onPullDownRefresh: function () {
+        this.initPageData();
+    },
+    onReachBottom: function () {
         if (this.data.pageIndex <= this.data.pageCount) {
             this.setData({
                 loading: true
-            })
-            this.searchCostNoteData(false)
+            });
+            this.searchCostNoteData(false);
         } else {
             wx.showToast({
                 title: '没有更多数据了~',
                 icon: 'none',
                 duration: 2000
-            })
+            });
         }
     },
-    searchCostNoteData(refresh) {
+    searchCostNoteData: function (refresh) {
         var self = this;
         // 请求数据，并渲染
         wx.request({
@@ -250,22 +296,22 @@ Page({
                 memberId: self.data.chooseMemberId
             },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 self.setData({
-                        loading: false
-                    })
-                    //停止刷新
+                    loading: false
+                });
+                //停止刷新
                 if (self.data.pulldownrefresh) {
-                    wx.stopPullDownRefresh()
+                    wx.stopPullDownRefresh();
                 }
                 if (res.data.resultCode == 0) {
                     var arr = self.data.dataList;
                     if (!refresh) {
                         res.data.data.dataList.forEach(element => {
-                            arr.push(element)
+                            arr.push(element);
                         });
                     } else {
-                        arr = res.data.data.dataList
+                        arr = res.data.data.dataList;
                     }
                     self.setData({
                         dataList: arr,
@@ -274,23 +320,23 @@ Page({
                         pageIndex: self.data.pageIndex + 1,
                         loading: false,
                         pulldownrefresh: false
-                    })
+                    });
                 } else {
                     wx.showToast({
                         title: res.data.message,
                         icon: 'none',
                         duration: 2000
-                    })
+                    });
                 }
             },
-            fail: function() {
+            fail: function () {
                 self.setData({
                     loading: false
-                })
+                });
             }
-        })
+        });
     },
-    getAllCostType() {
+    getAllCostType: function () {
         var self = this;
         wx.request({
             url: app.globalData.api + '/CostNote/GetCostChannelType',
@@ -298,7 +344,7 @@ Page({
                 token: app.globalData.userInfo.token
             },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 if (res.data.resultCode == 0) {
                     var list = ['全部']
                     var idList = [-1]
@@ -311,18 +357,18 @@ Page({
                         channelObjectMultiArray: res.data.data.channelData,
                         channelmultiArray: list,
                         channelIdList: idList
-                    })
+                    });
                 } else {
                     wx.showToast({
                         title: res.data.message,
                         icon: 'none',
                         duration: 2000
-                    })
+                    });
                 }
             }
-        })
+        });
     },
-    getNoticeMsg() {
+    getNoticeMsg: function () {
         var self = this;
         wx.request({
             url: app.globalData.api + '/CostNote/GetHomePageNotice',
@@ -330,7 +376,7 @@ Page({
                 token: app.globalData.userInfo.token
             },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 if (res.data.resultCode == 0) {
                     self.setData({
                         msgList: res.data.data.noticeList
@@ -339,7 +385,7 @@ Page({
             }
         })
     },
-    bindChannelPickerChange: function(e) {
+    bindChannelPickerChange: function (e) {
         this.setData({
             channelmultiIndex: e.detail.value,
             costChannel: this.data.channelIdList[e.detail.value],
@@ -348,7 +394,7 @@ Page({
         })
         this.searchCostNoteData(true)
     },
-    bindMultiPickerChange: function(e) {
+    bindMultiPickerChange: function (e) {
         this.setData({
             costTypemultiIndex: e.detail.value,
             spendType: this.data.inoroutIdList[e.detail.value[0]],
@@ -358,7 +404,7 @@ Page({
         })
         this.searchCostNoteData(true)
     },
-    bindMultiPickerColumnChange: function(e) {
+    bindMultiPickerColumnChange: function (e) {
         switch (e.detail.column) {
             case 0:
                 var list = ['全部']
@@ -380,7 +426,7 @@ Page({
 
         }
     },
-    onShareAppMessage() {
+    onShareAppMessage: function () {
         return {
             title: '记录你的一点一滴~',
             desc: '记录你的一点一滴~',
@@ -388,14 +434,14 @@ Page({
             imageUrl: app.globalData.shareImgUrl
         }
     },
-    initPageData: function() {
+    initPageData: function () {
         this.setData({
             pageIndex: 1,
             pageSize: 10,
             pulldownrefresh: true
-        })
-        this.getNoticeMsg()
-        this.getAllCostType()
-        this.searchCostNoteData(true)
+        });
+        this.getNoticeMsg();
+        this.getAllCostType();
+        this.searchCostNoteData(true);
     }
-})
+});

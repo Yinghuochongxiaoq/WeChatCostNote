@@ -16,6 +16,10 @@ page {
     font-size: 40rpx;
 }
 
+.txt-left {
+    text-align: left;
+}
+
 .ft-bg-green {
     color: #1BB97D !important;
 }
