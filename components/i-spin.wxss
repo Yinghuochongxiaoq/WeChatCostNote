@@ -1,0 +1,86 @@
+/* 自定义一个遮罩层 */
+.i-spin-bg {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    z-index: 1001;
+    -moz-opacity: 0.6;
+    opacity: 0.60;
+    filter: alpha(opacity=60);
+}
+
+.i-spin {
+    color: #1aad19;
+    vertical-align: middle;
+    text-align: center
+}
+
+.i-spin-dot {
+    position: relative;
+    display: block;
+    border-radius: 50%;
+    background-color: #f02d2d;
+    width: 20px;
+    height: 20px;
+    animation: ani-spin-bounce 1s 0s ease-in-out infinite
+}
+
+.i-spin-large .i-spin-dot {
+    width: 32px;
+    height: 32px
+}
+
+.i-spin-small .i-spin-dot {
+    width: 12px;
+    height: 12px
+}
+
+.i-spin-fix .i-spin-main {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.i-spin-fix .i-spin-dot {
+    display: inline-block
+}
+
+.i-spin-show-text .i-spin-dot,
+.i-spin-text {
+    display: inline-block;
+}
+
+.i-spin-show-text .i-spin-text {
+    display: block;
+    font-size: 14px
+}
+
+@keyframes ani-spin-bounce {
+    0% {
+        transform: scale(0)
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 0
+    }
+}
+
+.i-spin-show {
+    text-align: center;
+    position: absolute;
+    top: 45%;
+    width: 100%;
+    height: 10%;
+    padding: 8px;
+    z-index: 1002;
+    overflow: auto;
+}

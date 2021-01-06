@@ -14,6 +14,7 @@
         "i-row": "../../iView/row/index",
         "i-col": "../../iView/col/index",
         "i-notice-bar": "../../iView/notice-bar/index",
-        "i-spin": "../../iView/spin/index"
+        "i-spin": "../../iView/spin/index",
+        "i-customer-spin": "../../components/i-spin"
     }
 }

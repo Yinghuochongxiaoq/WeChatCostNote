@@ -3,7 +3,7 @@ const _page = require('../../utils/abstract-page.js');
 var modCalendar = require('../mod/calendar.js');
 var util = require('../../utils/util.js');
 var media_index = 0;
-var media_count = 3;
+var media_count = 0;
 const {
     watch,
     computed
@@ -25,46 +25,51 @@ Page(_page.initPage({
         lenMore: 0,
         imgs: [],
         media_list: [],
-        isUploadFile: false
+        isUploadFile: false,
+        isLogin: false
     },
     methods: {},
     onLoad: function (options) {
         var that = this;
-        wx.request({
-            url: app.globalData.api + '/CostNote/GetUploadConfig',
-            data: {
-                token: app.globalData.userInfo.token
-            },
-            method: 'GET',
-            success: function (res) {
-                if (res.data.resultCode == 0) {
-                    if (res.data.data) {
-                        media_count = res.data.data.media_count;
+        //检查token是否存在
+        var userInfo = util.getStorageSync("userInfo");
+        if (userInfo != null) {
+            wx.request({
+                url: app.globalData.api + '/CostNote/GetUploadConfig',
+                data: {
+                    token: app.globalData.userInfo.token
+                },
+                method: 'GET',
+                success: function (res) {
+                    if (res.data.resultCode == 0) {
+                        if (res.data.data) {
+                            media_count = res.data.data.media_count;
+                        }
+                    } else {
+                        wx.showToast({
+                            title: res.data.message,
+                            icon: 'none',
+                            duration: 2000
+                        });
                     }
-                } else {
+                },
+                fail: function () {
                     wx.showToast({
-                        title: res.data.message,
+                        title: '网络异常',
                         icon: 'none',
                         duration: 2000
                     });
+                },
+                complete: function () {
+                    //初始化数据，如果传入的id大于0时
+                    if (options.id) {
+                        that.init(options.id);
+                    } else {
+                        that.defaultData();
+                    }
                 }
-            },
-            fail: function () {
-                wx.showToast({
-                    title: '网络异常',
-                    icon: 'none',
-                    duration: 2000
-                });
-            },
-            complete: function () {
-                //初始化数据，如果传入的id大于0时
-                if (options.id) {
-                    that.init(options.id);
-                } else {
-                    that.defaultData();
-                }
-            }
-        });
+            });
+        }
         computed(this, {
             textareaDisable: function () {
                 console.log("当前时间:" + new Date() + "显示日历:" + this.data.isCalendarShow + "判断值：" + (this.data.isCalendarShow != 'none'));

@@ -18,6 +18,35 @@ const strToJson = str => {
   return json;
 };
 
+/**
+ * 
+ * @param {string}} k 
+ * @param {any} v 
+ * @param {day} time 
+ */
+const setStorageSync = (k, v, time) => {
+  //有效时期时间戳
+  var effTime = parseInt(Date.parse(new Date())) + 1000 * time;
+  wx.setStorageSync(k, v);
+  wx.setStorageSync(k + "StorTime", effTime);
+};
+
+const getStorageSync = k => {
+  //当前时间戳
+  var currentTime = Date.parse(new Date());
+  if (currentTime < wx.getStorageSync(k + "StorTime")) {
+    console.log("缓存时间有效");
+    return wx.getStorageSync(k);
+  } else {
+    console.log("缓存时间已过期");
+    try {
+      wx.removeStorageSync(k);
+      wx.removeStorageSync(k + "StorTime");
+    } catch (e) {}
+    return null;
+  }
+};
+
 var getBiggerzIndex = (function () {
   //定义弹出层ui的最小zIndex
   let index = 2000;
@@ -249,5 +278,7 @@ module.exports = {
   formatTime: formatTime,
   getBiggerzIndex: getBiggerzIndex,
   strToJson: strToJson,
-  dateUtil: dateUtil
+  dateUtil: dateUtil,
+  setStorageSync: setStorageSync,
+  getStorageSync: getStorageSync
 };

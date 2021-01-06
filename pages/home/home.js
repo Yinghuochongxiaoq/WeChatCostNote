@@ -1,3 +1,4 @@
+const util = require("../../utils/util");
 var app = getApp();
 Page({
     data: {
@@ -23,7 +24,11 @@ Page({
         channelmultiArray: ['全部'],
         channelObjectMultiArray: [],
         channelIdList: [-1],
-        statisticsModel: {},
+        statisticsModel: {
+            allCouldCost: 0,
+            allInCost: 0,
+            allOutCost: 0
+        },
 
         pulldownrefresh: false,
         visibleShowDelete: false,
@@ -56,14 +61,66 @@ Page({
             name: '确定',
             color: '#2d8cf0',
         }],
+        isLogin: false,
+        noLoginDataList: []
     },
     onLoad: function () {
-        this.setData({
-            familyMembers: app.globalData.userInfo.wechatMemberList,
-            isShowFamilyMember: app.globalData.userInfo.wechatMemberList && app.globalData.userInfo.wechatMemberList.length > 0
-        })
+        //检查token是否存在
+        var userInfo = util.getStorageSync("userInfo");
+        if (userInfo != null) {
+            this.setData({
+                familyMembers: app.globalData.userInfo.wechatMemberList,
+                isShowFamilyMember: app.globalData.userInfo.wechatMemberList && app.globalData.userInfo.wechatMemberList.length > 0,
+                isLogin: true
+            });
+        }
     },
-    //选择成员
+
+    /**
+     * 没登录时的测试数据
+     */
+    noLoginData: function () {
+        this.setData({
+            statisticsModel: {
+                allCouldCost: 100000,
+                allInCost: 100000,
+                allOutCost: 100000
+            },
+            noLoginDataList: [{
+                    cost: 5200.52,
+                    costAddress: "温馨的家，心灵港湾",
+                    costChannelName: "微信账户",
+                    costInOrOut: 1,
+                    costThing: "闹新春抢红包",
+                    costTime: "2020-02-27 17:25:00",
+                    costTypeName: "收红包"
+                },
+                {
+                    cost: 3900.75,
+                    costAddress: "西藏自治区拉萨市山南市贡嘎县迎宾路",
+                    costChannelName: "支付宝账户",
+                    costInOrOut: 2,
+                    costThing: "追风少年飞往西藏",
+                    costTime: "2019-04-05 20:02:00",
+                    costTypeName: "旅行"
+                },
+                {
+                    cost: 870,
+                    costAddress: "创新大楼图书馆",
+                    costChannelName: "微信账户",
+                    costInOrOut: 2,
+                    costThing: "心悦诚服的购买图书卡",
+                    costTime: "2017-10-01 10:05:00",
+                    costTypeName: "教育"
+                }
+            ]
+        });
+    },
+
+    /**
+     * 选择成员
+     * @param {any} e 
+     */
     chooseMember: function (e) {
         var memberId = e.currentTarget.dataset.memberid;
         if (this.data.channelObjectMultiArray && this.data.channelObjectMultiArray.length > 0) {
@@ -80,7 +137,7 @@ Page({
                 this.setData({
                     channelmultiArray: channelNamelist,
                     channelIdList: channelIdList
-                })
+                });
             }
         }
         //选择了新的成员
@@ -95,13 +152,16 @@ Page({
                 pageSize: 10,
                 chooseMemberId: memberId,
                 memberNickName: e.currentTarget.dataset.membername
-            })
+            });
         }
         this.searchCostNoteData(true)
         var currentStatue = e.currentTarget.dataset.statue;
         this.util(currentStatue)
     },
-    //上拉选择成员
+    /**
+     * 上拉选择成员
+     * @param {any} e 
+     */
     powerDrawer: function (e) {
         var currentStatue = e.currentTarget.dataset.statue;
         this.util(currentStatue)
@@ -133,7 +193,7 @@ Page({
             // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象
             this.setData({
                 animationData: animation
-            })
+            });
 
             //关闭抽屉
             if (currentStatue == "close") {
@@ -141,7 +201,7 @@ Page({
                     showModalStatus: false
                 });
             }
-        }.bind(this), 200)
+        }.bind(this), 200);
 
         // 显示抽屉
         if (currentStatue == "open") {
@@ -150,7 +210,9 @@ Page({
             });
         }
     },
-    //取消删除
+    /**
+     * 取消删除
+     */
     handleCancel: function () {
         this.setData({
             visibleShowDelete: false,
@@ -158,7 +220,9 @@ Page({
             deleteId: 0
         });
     },
-    //确认删除
+    /**
+     * 确认删除
+     */
     handleClickDelete: function () {
         self = this;
         const action = [...self.data.deleteActions];
@@ -181,7 +245,7 @@ Page({
                         title: '删除成功',
                         icon: 'success',
                         duration: 2000
-                    })
+                    });
                     //刷新页面
                     self.onPullDownRefresh()
                 } else {
@@ -204,7 +268,7 @@ Page({
                     title: '网络异常',
                     icon: 'none',
                     duration: 2000
-                })
+                });
                 action[0].loading = false;
                 self.setData({
                     visibleShowDelete: false,
@@ -422,8 +486,7 @@ Page({
                     "costTypemultiIndex[0]": e.detail.value,
                     "costTypemultiIndex[1]": 0,
                     costTypeIdList: idList
-                })
-
+                });
         }
     },
     onShareAppMessage: function () {
@@ -432,7 +495,7 @@ Page({
             desc: '记录你的一点一滴~',
             path: 'pages/index/index',
             imageUrl: app.globalData.shareImgUrl
-        }
+        };
     },
     initPageData: function () {
         this.setData({
@@ -440,6 +503,10 @@ Page({
             pageSize: 10,
             pulldownrefresh: true
         });
+        if (!this.data.isLogin) {
+            this.noLoginData();
+            return;
+        }
         this.getNoticeMsg();
         this.getAllCostType();
         this.searchCostNoteData(true);

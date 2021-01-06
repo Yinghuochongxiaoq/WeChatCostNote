@@ -1,4 +1,3 @@
-
 <i-tabs current="{{ spendType }}" bindchange="handlerSpendTypeChange">
     <i-tab key="1" title="收入"></i-tab>
     <i-tab key="0" title="支出"></i-tab>
@@ -7,8 +6,9 @@
 <i-panel>
     <i-cell-group>
         <block wx:for="{{costTypemultiArray}}" wx:key="id">
-                <i-cell title="{{item.name}}" is-link url="./edit?id={{item.id}}"></i-cell>
+            <i-cell title="{{item.name}}" is-link url="./edit?id={{item.id}}"></i-cell>
         </block>
     </i-cell-group>
 </i-panel>
 <i-button bind:click="handleNavigateClick" type="success">增加新类型</i-button>
+<i-customer-spin isLogin="{{isLogin}}" />

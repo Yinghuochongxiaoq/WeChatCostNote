@@ -1,3 +1,4 @@
+const util = require("../../utils/util");
 var app = getApp();
 Page({
     data: {
@@ -34,25 +35,37 @@ Page({
         //当前用户id
         currentMemberId: -1,
         //绑定状态0：未绑定；1：正常绑定；2：解绑3天以内
-        bindState: 0
+        bindState: 0,
+        isLogin: false
     },
-    onLoad: function(options) {
-        this.setData({
-            userInfo: app.globalData.userInfo,
-            currentMemberId: app.globalData.userInfo.accountId
-        });
+    onLoad: function (options) {
+        //检查token是否存在
+        var userInfo = util.getStorageSync("userInfo");
+        if (userInfo != null) {
+            this.setData({
+                userInfo: app.globalData.userInfo,
+                currentMemberId: app.globalData.userInfo.accountId,
+                isLogin: true
+            });
+        }
+
     },
-    onShow: function() {
+    onShow: function () {
+        if (!this.data.isLogin) {
+            return;
+        }
         this.getMemberInfo();
     },
     //获取用户信息
-    getMemberInfo: function() {
+    getMemberInfo: function () {
         var self = this;
         wx.request({
             url: app.globalData.api + '/CostNote/GetCurrentUserFamilyMembers',
-            data: { token: app.globalData.userInfo.token },
+            data: {
+                token: app.globalData.userInfo.token
+            },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 if (res.data.resultCode == 0) {
 
                     self.setData({
@@ -78,16 +91,18 @@ Page({
             verticalCurrent: detail.key == 1 ? 2 : 0
         })
     },
-    handleInviteClick: function() {
+    handleInviteClick: function () {
         var self = this;
         self.setData({
             isSaving: true
         });
         wx.request({
             url: app.globalData.api + '/CostNote/GetInviteCode',
-            data: { token: app.globalData.userInfo.token },
+            data: {
+                token: app.globalData.userInfo.token
+            },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 if (res.data.resultCode == 0) {
                     wx.showToast({
                         title: '获取成功',
@@ -105,17 +120,17 @@ Page({
                     })
                 }
             },
-            complete: function() {
+            complete: function () {
                 self.setData({
                     isSaving: false
                 });
             }
         })
     },
-    handleCopyClick: function() {
+    handleCopyClick: function () {
         wx.setClipboardData({
             data: this.data.verticalCode,
-            success: function() {
+            success: function () {
                 wx.showToast({
                     title: '复制成功,快去分享吧',
                     icon: 'none'
@@ -123,13 +138,13 @@ Page({
             }
         });
     },
-    changeVerticalCodeThing: function(e) {
+    changeVerticalCodeThing: function (e) {
         this.setData({
             bindVerticalCode: e.detail.detail.value
         })
     },
     //点击绑定
-    handleOpenBind: function() {
+    handleOpenBind: function () {
         if (!this.data.bindVerticalCode) {
             wx.showToast({
                 title: '邀请码不能为空',
@@ -143,13 +158,13 @@ Page({
         });
     },
     //取消确认
-    handleCancelBind: function() {
+    handleCancelBind: function () {
         this.setData({
             visibleSendBind: false
         });
     },
     //确认
-    handleDoBind: function() {
+    handleDoBind: function () {
         const action = [...this.data.bindActions];
         action[0].loading = true;
         this.setData({
@@ -163,7 +178,7 @@ Page({
                 inviteCode: self.data.bindVerticalCode
             },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 if (res.data.resultCode == 0) {
                     wx.showToast({
                         title: '绑定成功',
@@ -179,7 +194,7 @@ Page({
                     })
                 }
             },
-            complete: function() {
+            complete: function () {
                 action[0].loading = false;
                 self.setData({
                     visibleSendBind: false,
@@ -190,19 +205,19 @@ Page({
     },
 
     //点击解除绑定
-    unbindHandler: function() {
+    unbindHandler: function () {
         this.setData({
             visibleUnBind: true
         });
     },
     //取消确认
-    handleCancelUnBind: function() {
+    handleCancelUnBind: function () {
         this.setData({
             visibleUnBind: false
         });
     },
     //确认取消绑定
-    handleDoUnBind: function() {
+    handleDoUnBind: function () {
         const action = [...this.data.unbindActions];
         action[0].loading = true;
         this.setData({
@@ -215,7 +230,7 @@ Page({
                 token: app.globalData.userInfo.token
             },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 if (res.data.resultCode == 0) {
                     wx.showToast({
                         title: '解除绑定成功',
@@ -231,7 +246,7 @@ Page({
                     })
                 }
             },
-            complete: function() {
+            complete: function () {
                 action[0].loading = false;
                 self.setData({
                     visibleUnBind: false,
@@ -242,19 +257,19 @@ Page({
     },
 
     //点击重新绑定
-    rebindHandler: function() {
+    rebindHandler: function () {
         this.setData({
             visibleReBind: true
         });
     },
     //重新绑定取消确认
-    handleCancelReBind: function() {
+    handleCancelReBind: function () {
         this.setData({
             visibleReBind: false
         });
     },
     //确认重新绑定绑定
-    handleDoReBind: function() {
+    handleDoReBind: function () {
         const action = [...this.data.rebindActions];
         action[0].loading = true;
         this.setData({
@@ -267,7 +282,7 @@ Page({
                 token: app.globalData.userInfo.token
             },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 if (res.data.resultCode == 0) {
                     wx.showToast({
                         title: '绑定成功',
@@ -283,7 +298,7 @@ Page({
                     })
                 }
             },
-            complete: function() {
+            complete: function () {
                 action[0].loading = false;
                 self.setData({
                     visibleReBind: false,
@@ -293,17 +308,17 @@ Page({
         })
     },
     //重新登录
-    reLogin: function() {
+    reLogin: function () {
         wx.reLaunch({
             url: '/pages/index/index'
         })
     },
-    onShareAppMessage() {     
-        return {    
+    onShareAppMessage() {
+        return {
             title: '记录你的一点一滴~',
             desc: '记录你的一点一滴~',
             path: 'pages/index/index',
             imageUrl: app.globalData.shareImgUrl
-        }    
+        }
     }
 })

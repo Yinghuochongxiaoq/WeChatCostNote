@@ -5,6 +5,7 @@
         "ui-calendar": "/components/ui-calendar",
         "i-button": "../../iView/button/index",
         "i-icon": "../../iView/icon/index",
-        "i-input-number": "../../iView/input-number/index"
+        "i-input-number": "../../iView/input-number/index",
+        "i-customer-spin": "../../components/i-spin"
     }
 }

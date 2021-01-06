@@ -37,3 +37,4 @@
 <i-button bind:click="send" size="small" disabled="{{isSaving}}" type="success" loading="{{isSaving}}">
     {{isSaving?'保存中...':'打卡'}}</i-button>
 <include src="../mod/calendar.wxml" />
+<i-customer-spin isLogin="{{isLogin}}" />

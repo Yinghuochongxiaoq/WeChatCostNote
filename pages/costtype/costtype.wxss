@@ -1,1 +1,5 @@
 /* pages/costtype/costtype.wxss */
+page {
+    background-color: #efeff4;
+    font-size: 30rpx;
+}

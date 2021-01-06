@@ -9,7 +9,8 @@
     <view class="container" wx:if="{{verticalCode?true:false}}">
         {{verticalCode}}
     </view>
-    <i-button wx:if="{{verticalCode?false:true}}" bind:click="handleInviteClick" type="success" loading="{{isSaving}}">{{isSaving?'获取中...':'获取邀请码'}}</i-button>
+    <i-button wx:if="{{verticalCode?false:true}}" bind:click="handleInviteClick" type="success" loading="{{isSaving}}">
+        {{isSaving?'获取中...':'获取邀请码'}}</i-button>
     <i-button wx:if="{{verticalCode?true:false}}" bind:click="handleCopyClick" type="success">复制</i-button>
 
 </i-panel>
@@ -17,11 +18,13 @@
 
 <!-- 绑定家庭start -->
 <i-panel wx:if="{{ handlderIndex==1 }}">
-    <i-input value="{{ bindVerticalCode }}" title="邀请码" bind:change="changeVerticalCodeThing" placeholder="输入邀请码" maxlength="26" />
+    <i-input value="{{ bindVerticalCode }}" title="邀请码" bind:change="changeVerticalCodeThing" placeholder="输入邀请码"
+        maxlength="26" />
     <i-button type="error" bind:click="handleOpenBind">绑定</i-button>
 </i-panel>
 
-<i-action-sheet visible="{{ visibleSendBind }}" actions="{{ bindActions }}" show-cancel bind:cancel="handleCancelBind" bind:click="handleDoBind" mask-closable="{{ false }}">
+<i-action-sheet visible="{{ visibleSendBind }}" actions="{{ bindActions }}" show-cancel bind:cancel="handleCancelBind"
+    bind:click="handleDoBind" mask-closable="{{ false }}">
     <view slot="header" style="padding: 16px">
         <view style="color: #444;font-size: 16px">确定吗？</view>
         <text>绑定后将与家庭成员共享数据哦</text>
@@ -68,10 +71,12 @@
             解除绑定后可在72小时内重新绑定，超过72小时将需要重新邀请加入家庭
         </i-notice-bar>
         <!-- 绑定第一个数据，在解绑的前72小时中，本人位于第一个位置 -->
-        <template is="familyMemberTemp" data="{{navItem:familyMembers[0],currentMemberId:currentMemberId,bindState:bindState}}"></template>
+        <template is="familyMemberTemp"
+            data="{{navItem:familyMembers[0],currentMemberId:currentMemberId,bindState:bindState}}"></template>
         <view class="otherMember">
             <block wx:for="{{familyMembers}}" wx:for-index="idx" wx:for-item="navItem" wx:key="idx">
-                <template is="familyMemberTemp" data="{{navItem,currentMemberId:currentMemberId,bindState:bindState}}" wx:if="{{idx>0}}"></template>
+                <template is="familyMemberTemp" data="{{navItem,currentMemberId:currentMemberId,bindState:bindState}}"
+                    wx:if="{{idx>0}}"></template>
             </block>
             <i-spin size="large" fix wx:if="{{ bindState==2 }}"></i-spin>
         </view>
@@ -83,14 +88,16 @@
         </view>
     </view>
 </view>
-<i-action-sheet visible="{{ visibleUnBind }}" actions="{{ unbindActions }}" show-cancel bind:cancel="handleCancelUnBind" bind:click="handleDoUnBind" mask-closable="{{ false }}">
+<i-action-sheet visible="{{ visibleUnBind }}" actions="{{ unbindActions }}" show-cancel bind:cancel="handleCancelUnBind"
+    bind:click="handleDoUnBind" mask-closable="{{ false }}">
     <view slot="header" style="padding: 16px">
         <view style="color: #444;font-size: 16px">确定吗？</view>
         <text>解除绑定后可在72小时内恢复</text>
     </view>
 </i-action-sheet>
 
-<i-action-sheet visible="{{ visibleReBind }}" actions="{{ rebindActions }}" show-cancel bind:cancel="handleCancelReBind" bind:click="handleDoReBind" mask-closable="{{ false }}">
+<i-action-sheet visible="{{ visibleReBind }}" actions="{{ rebindActions }}" show-cancel bind:cancel="handleCancelReBind"
+    bind:click="handleDoReBind" mask-closable="{{ false }}">
     <view slot="header" style="padding: 16px">
         <view style="color: #444;font-size: 16px">确定吗？</view>
         <text>绑定后将与家庭成员共享数据哦</text>
@@ -98,16 +105,18 @@
 </i-action-sheet>
 
 <template name="familyMemberTemp">
-        <view class="i-card">
-                <view class="i-card-header">
-                    <view class="i-card-header-content">
-                        <image class="i-card-header-thumb" src="{{navItem.avatarUrl}}" mode="aspectFit">
-                        </image>
-                        <view class="i-card-header-text"> {{navItem.nickName}}</view>
-                    </view>
-                    <ivew class="i-card-header-extra" wx:if="{{currentMemberId==navItem.accountId}}" bindtap="{{bindState==1?'unbindHandler':'rebindHandler'}}">{{bindState==1?'解除绑定':'重新绑定'}}</ivew>
-                </view>
-            <view class="i-card-footer">加入时间:{{navItem.createTime}}</view>
+    <view class="i-card">
+        <view class="i-card-header">
+            <view class="i-card-header-content">
+                <image class="i-card-header-thumb" src="{{navItem.avatarUrl}}" mode="aspectFit">
+                </image>
+                <view class="i-card-header-text"> {{navItem.nickName}}</view>
+            </view>
+            <ivew class="i-card-header-extra" wx:if="{{currentMemberId==navItem.accountId}}"
+                bindtap="{{bindState==1?'unbindHandler':'rebindHandler'}}">{{bindState==1?'解除绑定':'重新绑定'}}</ivew>
         </view>
+        <view class="i-card-footer">加入时间:{{navItem.createTime}}</view>
+    </view>
 </template>
 <!-- 家庭成员end -->
+<i-customer-spin isLogin="{{isLogin}}" />

@@ -91,57 +91,96 @@
     </view>
 </i-action-sheet>
 
-<!--列表页账单-->
-<view wx:if="{{dataList.length>0}}">
-    <view wx:for="{{dataList}}" wx:key="id" wx:for-index="index">
-        <i-swipeout i-class="i-swipeout-demo-item" operateWidth="{{80}}" unclosable="{{true}}" toggle="{{toggle}}">
-            <view slot="content">
-                <view class="list-card" hover-class="list-card-active" bindtap="onDetailTap" data-index="{{index}}">
-                    <view class="list-item-left">
-                        <text
-                            class="number_border tui-fl {{item.costInOrOut==1?' bg-danger':' bg-green'}}">{{item.costInOrOut==1?"收":"支"}}</text>
-                    </view>
-                    <view class="list-right tui-fl">
-                        <view class="list-item-title" wx:if="{{item.costThing}}">
-                            <i-icon type="transaction_fill" size="16" color="#80848f"></i-icon>{{item.costThing}}
+<block wx:if="{{isLogin}}">
+    <!--列表页账单-->
+    <view wx:if="{{dataList.length>0}}">
+        <view wx:for="{{dataList}}" wx:key="id" wx:for-index="index">
+            <i-swipeout i-class="i-swipeout-demo-item" operateWidth="{{80}}" unclosable="{{true}}" toggle="{{toggle}}">
+                <view slot="content">
+                    <view class="list-card" hover-class="list-card-active" bindtap="onDetailTap" data-index="{{index}}">
+                        <view class="list-item-left">
+                            <text
+                                class="number_border tui-fl {{item.costInOrOut==1?' bg-danger':' bg-green'}}">{{item.costInOrOut==1?"收":"支"}}</text>
                         </view>
-                        <view class="list-item-type">
-                            <i-icon type="barrage" size="16" color="#80848f"></i-icon>
-                            {{item.costChannelName+' / '+(item.costTypeName||'--')}}
+                        <view class="list-right tui-fl">
+                            <view class="list-item-title" wx:if="{{item.costThing}}">
+                                <i-icon type="transaction_fill" size="16" color="#80848f"></i-icon>{{item.costThing}}
+                            </view>
+                            <view class="list-item-type">
+                                <i-icon type="barrage" size="16" color="#80848f"></i-icon>
+                                {{item.costChannelName+' / '+(item.costTypeName||'--')}}
+                            </view>
+                            <view class="list-item-time" wx:if="{{item.costAddress}}">
+                                <i-icon type="coordinates" size="16" color="#80848f"></i-icon>{{item.costAddress}}
+                            </view>
+                            <view class="list-item-time">
+                                <i-icon type="time" size="16" color="#80848f"></i-icon>{{item.costTime}}
+                            </view>
                         </view>
-                        <view class="list-item-time" wx:if="{{item.costAddress}}">
-                            <i-icon type="coordinates" size="16" color="#80848f"></i-icon>{{item.costAddress}}
+                        <view class="list-item-cost">
+                            <view class="list-text-ft tui-fr {{item.costInOrOut==1?' ft-bg-danger':' ft-bg-green'}}">
+                                {{item.costInOrOut==1?"+":"-"}}{{filters.toFix(item.cost)}}</view>
                         </view>
-                        <view class="list-item-time">
-                            <i-icon type="time" size="16" color="#80848f"></i-icon>{{item.costTime}}
-                        </view>
-                    </view>
-                    <view class="list-item-cost">
-                        <view class="list-text-ft tui-fr {{item.costInOrOut==1?' ft-bg-danger':' ft-bg-green'}}">
-                            {{item.costInOrOut==1?"+":"-"}}{{filters.toFix(item.cost)}}</view>
                     </view>
                 </view>
-            </view>
-            <view slot="button" class="i-swipeout-demo-button-group">
-                <view class="i-swipeout-demo-button" style="width:80rpx;" style="background:#F8F9FB"
-                    bindtap="deleteActionsTap" id="{{item.id}}">
-                    <i-icon size="32" type="delete" style="color: red"></i-icon>删除
+                <view slot="button" class="i-swipeout-demo-button-group">
+                    <view class="i-swipeout-demo-button" style="width:80rpx;" style="background:#F8F9FB"
+                        bindtap="deleteActionsTap" id="{{item.id}}">
+                        <i-icon size="32" type="delete" style="color: red"></i-icon>删除
+                    </view>
                 </view>
-            </view>
-        </i-swipeout>
+            </i-swipeout>
+        </view>
     </view>
-</view>
-<!-- 无数据 -->
-<view wx:else class="mg-10">
-    <view class="list-column">
-        <icon size="40" type="warn" role="img"></icon>
-        <view>还没有数据哦~</view>
+    <!-- 无数据 -->
+    <view wx:else class="mg-10">
+        <view class="list-column">
+            <icon size="40" type="warn" role="img"></icon>
+            <view>还没有数据哦~</view>
+        </view>
     </view>
-</view>
-<!-- 加载层 -->
-<view wx:if="{{loading}}">
-    <i-load-more />
-</view>
+    <!-- 加载层 -->
+    <view wx:if="{{loading}}">
+        <i-load-more />
+    </view>
+</block>
+<block wx:else>
+    <!--测试列表页账单-->
+    <view wx:if="{{noLoginDataList.length>0}}">
+        <view wx:for="{{noLoginDataList}}" wx:key="id" wx:for-index="index">
+            <i-swipeout i-class="i-swipeout-demo-item" operateWidth="{{80}}" unclosable="{{true}}" toggle="{{toggle}}">
+                <view slot="content">
+                    <view class="list-card" hover-class="list-card-active">
+                        <view class="list-item-left">
+                            <text
+                                class="number_border tui-fl {{item.costInOrOut==1?' bg-danger':' bg-green'}}">{{item.costInOrOut==1?"收":"支"}}</text>
+                        </view>
+                        <view class="list-right tui-fl">
+                            <view class="list-item-title" wx:if="{{item.costThing}}">
+                                <i-icon type="transaction_fill" size="16" color="#80848f"></i-icon>{{item.costThing}}
+                            </view>
+                            <view class="list-item-type">
+                                <i-icon type="barrage" size="16" color="#80848f"></i-icon>
+                                {{item.costChannelName+' / '+(item.costTypeName||'--')}}
+                            </view>
+                            <view class="list-item-time" wx:if="{{item.costAddress}}">
+                                <i-icon type="coordinates" size="16" color="#80848f"></i-icon>{{item.costAddress}}
+                            </view>
+                            <view class="list-item-time">
+                                <i-icon type="time" size="16" color="#80848f"></i-icon>{{item.costTime}}
+                            </view>
+                        </view>
+                        <view class="list-item-cost">
+                            <view class="list-text-ft tui-fr {{item.costInOrOut==1?' ft-bg-danger':' ft-bg-green'}}">
+                                {{item.costInOrOut==1?"+":"-"}}{{filters.toFix(item.cost)}}</view>
+                        </view>
+                    </view>
+                </view>
+            </i-swipeout>
+        </view>
+    </view>
+</block>
+
 <i-load-more loading="{{ false }}" />
 <!-- 详情弹窗 -->
 <i-modal title="记录详情" visible="{{ showDetail }}" actions="{{ showDetailActions }}" bind:click="detailHandleClick">
@@ -163,3 +202,4 @@
         {{showDetailModel.costInOrOut==1?"+":"-"}}{{filters.toFix(showDetailModel.cost)}}
     </view>
 </i-modal>
+<i-customer-spin isLogin="{{isLogin}}" />

@@ -1,19 +1,26 @@
+const util = require("../../utils/util");
 var app = getApp();
 Page({
     data: {
-        userInfo: app.globalData,
-        single: false
+        userInfo: null,
+        single: false,
+        isLogin: false,
     },
     onLoad: function () {
-        this.setData({
-            userInfo: app.globalData.userInfo
-        });
+        //检查token是否存在
+        var userInfo = util.getStorageSync("userInfo");
+        if (userInfo != null) {
+            this.setData({
+                userInfo: app.globalData.userInfo,
+                isLogin: true
+            });
+        }
     },
     onShow: function () {
-        this.setData({
-            userInfo: app.globalData.userInfo
-        });
         var self = this;
+        if (!this.data.isLogin) {
+            return;
+        }
         wx.request({
             url: app.globalData.api + '/CostNote/CheckUserTodayDailySign',
             data: {
@@ -43,9 +50,13 @@ Page({
             }
         });
     },
-    handleToHome: function () {
-        wx.reLaunch({
-            url: '/pages/index/index'
+    /**
+     * 跳转到登录页
+     */
+    handleToLogin: function () {
+        wx.clearStorageSync();
+        wx.navigateTo({
+            url: '/pages/login/index'
         });
     },
     handleToAddOrListDailyHistory: function () {
@@ -64,12 +75,12 @@ Page({
             url: "/pages/registration/index",
         });
     },
-    onShareAppMessage() {
+    onShareAppMessage: function () {
         return {
             title: '记录你的一点一滴~',
             desc: '记录你的一点一滴~',
             path: 'pages/index/index',
             imageUrl: app.globalData.shareImgUrl
-        }
+        };
     }
 });

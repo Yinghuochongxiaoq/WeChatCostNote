@@ -1,3 +1,4 @@
+const util = require("../../utils/util");
 var app = getApp();
 Page({
     data: {
@@ -10,26 +11,33 @@ Page({
         //是否显示家庭成员
         isShowFamilyMember: false,
         currentTab: 0,
-        navScrollLeft: 0
+        navScrollLeft: 0,
+        isLogin: false,
+        noLoginDataModel: {}
     },
-    onLoad: function() {
+    onLoad: function () {
         var self = this;
-        var hadBindFamily = app.globalData.userInfo.wechatMemberList && app.globalData.userInfo.wechatMemberList.length > 0;
-        var allSelecter = {
-            accountId: hadBindFamily ? -1 : app.globalData.userInfo.accountId,
-            avatarUrl: "https://aivabc.com/Uploadfile/ShareDetailImage/20190713/6369864601072339692522601.png",
-            codeTimeSpan: null,
-            nickName: "一大家子",
-            token: null
+        //检查token是否存在
+        var userInfo = util.getStorageSync("userInfo");
+        if (userInfo != null) {
+            var hadBindFamily = app.globalData.userInfo.wechatMemberList && app.globalData.userInfo.wechatMemberList.length > 0;
+            var allSelecter = {
+                accountId: hadBindFamily ? -1 : app.globalData.userInfo.accountId,
+                avatarUrl: "https://aivabc.com/Uploadfile/ShareDetailImage/20190713/6369864601072339692522601.png",
+                codeTimeSpan: null,
+                nickName: "一大家子",
+                token: null
+            };
+            var fullfamilyMember = [];
+            fullfamilyMember.push(allSelecter);
+            fullfamilyMember = fullfamilyMember.concat(app.globalData.userInfo.wechatMemberList);
+            self.setData({
+                userInfo: app.globalData.userInfo,
+                familyMembers: fullfamilyMember,
+                isShowFamilyMember: hadBindFamily,
+                isLogin: true
+            });
         }
-        var fullfamilyMember = [];
-        fullfamilyMember.push(allSelecter);
-        fullfamilyMember = fullfamilyMember.concat(app.globalData.userInfo.wechatMemberList)
-        self.setData({
-            userInfo: app.globalData.userInfo,
-            familyMembers: fullfamilyMember,
-            isShowFamilyMember: hadBindFamily
-        });
 
         wx.getSystemInfo({
             success: (res) => {
@@ -37,9 +45,9 @@ Page({
                     pixelRatio: res.pixelRatio,
                     windowHeight: res.windowHeight,
                     windowWidth: res.windowWidth
-                })
+                });
             },
-        })
+        });
     },
     switchNav(event) {
         var cur = event.currentTarget.dataset.current;
@@ -48,13 +56,13 @@ Page({
         //tab选项居中                            
         this.setData({
             navScrollLeft: (cur - 2) * singleNavWidth
-        })
+        });
         if (this.data.currentTab == cur) {
             return false;
         } else {
             this.setData({
                 currentTab: cur
-            })
+            });
         }
     },
     switchTab(event) {
@@ -65,16 +73,56 @@ Page({
             navScrollLeft: (cur - 2) * singleNavWidth
         });
     },
-    onShow: function() {
-        this.getStatistics()
+    onShow: function () {
+        if (!this.data.isLogin) {
+            this.noLoginData();
+            return;
+        }
+        this.getStatistics();
     },
-    onPullDownRefresh: function() {
+    /**
+     * 没登录时的测试数据
+     */
+    noLoginData: function () {
+        var statisticsModel = {
+            allCouldCost: 100000,
+            allInCost: 100000,
+            allOutCost: 100000
+        };
+        var channelAcountList = [{
+            costChannelName: '微信账户',
+            costCount: 9000
+        }, {
+            costChannelName: '支付宝账户',
+            costCount: 1500
+        }, {
+            costChannelName: '中国银行信用卡',
+            costCount: -6857
+        }, {
+            costChannelName: '京东金融',
+            costCount: 20000
+        }, {
+            costChannelName: '应收借款',
+            costCount: 500
+        }, {
+            costChannelName: '企业年金账户',
+            costCount: 800
+        }];
+        var noLoginDataModel = {
+            statisticsModel: statisticsModel,
+            channelAcount: channelAcountList
+        };
+        this.setData({
+            noLoginDataModel: noLoginDataModel
+        });
+    },
+    onPullDownRefresh: function () {
         this.setData({
             pulldownrefresh: true
-        })
-        this.getStatistics()
+        });
+        this.getStatistics();
     },
-    getStatistics: function() {
+    getStatistics: function () {
         var self = this;
         // 请求数据，并渲染
         wx.request({
@@ -83,7 +131,7 @@ Page({
                 token: app.globalData.userInfo.token
             },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 if (res.data.resultCode == 0) {
                     var resulteData = [];
                     //对返回数据排序
@@ -101,34 +149,34 @@ Page({
                     self.setData({
                         statisticsModel: resulteData,
                         pulldownrefresh: false
-                    })
+                    });
                 } else {
                     wx.showToast({
                         title: res.data.message,
                         icon: 'none',
                         duration: 2000
-                    })
+                    });
                 }
             },
-            complete: function() {
+            complete: function () {
                 //停止刷新
                 if (self.data.pulldownrefresh) {
-                    wx.stopPullDownRefresh()
+                    wx.stopPullDownRefresh();
                 }
             }
-        })
+        });
     },
-    handleNavigateClick: function() {
+    handleNavigateClick: function () {
         wx.navigateTo({
             url: "/pages/costchannel/edit?id=0"
         });
     },
-    onShareAppMessage() {     
-        return {    
+    onShareAppMessage: function () {
+        return {
             title: '记录你的一点一滴~',
             desc: '记录你的一点一滴~',
             path: 'pages/index/index',
             imageUrl: app.globalData.shareImgUrl
-        }    
+        };
     }
-})
+});

@@ -1,3 +1,8 @@
+page {
+    background-color: #efeff4;
+    font-size: 30rpx;
+}
+
 /*tabbar style  */
 
 .tui-tabbar-content {

@@ -1,0 +1,13 @@
+<block wx:if="{{!isLogin}}">
+    <view class="i-spin-bg"></view>
+    <view class="i-spin-show" bindtap='handleToLogin'>
+        <view class="i-spin i-spin-large i-spin-fix">
+            <view class="i-spin-main">
+                <view class="i-spin-dot"></view>
+                <view class="i-spin-text">
+                    您还未登录，点此登录
+                </view>
+            </view>
+        </view>
+    </view>
+</block>

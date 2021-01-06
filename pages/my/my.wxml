@@ -1,9 +1,9 @@
-<view class="personal_info">
+<view class="personal_info" bindtap="{{isLogin?'':'handleToLogin'}}">
     <view class="photo_wrap">
-        <image src="{{userInfo.avatarUrl}}" class="photo"></image>
+        <image src="{{userInfo?userInfo.avatarUrl:'/images/wx_login.png'}}" class="photo"></image>
     </view>
     <view class="nickname">
-        {{userInfo.nickName}}
+        {{userInfo?userInfo.nickName:'您还没有登录,点我去登录'}}
     </view>
 </view>
 <view class="sign_activity">
@@ -14,7 +14,6 @@
     <view class="c-span3" bindtap="handleToAddDailyHistory">
         <i-icon type="add" size="25" color="#19be6b" />
         <text>点此补打</text>
-
     </view>
 </view>
 
@@ -29,4 +28,4 @@
         </i-cell-group>
     </i-panel>
 </view>
-<i-button bind:click="handleToHome" type="success">重新登录</i-button>
+<i-button bind:click="handleToLogin" type="success">{{isLogin?'重新登录':'去登录'}}</i-button>

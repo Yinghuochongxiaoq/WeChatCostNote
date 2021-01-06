@@ -1,4 +1,5 @@
 var wxCharts = require('../../utils/wxcharts.js');
+const util = require("../../utils/util");
 var app = getApp();
 var pieChart = null;
 var windowWidth = 320;
@@ -24,10 +25,12 @@ Page({
         currentTab: 0,
         navScrollLeft: 0,
         //当前用户id
-        currentMemberId: -1
+        currentMemberId: -1,
+        //是否已经登录
+        isLogin: false,
     },
     //点击饼图
-    touchHandler: function(e) {
+    touchHandler: function (e) {
         console.log(pieChart.getCurrentDataIndex(e));
         if (this.data.typeArray && this.data.typeArray.length > 0 && pieChart.getCurrentDataIndex(e) > -1) {
             this.setData({
@@ -64,34 +67,75 @@ Page({
             }
         }
     },
-    onShow: function() {
-        this.getPieData()
-        this.getLineData()
+    /**
+     * 没登录时的测试数据
+     */
+    noLoginData: function () {
+        var self = this;
+        var data = [{
+            color: "#7cb5ec",
+            data: 2025.68,
+            name: "发红包",
+        }, {
+            color: "#e7a65c",
+            data: 3000,
+            name: "住宿",
+        }, {
+            color: "#def0ba",
+            data: 1800.8,
+            name: "旅行"
+        }, {
+            color: "#879eba",
+            data: 1500,
+            name: "奢侈品"
+        }];
+        self.setData({
+            pieTip: '总计消费52482元'
+        });
+        self.drawPie(data);
     },
-    onPullDownRefresh: function() {
+    onShow: function () {
+        if (!this.data.isLogin) {
+            this.noLoginData();
+            return;
+        }
+        this.getPieData();
+        this.getLineData();
+    },
+    onPullDownRefresh: function () {
+        if (!this.data.isLogin) {
+            this.noLoginData();
+            return;
+        }
         this.setData({
             pulldownrefresh: true
-        })
-        this.getPieData()
-        this.getLineData()
-    },
-    onLoad: function(e) {
-        var hadBindFamily = app.globalData.userInfo.wechatMemberList && app.globalData.userInfo.wechatMemberList.length > 0;
-        var allSelecter = {
-            accountId: hadBindFamily ? -1 : app.globalData.userInfo.accountId,
-            avatarUrl: "https://aivabc.com/Uploadfile/ShareDetailImage/20190713/6369864601072339692522601.png",
-            codeTimeSpan: null,
-            nickName: "一大家子",
-            token: null
-        }
-        var fullfamilyMember = [];
-        fullfamilyMember.push(allSelecter);
-        fullfamilyMember = fullfamilyMember.concat(app.globalData.userInfo.wechatMemberList)
-        this.setData({
-            userInfo: app.globalData.userInfo,
-            familyMembers: fullfamilyMember,
-            isShowFamilyMember: hadBindFamily
         });
+        this.getPieData();
+        this.getLineData();
+    },
+    onLoad: function (e) {
+        //检查token是否存在
+        var userInfo = util.getStorageSync("userInfo");
+        if (userInfo != null) {
+            var hadBindFamily = app.globalData.userInfo.wechatMemberList && app.globalData.userInfo.wechatMemberList.length > 0;
+            var allSelecter = {
+                accountId: hadBindFamily ? -1 : app.globalData.userInfo.accountId,
+                avatarUrl: "https://aivabc.com/Uploadfile/ShareDetailImage/20190713/6369864601072339692522601.png",
+                codeTimeSpan: null,
+                nickName: "一大家子",
+                token: null
+            }
+            var fullfamilyMember = [];
+            fullfamilyMember.push(allSelecter);
+            fullfamilyMember = fullfamilyMember.concat(app.globalData.userInfo.wechatMemberList)
+            this.setData({
+                userInfo: app.globalData.userInfo,
+                familyMembers: fullfamilyMember,
+                isShowFamilyMember: hadBindFamily,
+                isLogin: true
+            });
+        }
+
         try {
             wx.getSystemInfo({
                 success: (res) => {
@@ -99,29 +143,31 @@ Page({
                         pixelRatio: res.pixelRatio,
                         windowHeight: res.windowHeight,
                         windowWidth: res.windowWidth
-                    })
+                    });
                 },
-            })
+            });
         } catch (e) {
             console.error('getSystemInfo failed!');
         }
-        //初始化一个无数据
-        this.drawPie([{
-            name: '无数据',
-            data: 1
-        }]);
-        this.drawLine(['无数据'], [0], [0])
+        if (userInfo != null) {
+            //初始化一个无数据
+            this.drawPie([{
+                name: '无数据',
+                data: 1
+            }]);
+            this.drawLine(['无数据'], [0], [0]);
+        }
     },
     //获取饼图数据
-    getPieData: function() {
+    getPieData: function () {
         var self = this;
         self.setData({
             pieDo: true
-        })
+        });
         wx.showLoading({
-                title: '数据加载中…'
-            })
-            // 请求数据，并渲染
+            title: '数据加载中…'
+        });
+        // 请求数据，并渲染
         wx.request({
             url: app.globalData.api + '/CostNote/ChartPieData',
             data: {
@@ -130,7 +176,7 @@ Page({
                 memberId: self.data.currentMemberId
             },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 if (res.data.resultCode == 0) {
                     if (res.data.data.length > 0) {
                         var sumData = 0;
@@ -140,13 +186,13 @@ Page({
                         self.setData({
                             typeArray: res.data.data,
                             pieTip: '总计消费' + sumData / 100 + '元'
-                        })
-                        self.drawPie(res.data.data)
+                        });
+                        self.drawPie(res.data.data);
                     } else {
                         self.setData({
                             pieTip: '暂无数据，快去记账吧~',
                             typeArray: []
-                        })
+                        });
                         self.drawPie([{
                             name: '无数据',
                             data: 1
@@ -162,26 +208,26 @@ Page({
             },
             complete: () => {
                 self.setData({
-                        pieDo: false
-                    })
-                    //停止刷新
+                    pieDo: false
+                })
+                //停止刷新
                 if (self.data.pulldownrefresh && !self.data.lineDo) {
-                    wx.stopPullDownRefresh()
+                    wx.stopPullDownRefresh();
                 }
-                wx.hideLoading()
+                wx.hideLoading();
             }
-        })
+        });
     },
     //获取折线图数据
-    getLineData: function() {
+    getLineData: function () {
         var self = this;
         self.setData({
             lineDo: true
         })
         wx.showLoading({
-                title: '数据加载中…'
-            })
-            // 请求数据，并渲染
+            title: '数据加载中…'
+        });
+        // 请求数据，并渲染
         wx.request({
             url: app.globalData.api + '/CostNote/ChartLineData',
             data: {
@@ -190,7 +236,7 @@ Page({
                 memberId: self.data.currentMemberId
             },
             method: 'GET',
-            success: function(res) {
+            success: function (res) {
                 if (res.data.resultCode == 0) {
                     if (res.data.data.nameArray.length > 0) {
                         var lineData = [];
@@ -199,41 +245,41 @@ Page({
                                 month: res.data.data.nameArray[i],
                                 sumCost: res.data.data.dataOutArray[i],
                                 sumIn: res.data.data.dataInArray[i]
-                            })
+                            });
                         }
                         self.setData({
                             monthArray: lineData
-                        })
-                        self.drawLine(res.data.data.nameArray, res.data.data.dataOutArray, res.data.data.dataInArray)
+                        });
+                        self.drawLine(res.data.data.nameArray, res.data.data.dataOutArray, res.data.data.dataInArray);
                     } else {
-                        self.drawLine(['无数据'], [0], [0])
+                        self.drawLine(['无数据'], [0], [0]);
                         self.setData({
                             monthArray: []
-                        })
+                        });
                     }
                 } else {
                     wx.showToast({
                         title: res.data.message,
                         icon: 'none',
                         duration: 2000
-                    })
+                    });
                     self.drawLine(['无数据'], [0], [0])
                 }
             },
             complete: () => {
                 self.setData({
-                        lineDo: false
-                    })
-                    //停止刷新
+                    lineDo: false
+                });
+                //停止刷新
                 if (self.data.pulldownrefresh && !self.data.pieDo) {
-                    wx.stopPullDownRefresh()
+                    wx.stopPullDownRefresh();
                 }
-                wx.hideLoading()
+                wx.hideLoading();
             }
-        })
+        });
     },
     //绘制饼图
-    drawPie: function(data) {
+    drawPie: function (data) {
         pieChart = new wxCharts({
             animation: true,
             canvasId: 'pieCanvas',
@@ -248,7 +294,7 @@ Page({
         });
     },
     //绘制折线图
-    drawLine: function(categories, dataOut, dataIn) {
+    drawLine: function (categories, dataOut, dataIn) {
         if (dataOut.length > 1) {
             var lineOutData = [];
             for (var i = 0; i < dataOut.length; i++) {
@@ -279,13 +325,13 @@ Page({
             series: [{
                 name: '月度消费走势',
                 data: dataOut,
-                format: function(val, name) {
+                format: function (val, name) {
                     return val.toFixed(2) + '元';
                 }
             }, {
                 name: '月度收入走势',
                 data: dataIn,
-                format: function(val, name) {
+                format: function (val, name) {
                     return val.toFixed(2) + '元';
                 }
             }],
@@ -294,7 +340,7 @@ Page({
             },
             yAxis: {
                 title: '月度消费/收入金额 (元)',
-                format: function(val) {
+                format: function (val) {
                     return val.toFixed(2);
                 },
                 min: 0
@@ -310,7 +356,7 @@ Page({
         });
     },
     //切换图形分类
-    handlerTypeChange: function({
+    handlerTypeChange: function ({
         detail
     }) {
         this.setData({
@@ -330,26 +376,26 @@ Page({
         })
         this.getLineData()
     },
-    touchLineHandler: function(e) {
+    touchLineHandler: function (e) {
         lineChart.scrollStart(e);
     },
-    moveHandler: function(e) {
+    moveHandler: function (e) {
         lineChart.scroll(e);
     },
-    touchEndHandler: function(e) {
+    touchEndHandler: function (e) {
         lineChart.scrollEnd(e);
         lineChart.showToolTip(e, {
-            format: function(item, category) {
+            format: function (item, category) {
                 return category + ' ' + item.name + ':' + item.data
             }
         });
     },
-    onShareAppMessage() {     
-        return {    
+    onShareAppMessage() {
+        return {
             title: '记录你的一点一滴~',
             desc: '记录你的一点一滴~',
             path: 'pages/index/index',
             imageUrl: app.globalData.shareImgUrl
-        }    
+        };
     }
 });

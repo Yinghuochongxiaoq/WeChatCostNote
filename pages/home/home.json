@@ -12,6 +12,7 @@
         "i-action-sheet": "../../iView/action-sheet/index",
         "i-avatar": "../../iView/avatar/index",
         "i-notice-bar": "../../iView/notice-bar/index",
-        "i-modal": "../../iView/modal/index"
+        "i-modal": "../../iView/modal/index",
+        "i-customer-spin": "../../components/i-spin"
     }
 }

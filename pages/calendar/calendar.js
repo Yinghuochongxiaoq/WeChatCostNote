@@ -100,13 +100,21 @@ Page({
                 color: '#ed3f14',
                 loading: false
             }
-        ]
+        ],
+        isLogin: false
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        //检查token是否存在
+        var userInfo = util.getStorageSync("userInfo");
+        if (userInfo != null) {
+            this.setData({
+                isLogin: true
+            });
+        }
         this.setData({
             objectId: options.objectId
         });
@@ -301,6 +309,9 @@ Page({
      */
     onGetSignUp: function (year, month) {
         var self = this;
+        if (!this.data.isLogin) {
+            return;
+        }
         wx.request({
             url: app.globalData.api + '/CostNote/GetUserDailyHistoryList',
             data: {

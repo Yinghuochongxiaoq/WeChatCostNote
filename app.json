@@ -1,6 +1,7 @@
 {
     "pages": [
-        "pages/index/index",
+        "pages/welcome/index",
+        "pages/login/index",
         "pages/home/home",
         "pages/costchannel/costchannel",
         "pages/costchannel/edit",
