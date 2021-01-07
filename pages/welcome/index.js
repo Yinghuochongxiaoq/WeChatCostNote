@@ -24,7 +24,7 @@ Page({
         // 查看是否授权
         wx.getSetting({
             success: function (res) {
-                console.log('授权成功');
+                console.log('查看是否授权');
                 if (res.authSetting['scope.userInfo']) {
                     wx.login({
                         success: function (res) {

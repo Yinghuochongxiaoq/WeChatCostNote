@@ -19,6 +19,14 @@ page {
     letter-spacing: 2px;
 } */
 
+.i-swipeout-demo-item {
+    width: 100%;
+    padding: 10rpx 10rpx !important;
+    box-sizing: border-box;
+    transition: transform .2s ease;
+    font-size: 14px;
+}
+
 .list-card {
     position: relative;
     overflow: hidden;
@@ -52,8 +60,8 @@ page {
 
 .list-item-title {
     display: block;
-    height: 40rpx;
-    line-height: 40rpx;
+    height: 50rpx;
+    line-height: 50rpx;
     overflow: hidden;
     font-size: 30rpx;
     white-space: nowrap;
@@ -69,6 +77,9 @@ page {
     overflow: hidden;
     font-size: 25rpx;
     color: #8f8f94;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 450rpx;
 }
 
 .block-ft {

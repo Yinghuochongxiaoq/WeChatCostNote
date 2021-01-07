@@ -97,21 +97,12 @@ Page({
                 },
                 {
                     cost: 3900.75,
-                    costAddress: "西藏自治区拉萨市山南市贡嘎县迎宾路",
+                    costAddress: "拉萨市山南市贡嘎县迎宾路",
                     costChannelName: "支付宝账户",
                     costInOrOut: 2,
                     costThing: "追风少年飞往西藏",
                     costTime: "2019-04-05 20:02:00",
                     costTypeName: "旅行"
-                },
-                {
-                    cost: 870,
-                    costAddress: "创新大楼图书馆",
-                    costChannelName: "微信账户",
-                    costInOrOut: 2,
-                    costThing: "心悦诚服的购买图书卡",
-                    costTime: "2017-10-01 10:05:00",
-                    costTypeName: "教育"
                 }
             ]
         });

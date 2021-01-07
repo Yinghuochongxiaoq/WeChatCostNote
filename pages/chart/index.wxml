@@ -38,7 +38,9 @@
         </i-notice-bar>
     </i-panel>
     <view class="container" hidden="{{chartType!=0}}">
-        <canvas canvas-id="pieCanvas" class="canvas" style="height:300px" bindtouchstart="touchHandler"></canvas>
+        <canvas canvas-id="pieCanvas" id="pieCanvas" class="canvas" style="height:300px;{{isLogin?'':'display: none;'}}"
+            bindtouchstart="touchHandler"></canvas>
+        <image class="chart_demo" wx:if="{{!isLogin}}" src="/images/chart.png" />
     </view>
 
     <i-panel wx:if="{{chartType==0}}">
@@ -63,7 +65,7 @@
     </view>
 
     <view class="container" hidden="{{chartType!=1}}">
-        <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" bindtouchstart="touchLineHandler"
+        <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" bindtouchstart="touchLineHandler" type="2d"
             bindtouchmove="moveHandler" bindtouchend="touchEndHandler"></canvas>
     </view>
 

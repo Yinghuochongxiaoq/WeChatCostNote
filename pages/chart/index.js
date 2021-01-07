@@ -27,7 +27,7 @@ Page({
         //当前用户id
         currentMemberId: -1,
         //是否已经登录
-        isLogin: false,
+        isLogin: false
     },
     //点击饼图
     touchHandler: function (e) {
@@ -35,7 +35,7 @@ Page({
         if (this.data.typeArray && this.data.typeArray.length > 0 && pieChart.getCurrentDataIndex(e) > -1) {
             this.setData({
                 pieTip: this.data.typeArray[pieChart.getCurrentDataIndex(e)].name + '类型累计消费' + this.data.typeArray[pieChart.getCurrentDataIndex(e)].data + '元'
-            })
+            });
         }
     },
     //切换用户
@@ -67,36 +67,8 @@ Page({
             }
         }
     },
-    /**
-     * 没登录时的测试数据
-     */
-    noLoginData: function () {
-        var self = this;
-        var data = [{
-            color: "#7cb5ec",
-            data: 2025.68,
-            name: "发红包",
-        }, {
-            color: "#e7a65c",
-            data: 3000,
-            name: "住宿",
-        }, {
-            color: "#def0ba",
-            data: 1800.8,
-            name: "旅行"
-        }, {
-            color: "#879eba",
-            data: 1500,
-            name: "奢侈品"
-        }];
-        self.setData({
-            pieTip: '总计消费52482元'
-        });
-        self.drawPie(data);
-    },
     onShow: function () {
         if (!this.data.isLogin) {
-            this.noLoginData();
             return;
         }
         this.getPieData();
@@ -104,7 +76,6 @@ Page({
     },
     onPullDownRefresh: function () {
         if (!this.data.isLogin) {
-            this.noLoginData();
             return;
         }
         this.setData({
@@ -124,7 +95,7 @@ Page({
                 codeTimeSpan: null,
                 nickName: "一大家子",
                 token: null
-            }
+            };
             var fullfamilyMember = [];
             fullfamilyMember.push(allSelecter);
             fullfamilyMember = fullfamilyMember.concat(app.globalData.userInfo.wechatMemberList)
@@ -185,7 +156,7 @@ Page({
                         }
                         self.setData({
                             typeArray: res.data.data,
-                            pieTip: '总计消费' + sumData / 100 + '元'
+                            pieTip: '总计消费' + (sumData / 100).toFixed(2) + '元'
                         });
                         self.drawPie(res.data.data);
                     } else {
@@ -263,7 +234,7 @@ Page({
                         icon: 'none',
                         duration: 2000
                     });
-                    self.drawLine(['无数据'], [0], [0])
+                    self.drawLine(['无数据'], [0], [0]);
                 }
             },
             complete: () => {
@@ -290,7 +261,7 @@ Page({
             series: data,
             width: windowWidth,
             height: 300,
-            dataLabel: true,
+            dataLabel: true
         });
     },
     //绘制折线图
@@ -299,9 +270,9 @@ Page({
             var lineOutData = [];
             for (var i = 0; i < dataOut.length; i++) {
                 if (!dataOut[i]) {
-                    lineOutData.push(null)
+                    lineOutData.push(null);
                 } else {
-                    lineOutData.push(dataOut[i])
+                    lineOutData.push(dataOut[i]);
                 }
             }
             dataOut = lineOutData;
@@ -310,9 +281,9 @@ Page({
             var lineInData = [];
             for (var i = 0; i < dataIn.length; i++) {
                 if (!dataIn[i]) {
-                    lineInData.push(null)
+                    lineInData.push(null);
                 } else {
-                    lineInData.push(dataIn[i])
+                    lineInData.push(dataIn[i]);
                 }
             }
             dataIn = lineInData;
@@ -361,20 +332,20 @@ Page({
     }) {
         this.setData({
             chartType: detail.key
-        })
+        });
     },
     //时间选择
     changePieTabBar(e) {
         this.setData({
             timePieIndex: e.currentTarget.dataset.id
         })
-        this.getPieData()
+        this.getPieData();
     },
     changeLineTabBar(e) {
         this.setData({
             timeLineIndex: e.currentTarget.dataset.id
         })
-        this.getLineData()
+        this.getLineData();
     },
     touchLineHandler: function (e) {
         lineChart.scrollStart(e);
@@ -390,7 +361,7 @@ Page({
             }
         });
     },
-    onShareAppMessage() {
+    onShareAppMessage: function () {
         return {
             title: '记录你的一点一滴~',
             desc: '记录你的一点一滴~',

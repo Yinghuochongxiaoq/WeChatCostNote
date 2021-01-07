@@ -34,6 +34,9 @@ Page(_page.initPage({
         //检查token是否存在
         var userInfo = util.getStorageSync("userInfo");
         if (userInfo != null) {
+            that.setData({
+                isLogin: true
+            });
             wx.request({
                 url: app.globalData.api + '/CostNote/GetUploadConfig',
                 data: {

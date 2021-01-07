@@ -7,7 +7,7 @@
         <view class='content'>
             <view>申请获取以下权限</view>
             <text>获得你的公开信息(昵称，头像等)</text>
-            <text>用于标记用户记账，查看账单信息，查看收支统计等功能</text>
+            <text>作为用户登录唯一凭证，体验完整的记账流程、查看账单信息、查看收支统计等服务</text>
         </view>
 
         <button class='bottom' type='primary' open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="bindGetUserInfo">
