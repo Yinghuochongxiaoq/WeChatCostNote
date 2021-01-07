@@ -23,7 +23,7 @@ Page({
             var hadBindFamily = app.globalData.userInfo.wechatMemberList && app.globalData.userInfo.wechatMemberList.length > 0;
             var allSelecter = {
                 accountId: hadBindFamily ? -1 : app.globalData.userInfo.accountId,
-                avatarUrl: "https://aivabc.com/Uploadfile/ShareDetailImage/20190713/6369864601072339692522601.png",
+                avatarUrl: "https://aivabc.com:8080/Uploadfile/20210105/6369864601072339692522601.png",
                 codeTimeSpan: null,
                 nickName: "一大家子",
                 token: null

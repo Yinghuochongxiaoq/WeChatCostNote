@@ -52,8 +52,8 @@
     <view class="drawer_content">
         <view class="drawer_title line" bindtap="chooseMember" data-statue="close" data-memberid="-1"
             data-membername="全部">
-            <i-avatar src="https://aivabc.com/Uploadfile/ShareDetailImage/20190713/6369864601072339692522601.png"
-                size="small" shape="square"></i-avatar>一大家子
+            <i-avatar src="https://aivabc.com:8080/Uploadfile/20210105/6369864601072339692522601.png" size="small"
+                shape="square"></i-avatar>一大家子
         </view>
         <block wx:for="{{familyMembers}}" wx:key="accountId">
             <view class="drawer_title line" bindtap="chooseMember" data-membername="{{item.nickName}}"

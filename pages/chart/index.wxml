@@ -65,7 +65,7 @@
     </view>
 
     <view class="container" hidden="{{chartType!=1}}">
-        <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" bindtouchstart="touchLineHandler" type="2d"
+        <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" bindtouchstart="touchLineHandler"
             bindtouchmove="moveHandler" bindtouchend="touchEndHandler"></canvas>
     </view>
 
