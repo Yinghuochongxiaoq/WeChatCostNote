@@ -162,6 +162,30 @@ Page({
     },
 
     /**
+     * 图片加载失败
+     */
+    imageOnloadError: function (e) {
+        var that = this;
+        //获取加载出错的图片下标
+        var index = e.currentTarget.dataset.img_index;
+        var detailIndex = e.currentTarget.dataset.index;
+
+        console.log("图片加载出错啦,打卡下标：" + detailIndex + "图片下标：" + index);
+        //后台返回的图片路径数组
+        var errorMedia = this.data.answer[detailIndex].mediaList[index];
+        if (!errorMedia.loadError) {
+            var _imgUrl = this.data.answer[detailIndex].mediaList[index].fullUrl;
+            var answer = this.data.answer;
+            answer[detailIndex].mediaList[index].fullUrl = _imgUrl + "?_v=" + Math.random();
+            answer[detailIndex].mediaList[index].loadError = true;
+            console.log(answer);
+            that.setData({
+                answer: answer
+            });
+        }
+    },
+
+    /**
      * 展开更多
      * @param {e} e 
      */

@@ -8,6 +8,7 @@ const {
     watch,
     computed
 } = require('../../utils/vuefy.js');
+var errorIndexList = [];
 
 //获取应用实例
 const app = getApp();
@@ -299,6 +300,26 @@ Page(_page.initPage({
                 });
             }
         });
+    },
+    /**
+     * 图片加载失败
+     */
+    imageOnloadError: function (e) {
+        var that = this;
+        //获取加载出错的图片下标
+        var index = e.currentTarget.dataset.index;
+        console.log("图片加载出错啦,下标：" + index);
+        //后台返回的图片路径数组
+        if (errorIndexList.indexOf(index) >= 0) {
+            errorIndexList.push(index);
+            var _imgUrl = this.data.imgs[index];
+            var imgs = this.data.imgs;
+            imgs[index] = _imgUrl + "?_v=" + Math.random();
+            console.log(imgs);
+            that.setData({
+                imgs: imgs
+            });
+        }
     },
     /**
      * 选择图片

@@ -60,7 +60,8 @@
                 style="{{item.auto && item.seeMore?'height: 90rpx;':''}}">
                 <view class='image' wx:for='{{item.mediaList}}' wx:key="id" wx:for-item="mediaItem">
                     <image class='moment_img' src="{{mediaItem.fullUrl}}" data-index="{{detailIndex}}"
-                        data-img_index="{{index}}" mode="aspectFill" bindtap="previewImg" lazy-load="true">
+                        data-img_index="{{index}}" mode="aspectFill" bindtap="previewImg" lazy-load="true"
+                        binderror="imageOnloadError">
                     </image>
                 </view>
             </view>
