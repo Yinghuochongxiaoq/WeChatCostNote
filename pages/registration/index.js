@@ -310,7 +310,7 @@ Page(_page.initPage({
         var index = e.currentTarget.dataset.index;
         console.log("图片加载出错啦,下标：" + index);
         //后台返回的图片路径数组
-        if (errorIndexList.indexOf(index) >= 0) {
+        if (errorIndexList.indexOf(index) < 0) {
             errorIndexList.push(index);
             var _imgUrl = this.data.imgs[index];
             var imgs = this.data.imgs;

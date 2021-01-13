@@ -13,7 +13,8 @@
         "pages/costtype/edit",
         "pages/bindfamily/index",
         "pages/registration/index",
-        "pages/calendar/calendar"
+        "pages/calendar/calendar",
+        "pages/2048/2048"
     ],
     "window": {
         "backgroundTextStyle": "light",
