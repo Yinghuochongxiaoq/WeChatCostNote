@@ -125,5 +125,13 @@ Page({
                 score: data.score
             });
         }
+    },
+    onShareAppMessage: function () {
+        return {
+            title: '吾计轻松一刻',
+            desc: '上班,学习,无聊?来吾计轻松一下吧^v^',
+            path: 'pages/2048/2048',
+            imageUrl: app.globalData.shareImgUrl
+        };
     }
 });
