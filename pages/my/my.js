@@ -5,6 +5,10 @@ Page({
         userInfo: null,
         single: false,
         isLogin: false,
+        linkList: [{
+            title: "关于我们",
+            link: "./about"
+        }]
     },
     onLoad: function () {
         //检查token是否存在
@@ -15,6 +19,14 @@ Page({
                 isLogin: true
             });
         }
+        app.http('/ConfigFunction/MyConfigInfo', '', "GET")
+            .then(res => {
+                if (res.resultCode == 0) {
+                    this.setData({
+                        linkList: res.data
+                    });
+                }
+            });
     },
     onShow: function () {
         var self = this;

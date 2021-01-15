@@ -30,12 +30,43 @@ App({
             });
         }
     },
+    /**
+     * 封装http请求
+     * @param {string} url 
+     * @param {object} data 
+     * @param {string|GET|POST} method 
+     */
+    http: function (url, data = '', method = "GET") {
+        var apiUrl = this.globalData.api;
+        var currency = {
+            token: this.globalData.userInfo ? (this.globalData.userInfo.token || '') : ''
+        };
+        return new Promise((resolve, reject) => {
+            wx.request({
+                url: apiUrl + url,
+                data: Object.assign(currency, data),
+                method: method,
+                success: function (res) {
+                    if (res.data.resultCode == 0) {
+                        console.log('请求发起，响应成功.');
+                    }
+                    resolve(res.data);
+                },
+                fail: function (res) {
+                    reject(res);
+                },
+                complete: function () {
+                    console.log('http complete.');
+                }
+            });
+        });
+    },
     globalData: {
         userInfo: null,
         shareImgUrl: 'https://aivabc.com:8080/Uploadfile/20210105/6369786934483499313738901.jpg',
-        api: 'https://api.aivabc.com:8080/api',
-        uploadFileUrl: 'https://api.aivabc.com:8080/UploadServer/HandlerFile/HandlerFile.ashx?fun=001&others=',
-        // uploadFileUrl: 'http://localhost:8004/UploadServer/HandlerFile/HandlerFile.ashx?fun=001&others=',
-        // api: 'http://localhost:8004/api',
+        // api: 'https://api.aivabc.com:8080/api',
+        // uploadFileUrl: 'https://api.aivabc.com:8080/UploadServer/HandlerFile/HandlerFile.ashx?fun=001&others=',
+        uploadFileUrl: 'http://localhost:8004/UploadServer/HandlerFile/HandlerFile.ashx?fun=001&others=',
+        api: 'http://localhost:8004/api',
     }
 });
