@@ -71,11 +71,11 @@ App({
         jdApiKey: 'w01831035fb65a1c696c8ade9d00df6a6',
         jdJokeUrl: 'https://way.jd.com/showapi/wbxh',
         shareImgUrl: 'https://aivabc.com:8080/Uploadfile/20210105/6369786934483499313738901.jpg',
-        api: 'https://api.aivabc.com:8080/api',
-        uploadFileUrl: 'https://api.aivabc.com:8080/UploadServer/HandlerFile/HandlerFile.ashx?fun=001&others=',
-        cloudId: 'wcloud-http-online-4eo9hh8ef0ea88',
-        // cloudId: 'wcommon-test-data-set-6bw06f34bd7',
-        // uploadFileUrl: 'http://localhost:8004/UploadServer/HandlerFile/HandlerFile.ashx?fun=001&others=',
-        // api: 'http://localhost:8004/api',
+        // api: 'https://api.aivabc.com:8080/api',
+        // uploadFileUrl: 'https://api.aivabc.com:8080/UploadServer/HandlerFile/HandlerFile.ashx?fun=001&others=',
+        // cloudId: 'wcloud-http-online-4eo9hh8ef0ea88',
+        cloudId: 'wcommon-test-data-set-6bw06f34bd7',
+        uploadFileUrl: 'http://localhost:8004/UploadServer/HandlerFile/HandlerFile.ashx?fun=001&others=',
+        api: 'http://localhost:8004/api',
     }
 });
