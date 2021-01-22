@@ -36,7 +36,7 @@ function getMonthDay(year, month) {
             array = flag ? getLoopArray(1, 29) : getLoopArray(1, 28)
             break;
         default:
-            array = '月份格式不正确，请重新输入！'
+            array = '月份格式不正确，请重新输入！';
     }
     return array;
 }
@@ -85,9 +85,9 @@ function dateTimePicker(startYear, endYear, date) {
     return {
         dateTimeArray: dateTimeArray,
         dateTime: dateTime
-    }
+    };
 }
 module.exports = {
     dateTimePicker: dateTimePicker,
     getMonthDay: getMonthDay
-}
+};

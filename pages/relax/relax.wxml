@@ -1,0 +1,74 @@
+<view wx:if="{{showGame}}" class="container">
+
+	<view class="game-body">
+		<loading hidden="{{hidden}}">
+			加载中...
+		</loading>
+		<view class="heading">
+			<text class="title">2048</text>
+			<view class="scores-container">
+				<view class="score-container">{{score}}</view>
+				<view class="best-container">{{highScore}}</view>
+				<view class="restart-button" bindtap="restart">重新开始</view>
+			</view>
+		</view>
+
+		<view class="game-container" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd">
+
+			<!--游戏结束显示  -->
+			<view class="game-message game-{{over ? (win ? 'won' : 'over') : ''}}">
+				<text class="over-msg">{{overMsg}}</text>
+				<view class="lower">
+					<!-- <text class="keep-playing-button">继续</text> -->
+					<text class="retry-button" bindtap="restart">再试一次</text>
+				</view>
+			</view>
+
+			<view class="grid-container">
+				<view wx:for="{{grids}}" wx:for-index="rowIdx" wx:key="rowIdx" wx:for-item="row" class="grid-row">
+					<view wx:for="{{row}}" wx:for-index="colIdx" wx:key="colIdx" wx:for-item="cell" class="grid-cell">
+						<view class="tile tile-{{cell.value}}">
+							<view wx:if="{{cell}}" class="tile-inner">
+								{{cell.value}}
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
+
+<block wx:else>
+	<i-cell wx:if="{{couldInGame}}" title="进入游戏一番">
+		<i-switch value="{{false}}" size="large" bind:change="loadGame" slot="footer">
+			<view slot="open">开启</view>
+			<view slot="close">关闭</view>
+		</i-switch>
+	</i-cell>
+	<block wx:for="{{jokeList}}" wx:for-index="detailIndex">
+		<i-card full title="{{item.title}}" extra="{{item.ct}}" i-class="card-demo">
+			<view slot="content" class="{{item.seeMore?'elips':''}}" data-index="{{detailIndex}}">
+				<view class="{{item.seeMore?'elips':''}} content">{{item.text}}</view>
+			</view>
+			<view slot="footer" class="foot-center" data-index="{{detailIndex}}" wx:if="{{item.auto && item.seeMore}}"
+				bindtap="foldHandler">
+				<text class="bottom-arrow1"></text>
+				<text class="bottom-arrow2"></text>
+				<text style="color: #19be6b;">展开</text>
+			</view>
+
+			<view slot="footer" class="foot-center" data-index="{{detailIndex}}" wx:if="{{item.auto && !item.seeMore}}"
+				bindtap="unfoldHandler">
+				<text class="top-arrow1"></text>
+				<text class="top-arrow2"></text>
+				<text style="color:#19be6b;">收起</text>
+			</view>
+		</i-card>
+	</block>
+	<i-load-more wx:if="{{showAllJoke}}" tip="我是有底线的" loading="{{ false }}" />
+	<i-spin wx:else custom bindtap="initJokeData">
+		<i-icon type="refresh" size="20" i-class="icon-load"></i-icon>
+		<view>点击加载更多</view>
+	</i-spin>
+</block>

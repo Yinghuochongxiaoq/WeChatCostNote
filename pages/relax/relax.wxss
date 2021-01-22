@@ -1,3 +1,170 @@
+/*笑话部分样式*/
+.count {
+  padding: 30rpx;
+  display: flex;
+  text-align: center;
+  border-radius: 10px;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #fff;
+  align-items: center;
+  margin-top: 20rpx;
+}
+
+.count .number {
+  color: red;
+  font-size: 60rpx;
+  background-color: #fff;
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 20rpx;
+}
+
+.count text {
+  margin: 10rpx;
+}
+
+/* 明细 */
+.li-title {
+  border-top-right-radius: 100px;
+  border-bottom-right-radius: 100px;
+  background-color: #19be6b;
+  transition: all .2s linear;
+  position: relative;
+  color: #fff;
+  width: 15%;
+  padding: 4px 16px;
+  font-size: 12px;
+}
+
+/* 列表部分 */
+
+.elips {
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.foot-center {
+  text-align: center;
+  align-items: center;
+  width: 150rpx;
+  margin: 0 auto;
+  position: relative;
+}
+
+
+/*上箭头*/
+
+.top-arrow1,
+.top-arrow2 {
+  width: 0;
+  height: 0;
+  display: block;
+  position: absolute;
+  top: 0;
+  z-index: 5;
+  /*兼容ie8-*/
+  border-top: 20rpx transparent dashed;
+  border-left: 20rpx transparent dashed;
+  border-right: 20rpx transparent dashed;
+  border-bottom: 20rpx white solid;
+  overflow: hidden;
+}
+
+.top-arrow1 {
+  border-bottom: 20rpx #19be6b solid;
+}
+
+.top-arrow2 {
+  top: 1px;
+  /*重要*/
+  border-bottom: 20rpx white solid;
+}
+
+
+/*下箭头*/
+
+.bottom-arrow1,
+.bottom-arrow2 {
+  width: 0;
+  height: 0;
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  /*兼容ie8-*/
+  border-bottom: 20rpx transparent dashed;
+  border-left: 20rpx transparent dashed;
+  border-right: 20rpx transparent dashed;
+  border-top: 20rpx white solid;
+  overflow: hidden;
+}
+
+.bottom-arrow1 {
+  top: 1px;
+  /*重要*/
+  border-top: 20rpx #19be6b solid;
+}
+
+.bottom-arrow2 {
+  border-top: 20rpx white solid;
+}
+
+
+@keyframes ani-demo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.icon-load {
+  animation: ani-demo-spin 1s linear infinite;
+}
+
+.loading {
+  display: inline-block;
+  margin-right: 12px;
+  vertical-align: middle;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border-radius: 50%;
+  border: 2px solid #2d8cf0;
+  border-color: #2d8cf0 #2d8cf0 #2d8cf0 transparent;
+  animation: loading-spin 0.6s linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes loading-spin {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*游戏部分样式*/
 .container {
   margin: 0;
   padding: 20px 0;

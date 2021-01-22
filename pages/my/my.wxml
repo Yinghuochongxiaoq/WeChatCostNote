@@ -20,7 +20,7 @@
 <view class="wode_item_wrap" wx:if="{{linkList && linkList.length>0}}">
     <i-panel>
         <i-cell-group wx:for="{{linkList}}">
-            <i-cell title="{{item.title}}" is-link link-type="reLaunch" url="{{item.link}}"></i-cell>
+            <i-cell title="{{item.title}}" is-link url="{{item.link}}"></i-cell>
         </i-cell-group>
     </i-panel>
 </view>

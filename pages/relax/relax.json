@@ -1,0 +1,15 @@
+{
+    "navigationBarTitleText": "放松一刻",
+    "backgroundColor": "#faf8ef",
+    "backgroundTextStyle": "light",
+    "disableScroll": false,
+    "enablePullDownRefresh": false,
+    "usingComponents": {
+        "i-card": "../../iView/card/index",
+        "i-icon": "../../iView/icon/index",
+        "i-cell": "../../iView/cell/index",
+        "i-load-more": "../../iView/load-more/index",
+        "i-spin": "../../iView/spin",
+        "i-switch": "../../iView/switch/index"
+    }
+}

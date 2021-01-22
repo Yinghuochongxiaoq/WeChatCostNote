@@ -30,3 +30,5 @@ _ReSharper*/
 .vs/
 #Nuget packages folder
 packages/
+/cloud/node_modules/*
+/cloud/v-request/node_modules/*

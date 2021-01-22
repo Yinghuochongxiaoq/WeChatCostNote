@@ -14,7 +14,7 @@
         "pages/bindfamily/index",
         "pages/registration/index",
         "pages/calendar/calendar",
-        "pages/2048/2048"
+        "pages/relax/relax"
     ],
     "window": {
         "backgroundTextStyle": "light",
