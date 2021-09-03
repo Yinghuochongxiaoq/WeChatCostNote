@@ -19,9 +19,13 @@
 
 <view class="wode_item_wrap" wx:if="{{linkList && linkList.length>0}}">
     <i-panel>
+        <i-cell-group>
+            <i-cell title="消费备忘录" is-link url="/pages/carnotes/index"></i-cell>
+        </i-cell-group>
         <i-cell-group wx:for="{{linkList}}">
             <i-cell title="{{item.title}}" is-link url="{{item.link}}"></i-cell>
         </i-cell-group>
+
     </i-panel>
 </view>
 <i-button bind:click="handleToLogin" type="success">{{isLogin?'重新登录':'去登录'}}</i-button>

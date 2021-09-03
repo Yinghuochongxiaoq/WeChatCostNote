@@ -57,7 +57,7 @@ page {
 }
 
 .nav {
-    height: 80rpx;
+    height: 83rpx;
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;

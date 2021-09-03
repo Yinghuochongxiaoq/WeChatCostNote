@@ -1,4 +1,5 @@
 @import "../home/home.wxss";
+
 page {
     width: 100%;
     height: 100%;
@@ -10,7 +11,7 @@ page {
 }
 
 .nav {
-    height: 80rpx;
+    height: 83rpx;
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;

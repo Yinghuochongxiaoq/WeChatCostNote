@@ -1,0 +1,134 @@
+<i-notice-bar icon="systemprompt">
+    详细操作步骤请看页面最下方
+</i-notice-bar>
+<block wx:if="{{isLogin}}">
+    <!-- 橫向滚动 -->
+    <view class="container" wx:if="{{familyMembers && familyMembers.length>0}}">
+        <!-- tab导航栏 -->
+        <!-- scroll-left属性可以控制滚动条位置 -->
+        <!-- scroll-with-animation滚动添加动画过渡 -->
+        <scroll-view scroll-x="true" scroll-y="true" class="nav" scroll-left="{{navScrollLeft}}"
+            scroll-with-animation="{{true}}">
+            <block wx:for="{{familyMembers}}" wx:for-index="idx" wx:for-item="navItem" wx:key="idx">
+                <view class="nav-item {{currentTab == idx ?'active':''}}" style="width: {{100/familyMembers.length}}%"
+                    data-current="{{idx}}" bindtap="switchNav">
+                    <i-icon type="label_fill" size="14"></i-icon>{{navItem.nickName}}
+                </view>
+            </block>
+        </scroll-view>
+        <!-- 页面内容 -->
+        <swiper class="tab-box" current="{{currentTab}}" duration="300" bindchange="switchTab">
+            <swiper-item wx:for="{{familyMembers}}" wx:for-item="tabItem" wx:for-index="idx" wx:key="idx"
+                class="tab-content">
+                <scroll-view>
+                    <view wx:if="{{tabItem.dateTimeRange.length>0}}">
+                        <i-grid>
+                            <i-row>
+                                <i-grid-item i-class="customer-grid-item" wx:for="{{tabItem.dateTimeRange}}"
+                                    bindtap="onEveryTimeTap" data-id="{{item.id}}" data-start="{{tabItem.start}}"
+                                    data-end="{{tabItem.end}}" data-had_flag="{{item.hadFlag}}"
+                                    data-user_id="{{item.userId}}" data-car_name="{{tabItem.nickName}}"
+                                    data-time_range="{{item.timeRange}}">
+                                    <i-grid-icon i-class="customer-grid-icon">
+                                        <i-grid-label
+                                            i-class="{{item.hadFlag?'customer-grid-label-black':'customer-grid-label'}}">
+                                            {{item.timeRange}}</i-grid-label>
+                                        <block wx:if="{{item.userHeadImage}}">
+                                            <i-avatar i-class="customer-avatar-icon" src="{{item.userHeadImage}}"
+                                                size="default">
+                                            </i-avatar>
+                                        </block>
+                                        <block wx:else>
+                                            <i-avatar i-class="customer-avatar-icon" src="/images/icon-add-select.png"
+                                                size="default">
+                                            </i-avatar>
+                                        </block>
+                                        <i-grid-label>{{item.hadFlag?item.nickName:"可选"}}</i-grid-label>
+                                    </i-grid-icon>
+                                </i-grid-item>
+                            </i-row>
+                        </i-grid>
+
+                    </view>
+                    <view wx:else class="mg-10">
+                        <view class="list-column">
+                            <icon size="40" type="warn" role="img"></icon>
+                            <view>还没有数据哦~</view>
+                        </view>
+                    </view>
+                </scroll-view>
+            </swiper-item>
+        </swiper>
+    </view>
+
+    <view wx:else class="mg-10">
+        <view class="list-column">
+            <icon size="40" type="warn" role="img"></icon>
+            <view>还没有数据哦~</view>
+        </view>
+    </view>
+</block>
+<block wx:else>
+    <i-grid>
+        <i-row>
+            <i-grid-item wx:for="{{noLoginDataModel}}">
+
+                <i-grid-icon i-class="customer-grid-icon">
+                    <i-grid-label i-class="{{item.hadFlag?'customer-grid-label-black':'customer-grid-label'}}">
+                        {{item.timeRange}}</i-grid-label>
+                    <block wx:if="{{item.userHeadImage}}">
+                        <i-avatar i-class="customer-avatar-icon" src="{{item.userHeadImage}}" size="default">
+                        </i-avatar>
+                    </block>
+                    <block wx:else>
+                        <i-avatar i-class="customer-avatar-icon" src="/images/icon-add-select.png" size="default">
+                        </i-avatar>
+                    </block>
+                    <i-grid-label>{{item.hadFlag?item.nickName:"可选"}}</i-grid-label>
+                </i-grid-icon>
+            </i-grid-item>
+        </i-row>
+    </i-grid>
+</block>
+<i-customer-spin isLogin="{{isLogin}}" />
+<i-load-more loading="{{ false }}" />
+<view class="one-tag">操作步骤</view>
+<i-steps direction="vertical">
+    <i-step status="process">
+        <view slot="title">
+            选中时间
+        </view>
+        <view slot="content">
+            选中空白时间段，表示你需要在该时间段内进行备忘处理。
+        </view>
+    </i-step>
+    <i-step status="process">
+        <view slot="title">
+            确认备忘时间段
+        </view>
+        <view slot="content">
+            确定该备忘时间段，点击确定提交。如果需要修改，选中你已经预约的时间段，点击取消即可。
+        </view>
+    </i-step>
+    <i-step status="process">
+        <view slot="title">
+            备忘记录添加成功/失败
+        </view>
+        <view slot="content">
+            提示成功则表示已经记录了该时间段，失败表示已经有该时间段占用了，请重新选其他时间段。
+        </view>
+    </i-step>
+</i-steps>
+<!-- 详情弹窗 -->
+<i-modal i-class="customer-grid-item" title="详情" visible="{{ showDetail }}" actions="{{ showDetailActions }}"
+    bind:click="detailHandleClick">
+    <view>{{showDetailContent}}</view>
+</i-modal>
+<!-- 取消弹窗 -->
+<i-modal title="确认取消预约" visible="{{ showDelete }}" actions="{{ showDeleteActions }}" bind:click="deleteHandlerClick">
+    <view>取消后无法恢复哦</view>
+</i-modal>
+<!-- 确认弹窗 -->
+<i-modal visible="{{ showAdd }}" actions="{{ showAddActions }}" bind:click="addHandlerClick">
+    <view>点击确定预约该时段</view>
+</i-modal>

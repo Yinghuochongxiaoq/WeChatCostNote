@@ -479,7 +479,7 @@ Page({
                         title: '网络异常',
                         icon: 'none',
                         duration: 2000
-                    })
+                    });
                     action[1].loading = false;
                     self.setData({
                         showDelete: false,

@@ -14,6 +14,7 @@
         "pages/bindfamily/index",
         "pages/registration/index",
         "pages/calendar/calendar",
+        "pages/carnotes/index",
         "pages/relax/relax"
     ],
     "window": {
