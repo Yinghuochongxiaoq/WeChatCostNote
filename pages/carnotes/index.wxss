@@ -5,6 +5,7 @@ page {
     font-size: 30rpx;
     width: 100%;
     height: 100%;
+    touch-action: none;
 }
 
 .container {
@@ -74,8 +75,13 @@ page {
     background: red;
 }
 
-.customer-grid-item {
-    padding: 10px 10px !important;
+.customer-modal-page {
+    max-height: auto !important;
+}
+
+.customer-real-name-input {
+    border: #2d8cf0 groove thin;
+    margin: 10rpx;
 }
 
 .customer-grid-icon {

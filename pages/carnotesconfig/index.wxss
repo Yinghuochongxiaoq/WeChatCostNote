@@ -1,0 +1,17 @@
+@import "../home/home.wxss";
+
+.one-tag {
+    font-size: 14px;
+    margin: 30px 5px 20px 10px;
+}
+
+.i-sticky-demo,
+page {
+    width: 100%;
+    height: 100%;
+}
+
+.i-sticky-demo-item {
+    border-bottom: #dddee1 solid 1px;
+    font-size: 14px;
+}

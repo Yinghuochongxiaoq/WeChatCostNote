@@ -1,0 +1,52 @@
+<i-button bind:click="handleAddClick" size="small" type="success">
+    添加预约项</i-button>
+<block wx:if="{{carList && carList.length>0}}">
+    <view class="i-sticky-demo">
+        <i-sticky scrollTop="{{scrollTop}}">
+            <i-sticky-item i-class="i-sticky-demo-title" wx:for="{{carList}}">
+                <view slot="title">
+                    {{item.nickname}}
+                </view>
+                <view slot="content">
+                    <view class="i-sticky-demo-item">
+                        <i-cell title="预约项目:" value="{{item.nickname}}">
+                        </i-cell>
+                    </view>
+                    <view class="i-sticky-demo-item">
+                        <i-cell title="预约开始时间:" value="{{item.start}}">
+                        </i-cell>
+                    </view>
+                    <view class="i-sticky-demo-item">
+                        <i-cell title="预约结束时间:" value="{{item.end}}">
+                        </i-cell>
+                    </view>
+                    <view class="i-sticky-demo-item">
+                        <i-cell title="预约临时通道:">
+                            <i-switch value="{{item.interimswich}}" size="large" bind:change="onChangeSwich"
+                                data-id="{{item.id}}" data-index="{{index}}" data-value="{{item.interimswich}}"
+                                slot="footer">
+                                <view slot="open">开启</view>
+                                <view slot="close">关闭</view>
+                            </i-switch>
+                        </i-cell>
+                    </view>
+                    <view class="i-sticky-demo-item">
+                        <i-cell title="本项目安排：" is-link value="详细信息"></i-cell>
+                    </view>
+                    <view class="i-sticky-demo-item">
+                        <i-cell title="配置信息：" is-link value="修改" url="./edit?id={{item.id}}"></i-cell>
+                    </view>
+                </view>
+            </i-sticky-item>
+        </i-sticky>
+    </view>
+</block>
+<block wx:else>
+    <view class="mg-10">
+        <view class="list-column">
+            <icon size="40" type="warn" role="img"></icon>
+            <view>还没有配置数据哦~</view>
+        </view>
+    </view>
+</block>
+<i-load-more loading="{{ false }}" />

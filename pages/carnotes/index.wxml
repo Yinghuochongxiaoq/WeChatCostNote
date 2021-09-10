@@ -12,7 +12,7 @@
             <block wx:for="{{familyMembers}}" wx:for-index="idx" wx:for-item="navItem" wx:key="idx">
                 <view class="nav-item {{currentTab == idx ?'active':''}}" style="width: {{100/familyMembers.length}}%"
                     data-current="{{idx}}" bindtap="switchNav">
-                    <i-icon type="label_fill" size="14"></i-icon>{{navItem.nickName}}
+                    <i-icon type="label_fill" size="14"></i-icon>{{navItem.nickname}}
                 </view>
             </block>
         </scroll-view>
@@ -26,15 +26,15 @@
                             <i-row>
                                 <i-grid-item i-class="customer-grid-item" wx:for="{{tabItem.dateTimeRange}}"
                                     bindtap="onEveryTimeTap" data-id="{{item.id}}" data-start="{{tabItem.start}}"
-                                    data-end="{{tabItem.end}}" data-had_flag="{{item.hadFlag}}"
-                                    data-user_id="{{item.userId}}" data-car_name="{{tabItem.nickName}}"
-                                    data-time_range="{{item.timeRange}}">
+                                    data-end="{{tabItem.end}}" data-had_flag="{{item.hadflag}}"
+                                    data-user_id="{{item.caruserid}}" data-car_name="{{tabItem.nickname}}"
+                                    data-time_range="{{item.timerange}}" data-interimswich="{{tabItem.interimswich}}">
                                     <i-grid-icon i-class="customer-grid-icon">
                                         <i-grid-label
-                                            i-class="{{item.hadFlag?'customer-grid-label-black':'customer-grid-label'}}">
-                                            {{item.timeRange}}</i-grid-label>
-                                        <block wx:if="{{item.userHeadImage}}">
-                                            <i-avatar i-class="customer-avatar-icon" src="{{item.userHeadImage}}"
+                                            i-class="{{item.hadflag?'customer-grid-label-black':'customer-grid-label'}}">
+                                            {{item.timerange}}</i-grid-label>
+                                        <block wx:if="{{item.caruserheadimage}}">
+                                            <i-avatar i-class="customer-avatar-icon" src="{{item.caruserheadimage}}"
                                                 size="default">
                                             </i-avatar>
                                         </block>
@@ -43,7 +43,9 @@
                                                 size="default">
                                             </i-avatar>
                                         </block>
-                                        <i-grid-label>{{item.hadFlag?item.nickName:"可选"}}</i-grid-label>
+                                        <i-grid-label>
+                                            {{item.hadflag?(hadRealName&&realName!=''?realName:item.carnickname):"可选"}}
+                                        </i-grid-label>
                                     </i-grid-icon>
                                 </i-grid-item>
                             </i-row>
@@ -74,8 +76,8 @@
             <i-grid-item wx:for="{{noLoginDataModel}}">
 
                 <i-grid-icon i-class="customer-grid-icon">
-                    <i-grid-label i-class="{{item.hadFlag?'customer-grid-label-black':'customer-grid-label'}}">
-                        {{item.timeRange}}</i-grid-label>
+                    <i-grid-label i-class="{{item.hadflag?'customer-grid-label-black':'customer-grid-label'}}">
+                        {{item.timerange}}</i-grid-label>
                     <block wx:if="{{item.userHeadImage}}">
                         <i-avatar i-class="customer-avatar-icon" src="{{item.userHeadImage}}" size="default">
                         </i-avatar>
@@ -84,14 +86,12 @@
                         <i-avatar i-class="customer-avatar-icon" src="/images/icon-add-select.png" size="default">
                         </i-avatar>
                     </block>
-                    <i-grid-label>{{item.hadFlag?item.nickName:"可选"}}</i-grid-label>
+                    <i-grid-label>{{item.hadflag?item.nickName:"可选"}}</i-grid-label>
                 </i-grid-icon>
             </i-grid-item>
         </i-row>
     </i-grid>
 </block>
-<i-customer-spin isLogin="{{isLogin}}" />
-<i-load-more loading="{{ false }}" />
 <view class="one-tag">操作步骤</view>
 <i-steps direction="vertical">
     <i-step status="process">
@@ -119,6 +119,14 @@
         </view>
     </i-step>
 </i-steps>
+<block wx:if="{{isLogin}}">
+    <block wx:if="{{isSuper}}">
+        <i-button type="success" bind:click="handleConfigClick">设置预约选项</i-button>
+    </block>
+    <block wx:else>
+        <i-button type="primary" bind:click="handleDetailClick">预约历史记录</i-button>
+    </block>
+</block>
 <!-- 详情弹窗 -->
 <i-modal i-class="customer-grid-item" title="详情" visible="{{ showDetail }}" actions="{{ showDetailActions }}"
     bind:click="detailHandleClick">
@@ -129,6 +137,13 @@
     <view>取消后无法恢复哦</view>
 </i-modal>
 <!-- 确认弹窗 -->
-<i-modal visible="{{ showAdd }}" actions="{{ showAddActions }}" bind:click="addHandlerClick">
+<i-modal i-class="customer-modal-page" visible="{{ showAdd }}" actions="{{ showAddActions }}"
+    bind:click="addHandlerClick">
+    <i-input wx:if="{{!hadRealName}}" i-class="customer-real-name-input" maxlength="4" value="{{ realName }}"
+        bind:change="changeRealName" title="姓名:" error placeholder="请输入名字" />
+    <i-input wx:if="{{!hadRealName}}" i-class="customer-real-name-input" maxlength="36" value="{{ askCode }}"
+        bind:change="changeAskCode" title="邀请码:" error placeholder="请输入邀请码(管理员处获取)" />
     <view>点击确定预约该时段</view>
 </i-modal>
+<i-customer-spin isLogin="{{isLogin}}" />
+<i-load-more loading="{{ false }}" />

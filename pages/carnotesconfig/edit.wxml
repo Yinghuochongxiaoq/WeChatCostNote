@@ -1,0 +1,67 @@
+<i-panel title="基本信息">
+    <i-input value="{{ nickname }}" title="项目名称" bind:change="changeNickName" placeholder="输入项目名称(最多50字)"
+        maxlength="50" />
+    <view class="i-cell i-input list-inline">
+        <view class="i-cell-hd i-input-title">
+            开始时间</view>
+        <picker mode="time" value="{{start}}" bindchange="bindStartTimeChange" class="weight-90" start="00:00"
+            end="23:59">
+            <view class="i-input-input i-cell-bd">
+                {{start}}
+            </view>
+        </picker>
+        <view class='arrow'></view>
+    </view>
+    <view class="i-cell i-input list-inline">
+        <view class="i-cell-hd i-input-title">
+            结束时间</view>
+        <picker mode="time" value="{{end}}" bindchange="bindEndTimeChange" class="weight-90" start="00:00" end="23:59">
+            <view class="i-input-input i-cell-bd">
+                {{end}}
+            </view>
+        </picker>
+        <view class='arrow'></view>
+    </view>
+    <i-button bind:click="handleSaveClick" disabled="{{isSaving}}" size="small" type="success" loading="{{isSaving}}">
+        {{isSaving?'保存中...':'保存'}}</i-button>
+</i-panel>
+
+<i-panel title="本项目安排" wx:if="{{detailList && detailList.length>0}}">
+    <view class="i-sticky-demo">
+        <i-sticky scrollTop="{{scrollTop}}" i-class="i-sticky-demo-title">
+            <i-sticky-item wx:for="{{detailList}}">
+                <view slot="title">
+                    <view class="sign_activity">
+                        <view class="c-span9 right-border">
+                            <i-icon size="25" type="activity" color="#19be6b"></i-icon>
+                            <text>{{item.name}}日</text>
+                        </view>
+                        <view class="c-span3" bindtap="handleToAddDailyHistory">
+                            <i-icon type="add" size="25" color="#19be6b" />
+                            <text>添加时段</text>
+                        </view>
+                    </view>
+                </view>
+                <view slot="content">
+                    <view class="i-sticky-demo-item">
+                        <i-tag wx:for="{{item.timeRange}}" wx:key="{{index}}" bindchange="onChange" checkable="{{true}}"
+                            name="{{index}}" color="green" checked="{{false}}" type="border" style="margin-right:5px;"
+                            data-id="{{item.id}}" data-range="{{item.timerange}}">
+                            {{item.timerange}}
+                        </i-tag>
+                    </view>
+                </view>
+            </i-sticky-item>
+        </i-sticky>
+    </view>
+</i-panel>
+<i-action-sheet visible="{{ showDetailAction }}" actions="{{ detailAction }}" show-cancel bind:cancel="handleCancel"
+    bind:click="handleClickItem" />
+<!-- 确认删除 -->
+<i-action-sheet visible="{{ visibleShowDelete }}" actions="{{ deleteActions }}" show-cancel
+    bind:cancel="handleCancelDelete" bind:click="handleClickDelete" mask-closable="{{ false }}">
+    <view slot="header" style="padding: 16px">
+        <view style="color: #444;font-size: 16px">确定删除吗？</view>
+        <text>删除后无法恢复哦</text>
+    </view>
+</i-action-sheet>

@@ -1,0 +1,14 @@
+{
+    "navigationBarTitleText": "预约配置管理",
+    "usingComponents": {
+        "i-load-more": "../../iView/load-more/index",
+        "i-cell-group": "../../iView/cell-group/index",
+        "i-cell": "../../iView/cell/index",
+        "i-panel": "../../iView/panel/index",
+        "i-icon": "../../iView/icon/index",
+        "i-switch": "../../iView/switch/index",
+        "i-button": "../../iView/button/index",
+        "i-sticky": "../../iView/sticky/index",
+        "i-sticky-item": "../../iView/sticky-item/index"
+    }
+}

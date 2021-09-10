@@ -9,11 +9,11 @@ Page({
         authUrl: 'https://aivabc.com'
     },
 
-    bindCopyUrl: function() {
+    bindCopyUrl: function () {
         var url = this.data.authUrl;
         wx.setClipboardData({
             data: url,
-            success: function() {
+            success: function () {
                 wx.showToast({
                     title: '复制成功',
                     icon: 'success'
@@ -21,12 +21,12 @@ Page({
             }
         });
     },
-    onShareAppMessage() {     
-        return {    
+    onShareAppMessage() {
+        return {
             title: '记录你的一点一滴~',
             desc: '记录你的一点一滴~',
             path: 'pages/index/index',
             imageUrl: app.globalData.shareImgUrl
-        }    
+        };
     }
-})
+});

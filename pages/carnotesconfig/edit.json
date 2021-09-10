@@ -1,0 +1,17 @@
+{
+    "navigationBarTitleText": "预约配置编辑",
+    "enablePullDownRefresh": false,
+    "usingComponents": {
+        "i-cell-group": "../../iView/cell-group/index",
+        "i-cell": "../../iView/cell/index",
+        "i-input": "../../iView/input/index",
+        "i-button": "../../iView/button/index",
+        "i-icon": "../../iView/icon/index",
+        "i-panel": "../../iView/panel/index",
+        "i-tag": "../../iView/tag/index",
+        "i-action-sheet": "../../iView/action-sheet/index",
+        "i-modal": "../../iView/modal/index",
+        "i-sticky": "../../iView/sticky/index",
+        "i-sticky-item": "../../iView/sticky-item/index"
+    }
+}

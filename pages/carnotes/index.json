@@ -15,6 +15,7 @@
         "i-customer-spin": "../../components/i-spin",
         "i-load-more": "../../iView/load-more/index",
         "i-button": "../../iView/button/index",
+        "i-input": "../../iView/input/index",
         "i-modal": "../../iView/modal/index"
     }
 }

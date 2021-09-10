@@ -1,0 +1,22 @@
+<block wx:if="{{detailHistory.length>0}}">
+    <view class="one-tag">预约历史记录</view>
+    <i-steps direction="vertical" wx:for="{{detailHistory}}" wx:for-index="i">
+        <i-step status="{{i==0?'process':'finish'}}">
+            <view slot="title">
+                {{item.day}}
+            </view>
+            <view slot="content">
+                {{'预约'+item.nickname+'成功,时间段'+item.timerange}}
+            </view>
+        </i-step>
+    </i-steps>
+</block>
+<block wx:else>
+    <view class="mg-10">
+        <view class="list-column">
+            <icon size="40" type="warn" role="img"></icon>
+            <view>还没有预约历史数据哦~</view>
+        </view>
+    </view>
+</block>
+<i-load-more loading="{{ false }}" />

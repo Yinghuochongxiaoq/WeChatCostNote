@@ -41,114 +41,18 @@ Page({
         }, {
             name: '关闭'
         }],
+        isSuper: 0,
+        realName: '',
+        hadRealName: false,
+        askCode: ''
     },
     onLoad: function () {
         var self = this;
         //检查token是否存在
         var userInfo = util.getStorageSync("userInfo");
         if (userInfo != null && app.globalData.userInfo) {
-            var one = {
-                id: 1,
-                nickName: "3030车",
-                start: "2021-09-03 16:00:00",
-                end: "2021-09-03 23:59:59",
-                dateTimeRange: [{
-                    id: 1,
-                    timeRange: "12:00-14:00",
-                    userId: 100,
-                    userHeadImage: "https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132",
-                    nickName: "张三",
-                    hadFlag: true
-                }, {
-                    id: 2,
-                    timeRange: "14:00-16:00",
-                    hadFlag: false
-                }, {
-                    id: 3,
-                    timeRange: "16:00-18:00",
-                    userId: 101,
-                    userHeadImage: "https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132",
-                    nickName: "王五",
-                    hadFlag: true
-                }]
-            };
-            var two = {
-                id: 2,
-                nickName: "925车",
-                start: "2021-09-03 16:00:00",
-                end: "2021-09-03 23:59:59",
-                dateTimeRange: [{
-                    id: 1,
-                    timeRange: "12:00-14:00",
-                    userId: 1,
-                    userHeadImage: "https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132",
-                    hadFlag: true,
-                    nickName: "陈世",
-                }, {
-                    id: 2,
-                    timeRange: "14:00-16:00",
-                    hadFlag: false
-                }, {
-                    id: 3,
-                    timeRange: "16:00-18:00",
-                    userId: 101,
-                    nickName: "谢很分",
-                    userHeadImage: "https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132",
-                    hadFlag: true
-                }, {
-                    id: 2,
-                    timeRange: "14:00-16:00",
-                    hadFlag: false
-                }, {
-                    id: 2,
-                    timeRange: "14:00-16:00",
-                    hadFlag: false
-                }, {
-                    id: 2,
-                    timeRange: "14:00-16:00",
-                    hadFlag: false
-                }, {
-                    id: 2,
-                    timeRange: "14:00-16:00",
-                    hadFlag: false
-                }, {
-                    id: 2,
-                    timeRange: "14:00-16:00",
-                    hadFlag: false
-                }, {
-                    id: 2,
-                    timeRange: "14:00-16:00",
-                    hadFlag: false
-                }, {
-                    id: 2,
-                    timeRange: "14:00-16:00",
-                    hadFlag: false
-                }, {
-                    id: 2,
-                    timeRange: "14:00-16:00",
-                    hadFlag: false
-                }, {
-                    id: 2,
-                    timeRange: "14:00-16:00",
-                    hadFlag: false
-                }, {
-                    id: 2,
-                    timeRange: "14:00-16:00",
-                    hadFlag: false
-                }, {
-                    id: 2,
-                    timeRange: "14:00-16:00",
-                    hadFlag: false
-                }, ]
-            };
-            var fullfamilyMember = [];
-            fullfamilyMember.push(one);
-            fullfamilyMember.push(two);
-
-
             self.setData({
                 userInfo: app.globalData.userInfo,
-                familyMembers: fullfamilyMember,
                 isLogin: true
             });
         }
@@ -199,14 +103,14 @@ Page({
      */
     noLoginData: function () {
         var noLoginDataModel = [{
-            timeRange: "00:00-08:00",
-            hadFlag: false
+            timerange: "00:00-08:00",
+            hadflag: false
         }, {
-            timeRange: "08:01-16:00",
-            hadFlag: false
+            timerange: "08:01-16:00",
+            hadflag: false
         }, {
-            timeRange: "16:01-24:00",
-            hadFlag: false
+            timerange: "16:01-24:00",
+            hadflag: false
         }];
         this.setData({
             noLoginDataModel: noLoginDataModel
@@ -222,28 +126,29 @@ Page({
         var self = this;
         // 请求数据，并渲染
         wx.request({
-            url: app.globalData.api + '/CostNote/StatisticsCostChannel',
+            url: app.globalData.api + '/CarNotice/GetCarNotice',
             data: {
                 token: app.globalData.userInfo.token
             },
             method: 'GET',
             success: function (res) {
                 if (res.data.resultCode == 0) {
-                    var resulteData = [];
                     //对返回数据排序
-                    if (self.data.familyMembers && self.data.familyMembers.length > 0 && res.data.data && res.data.data.length > 0) {
-                        self.data.familyMembers.forEach(element => {
-                            for (var j = 0; j < res.data.data.length; j++) {
-                                var itemData = res.data.data[j];
-                                if (element.accountId == itemData.userId) {
-                                    resulteData.push(itemData);
-                                    break;
-                                }
-                            }
-                        });
+                    var carList = [];
+                    var carRealNameModel = {};
+                    var isSuper = 0;
+                    if (res.data.data.noticeList && res.data.data.noticeList.length > 0) {
+                        carList = res.data.data.noticeList;
+                        carRealNameModel = res.data.data.carNoticeRealNameModel;
+                        isSuper = res.data.data.carNoticeRealNameModel ? res.data.data.carNoticeRealNameModel.isSuper : false;
                     }
                     self.setData({
-                        pullDownRefresh: false
+                        familyMembers: carList,
+                        realName: (carRealNameModel && carRealNameModel.realname) || '',
+                        hadRealName: (carRealNameModel && carRealNameModel.realname) || '' != '',
+                        askCode: '',
+                        pullDownRefresh: false,
+                        isSuper: isSuper
                     });
                 } else {
                     wx.showToast({
@@ -271,10 +176,11 @@ Page({
         let id = data.id;
         let car_name = data.car_name;
         let time_range = data.time_range;
+        let interimswich = data.interimswich;
         //已经有人选中了
         if (hadFlag) {
             //判断是自己
-            if (this.data.userInfo.accountId == userId) {
+            if (this.data.userInfo.accountId == userId || this.data.isSuper == 1) {
                 //弹出对话框，进行取消预约操作
                 this.setData({
                     showDetail: true,
@@ -284,7 +190,7 @@ Page({
             }
         } else {
             let checkTime = this.judgeTime(start, end);
-            if (checkTime) {
+            if (checkTime || interimswich) {
                 console.log('时间允许');
                 this.setData({
                     showAdd: true,
@@ -292,7 +198,6 @@ Page({
                 });
             }
         }
-
     },
     judgeTime: function (start, end) {
         let nowTime = new Date();
@@ -353,7 +258,7 @@ Page({
             });
             //提交删除
             wx.request({
-                url: app.globalData.api + '/SCostNote/DeleteDetailHistoryInfo',
+                url: app.globalData.api + '/CarNotice/CancleCarnoticeDetail',
                 data: {
                     token: app.globalData.userInfo.token,
                     id: self.data.showDetailId
@@ -400,6 +305,16 @@ Page({
             });
         }
     },
+    changeRealName: function (e) {
+        this.setData({
+            realName: e.detail.detail.value
+        });
+    },
+    changeAskCode: function (e) {
+        this.setData({
+            askCode: e.detail.detail.value
+        });
+    },
     addHandlerClick: function ({
         detail
     }) {
@@ -415,29 +330,49 @@ Page({
                     showAdd: false,
                     showDetailId: 0,
                 });
+                return;
             }
-            var action = [...this.data.showAddActions];
+            if (self.data.showAddActions[0].loading) {
+                return;
+            }
+            if (!self.data.hadRealName && !self.data.realName) {
+                wx.showToast({
+                    title: '请输入姓名',
+                    icon: 'none',
+                    duration: 2000
+                });
+                return;
+            }
+            if (!self.data.hadRealName && !self.data.askCode) {
+                wx.showToast({
+                    title: '请输入邀请码',
+                    icon: 'none',
+                    duration: 2000
+                });
+                return;
+            }
+            var action = [...self.data.showAddActions];
             action[0].loading = true;
 
             self.setData({
                 showAddActions: action
             });
             wx.request({
-                url: app.globalData.api + '/SCostNote/DeleteDetailHistoryInfo',
+                url: app.globalData.api + '/CarNotice/AddCarNoticeDetail',
                 data: {
                     token: app.globalData.userInfo.token,
-                    id: self.data.showDetailId
+                    id: self.data.showDetailId,
+                    realName: self.data.realName,
+                    askCode: self.data.askCode
                 },
                 method: 'GET',
                 success: function (res) {
                     if (res.data.resultCode == 0) {
                         wx.showToast({
-                            title: '删除成功',
+                            title: '成功',
                             icon: 'success',
                             duration: 2000
                         });
-                        //刷新页面
-                        self.onPullDownRefresh();
                     } else {
                         wx.showToast({
                             title: res.data.message,
@@ -464,9 +399,23 @@ Page({
                         showDetailId: 0,
                         showAddActions: action
                     });
+                },
+                complete: function () {
+                    //刷新页面
+                    self.onPullDownRefresh();
                 }
             });
         }
+    },
+    handleDetailClick: function () {
+        wx.navigateTo({
+            url: "/pages/carnoteshistory/index"
+        });
+    },
+    handleConfigClick: function () {
+        wx.navigateTo({
+            url: "/pages/carnotesconfig/index"
+        });
     },
     onShareAppMessage: function () {
         return {
