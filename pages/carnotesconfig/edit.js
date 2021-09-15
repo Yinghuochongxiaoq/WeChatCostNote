@@ -5,15 +5,14 @@ Page({
         userInfo: app.globalData.userInfo,
         id: 0,
         nickname: '',
-        end: '',
-        start: '',
+        end: '07:15',
+        start: '06:30',
         isSaving: false,
         isLogin: false,
         //时段配置
         detailList: [],
         scrollTop: 0,
         selectId: 0,
-        selectRange: '',
         showDetailAction: false,
         detailAction: [{
                 name: '修改',
@@ -29,6 +28,18 @@ Page({
             name: '删除',
             color: '#ed3f14'
         }],
+        showAdd: false,
+        showAddActions: [{
+            name: '确定',
+            color: '#ed3f14',
+            loading: false
+        }, {
+            name: '关闭'
+        }],
+        addRangeTimeTitle: '',
+        addDayStart: '',
+        addDayEnd: '',
+        addDayTime: ''
     },
     onLoad: function (options) {
         var self = this;
@@ -45,26 +56,25 @@ Page({
             this.getCarConfigById(id);
         }
     },
-    //页面滚动执行方式
-    onPageScroll(event) {
-        this.setData({
-            scrollTop: event.scrollTop
-        });
-    },
     onChange(event) {
         var id = event.target.dataset.id;
         var rangeName = event.target.dataset.range;
+        var selectDayTime = event.target.dataset.daytime;
         this.setData({
             showDetailAction: true,
             selectId: id,
-            selectRange: rangeName,
+            addDayStart: rangeName.split('-')[0],
+            addDayEnd: rangeName.split('-')[1],
+            addDayTime: selectDayTime,
         });
     },
     handleCancel: function () {
         this.setData({
             showDetailAction: false,
             selectId: 0,
-            selectRange: '',
+            addDayStart: '',
+            addDayEnd: '',
+            addDayTime: '',
         });
     },
     handleClickItem({
@@ -79,7 +89,10 @@ Page({
         }
         //修改
         else if (index == 1) {
-            console.log('修改')
+            this.setData({
+                addRangeTimeTitle: '修改时段',
+                showAdd: true,
+            });
         }
     },
     //取消删除
@@ -132,7 +145,9 @@ Page({
                     deleteActions: action,
                     showDetailAction: false,
                     selectId: 0,
-                    selectRange: '',
+                    addDayStart: '',
+                    addDayEnd: '',
+                    addDayTime: '',
                 });
             },
             fail: function () {
@@ -147,7 +162,9 @@ Page({
                     deleteActions: action,
                     showDetailAction: false,
                     selectId: 0,
-                    selectRange: '',
+                    addDayStart: '',
+                    addDayEnd: '',
+                    addDayTime: '',
                 });
             }
         });
@@ -204,8 +221,8 @@ Page({
         }
         if (!self.data.nickname || self.data.nickname == '') {
             wx.showToast({
-                title: '项目名称不能为空',
-                icon: 'error',
+                title: '名称不能为空',
+                icon: 'none',
                 duration: 2000
             });
             return;
@@ -213,7 +230,7 @@ Page({
         if (!self.data.start || self.data.start == '') {
             wx.showToast({
                 title: '开始时间不能为空',
-                icon: 'error',
+                icon: 'none',
                 duration: 2000
             });
             return;
@@ -221,7 +238,7 @@ Page({
         if (!self.data.end || self.data.end == '') {
             wx.showToast({
                 title: '结束时间不能为空',
-                icon: 'error',
+                icon: 'none',
                 duration: 2000
             });
             return;
@@ -289,6 +306,110 @@ Page({
         this.setData({
             end: e.detail.value
         });
+    },
+    bindAddDayStartTimeChange: function (e) {
+        this.setData({
+            addDayStart: e.detail.value
+        });
+    },
+    bindAddDayEndTimeChange: function (e) {
+        this.setData({
+            addDayEnd: e.detail.value
+        });
+    },
+    handleToAddDailyHistory: function (e) {
+        this.setData({
+            addRangeTimeTitle: '添加时段',
+            showAdd: true,
+            addDayStart: '06:30',
+            addDayEnd: '07:15',
+            addDayTime: e.currentTarget.dataset.daytime,
+            selectId: 0
+        });
+    },
+    addHandlerClick: function ({
+        detail
+    }) {
+        var self = this;
+        if (detail.index == 1) {
+            self.setData({
+                addRangeTimeTitle: '',
+                showAdd: false,
+                addDayStart: '',
+                addDayEnd: '',
+                addDayTime: '',
+                selectId: 0
+            });
+        } else {
+            if (self.data.showAddActions[0].loading) {
+                return;
+            }
+            var action = [...self.data.showAddActions];
+            action[0].loading = true;
+
+            self.setData({
+                showAddActions: action
+            });
+            wx.request({
+                url: app.globalData.api + '/CarNotice/SaveCarDetailInfo',
+                data: {
+                    token: app.globalData.userInfo.token,
+                    carId: self.data.id,
+                    rangeTime: self.data.addDayStart + '-' + self.data.addDayEnd,
+                    dayTime: self.data.addDayTime,
+                    id: self.data.selectId
+                },
+                method: 'GET',
+                success: function (res) {
+                    if (res.data.resultCode == 0) {
+                        wx.showToast({
+                            title: '成功',
+                            icon: 'success',
+                            duration: 2000
+                        });
+                    } else {
+                        wx.showToast({
+                            title: res.data.message,
+                            icon: 'none',
+                            duration: 2000
+                        });
+                    }
+                    action[0].loading = false;
+                    self.setData({
+                        addRangeTimeTitle: '',
+                        showAdd: false,
+                        addDayStart: '',
+                        addDayEnd: '',
+                        addDayTime: '',
+                        selectId: 0,
+                        showAddActions: action,
+                        showDetailAction: false
+                    });
+                },
+                fail: function () {
+                    wx.showToast({
+                        title: '网络异常',
+                        icon: 'none',
+                        duration: 2000
+                    });
+                    action[0].loading = false;
+                    self.setData({
+                        addRangeTimeTitle: '',
+                        showAdd: false,
+                        addDayStart: '',
+                        addDayEnd: '',
+                        addDayTime: '',
+                        selectId: 0,
+                        showAddActions: action,
+                        showDetailAction: false
+                    });
+                },
+                complete: function () {
+                    //刷新页面
+                    self.getCarConfigById(self.data.id);
+                }
+            });
+        }
     },
     onShareAppMessage() {
         return {

@@ -26,35 +26,46 @@
         {{isSaving?'保存中...':'保存'}}</i-button>
 </i-panel>
 
-<i-panel title="本项目安排" wx:if="{{detailList && detailList.length>0}}">
-    <view class="i-sticky-demo">
-        <i-sticky scrollTop="{{scrollTop}}" i-class="i-sticky-demo-title">
-            <i-sticky-item wx:for="{{detailList}}">
-                <view slot="title">
-                    <view class="sign_activity">
-                        <view class="c-span9 right-border">
-                            <i-icon size="25" type="activity" color="#19be6b"></i-icon>
-                            <text>{{item.name}}日</text>
-                        </view>
-                        <view class="c-span3" bindtap="handleToAddDailyHistory">
-                            <i-icon type="add" size="25" color="#19be6b" />
-                            <text>添加时段</text>
-                        </view>
-                    </view>
+<i-panel title="车辆计划出勤情况">
+    <view class="sign_activity">
+        <view class="c-span9">
+            <i-icon size="25" type="businesscard" color="#19be6b"></i-icon>
+            <text>车辆:{{nickname}}</text>
+        </view>
+        <view class="c-span3" bindtap="handleToAddDailyHistory">
+            <i-icon type="add" size="25" color="#19be6b" />
+            <text>新增计划</text>
+        </view>
+    </view>
+    <view class="i-sticky-demo" wx:if="{{detailList && detailList.length>0}}">
+        <view wx:for="{{detailList}}">
+            <view class="sign_activity">
+                <view class="c-span9">
+                    <i-icon size="25" type="activity" color="#19be6b"></i-icon>
+                    <text>{{item.name}}日</text>
                 </view>
-                <view slot="content">
-                    <view class="i-sticky-demo-item">
-                        <i-tag wx:for="{{item.timeRange}}" wx:key="{{index}}" bindchange="onChange" checkable="{{true}}"
-                            name="{{index}}" color="green" checked="{{false}}" type="border" style="margin-right:5px;"
-                            data-id="{{item.id}}" data-range="{{item.timerange}}">
-                            {{item.timerange}}
-                        </i-tag>
-                    </view>
+                <view class="c-span3" data-daytime="{{item.name}}" bindtap="handleToAddDailyHistory">
+                    <i-icon type="add" size="25" color="#19be6b" />
+                    <text>添加时段</text>
                 </view>
-            </i-sticky-item>
-        </i-sticky>
+            </view>
+            <view class="i-sticky-demo-item">
+                <i-tag wx:for="{{item.timeRange}}" wx:key="{{index}}" bindchange="onChange" checkable="{{true}}"
+                    name="{{index}}" color="green" checked="{{false}}" type="border" style="margin-right:5px;"
+                    data-id="{{item.id}}" data-range="{{item.timerange}}" data-daytime="{{item.name}}">
+                    {{item.timerange}}
+                </i-tag>
+            </view>
+        </view>
+    </view>
+    <view class="mg-10" wx:else>
+        <view class="list-column">
+            <icon size="40" type="warn" role="img"></icon>
+            <view>还没有计划数据哦~</view>
+        </view>
     </view>
 </i-panel>
+
 <i-action-sheet visible="{{ showDetailAction }}" actions="{{ detailAction }}" show-cancel bind:cancel="handleCancel"
     bind:click="handleClickItem" />
 <!-- 确认删除 -->
@@ -65,3 +76,29 @@
         <text>删除后无法恢复哦</text>
     </view>
 </i-action-sheet>
+<!-- 添加每天时段弹窗 -->
+<i-modal title="{{addRangeTimeTitle}}" i-class="customer-modal-page" visible="{{ showAdd }}"
+    actions="{{ showAddActions }}" bind:click="addHandlerClick">
+    <view class="i-cell i-input list-inline">
+        <view class="i-cell-hd i-input-title">
+            开始时间</view>
+        <picker mode="time" value="{{addDayStart}}" bindchange="bindAddDayStartTimeChange" class="weight-90"
+            start="00:00" end="23:59">
+            <view class="i-input-input i-cell-bd">
+                {{addDayStart}}
+            </view>
+        </picker>
+        <view class='arrow'></view>
+    </view>
+    <view class="i-cell i-input list-inline">
+        <view class="i-cell-hd i-input-title">
+            结束时间</view>
+        <picker mode="time" value="{{addDayEnd}}" bindchange="bindAddDayEndTimeChange" class="weight-90" start="00:00"
+            end="23:59">
+            <view class="i-input-input i-cell-bd">
+                {{addDayEnd}}
+            </view>
+        </picker>
+        <view class='arrow'></view>
+    </view>
+</i-modal>
